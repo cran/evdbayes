@@ -1,0 +1,11 @@
+dinfo                   Information for Beta and Gamma Distributions
+evdbayes-internal       Internal Functions
+lh                      Calculate Log-likelihoods
+mc.quant                Compute GEV Quantiles from Markov Chains
+mposterior              Maximizing Posterior Distributions
+posterior               MCMC Sampling of Posterior Distributions
+prior                   Construction of Prior Distributions
+rl.pred                 Return Level Plots for GEV Predictive
+                        Distributions
+rl.pst                  Return Level Plots Depicting Distributions of
+                        GEV Quantiles

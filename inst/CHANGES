@@ -1,0 +1,27 @@
+CHANGES FROM VERSION 1.0-1 ARE AS FOLLOWS
+
+  New dataset called rainfall.
+
+  The order statistics likelihood now uses an interface
+  to a C routine. 
+
+  PACKAGE argument in .C and .Call foreign function calls.
+
+  The mailing address of the maintainer has changed.
+
+  The CHANGES file has been moved to the top level directory.
+
+  The latex file of the users' guide is now included in the
+  doc directory.
+
+CHANGES FROM VERSION 1.0-0 ARE AS FOLLOWS
+
+  Documentation fixes and improvement.
+
+  Slight change in point process likelihood for when threshold
+  exceeds upper end point.
+
+
+
+
+

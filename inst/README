@@ -1,0 +1,24 @@
+The evdbayes package implements Bayesian analyses of extreme
+value models.
+
+The users guide (in pdf) will be in the directory evdbayes/doc/  
+underneath wherever the package is installed.
+A reference manual containing the help files (in pdf) can be 
+downloaded from CRAN.
+
+The evdbayes/ directory contains a CHANGES file that 
+documents the changes from previous versions.
+
+All comments, criticisms and queries on the package or 
+associated documentation are gratefully received.
+
+
+
+
+
+
+
+
+
+
+
