@@ -140,7 +140,7 @@ function(par, data, thresh, noy, trend, exact = FALSE)
     if(!exact) {
         thn <- seq(1, length(thresh), length = length(data))
         thresh <- thresh[thn]
-        trend <- trend[thn]
+        if(!missing(trend)) trend <- trend[thn]
     }
       
     pplik2(par = par, data = data, thresh = thresh,
@@ -322,7 +322,7 @@ function(n, init, prior, lh = c("none","gev","pp","os"), ..., psd, burn = 0, thi
         if(!ar$exact) {
           thn <- seq(1, length(ar$thresh), length = length(ar$data))
           ar$thresh <- ar$thresh[thn]
-          ar$trend <- ar$trend[thn]
+          if(!is.null(ar$trend)) ar$trend <- ar$trend[thn]
         }
         ar$exact <- NULL
     }
