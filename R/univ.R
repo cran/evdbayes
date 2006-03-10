@@ -126,6 +126,7 @@ function(par, data, trend)
 function(par, data, thresh, noy, trend, exact = FALSE)
 {
     n <- length(data)
+    if(missing(thresh)) stop("thresh must be specified")
     thresh <- rep(thresh, length.out = n)
     nan <- !is.na(data)
     data <- data[nan]
@@ -307,6 +308,7 @@ function(n, init, prior, lh = c("none","gev","pp","os"), ..., psd, burn = 0, thi
     
     if(lh == "pp") {
         nn <- length(ar$data)
+        if(is.null(ar$thresh)) stop("thresh must be specified")
         ar$thresh <- rep(ar$thresh, length.out = nn)
         nan <- !is.na(ar$data)
         ar$data <- ar$data[nan]
