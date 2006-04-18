@@ -3,6 +3,7 @@
 \usepackage{t1enc}
 \usepackage[latin1]{inputenc}
 \usepackage[english]{babel}
+\usepackage{hyperref}
 \usepackage{amsmath,amssymb}
 \usepackage{graphics}
 
@@ -22,133 +23,166 @@
 \newcommand{\bs}{\boldsymbol}
 \newcommand{\sfrac}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
 
-\begin{document}
-\sloppy
 
+\title{A Users's Guide to the evdbayes Package (Version 1.1)}
+\author{Alec Stephenson$^1$ \and Mathieu Ribatet$^{2,3}$}
+\date{18th April 2006}
+
+\begin{document}
+
+\maketitle
 \begin{center}
-\LARGE 
-A User's Guide to the evdbayes Package (Version 1.0) \\
-\Large
-\vspace{0.2cm}
-Alec Stephenson \\
-\normalsize
-Copyright \copyright 2004 \\
-\vspace{0.2cm}
-Department of Statistics,\\
-Division of Economic and Financial Studies,\\
-Macquarie University, NSW 2109,\\
-Australia. \\
-\vspace{0.2cm}
-E-mail: alec\_stephenson@hotmail.com \\
-25th May 2004 \\
+  Copyright \copyright 2006 \\
+  \vspace{0.2cm}
+  $^1$Department of Statistics,\\
+  Division of Economic and Financial Studies,\\
+  Macquarie University, NSW 2109,\\
+  Australia. \\
+  \vspace{0.2cm}
+  $^2$Department of Hydrological Statistic, INRS,\\
+  University of Qu\'ebec, 490 de la Couronne, G1K 9A9 Canada\\
+  \vspace{0.2cm} $^3$Cemagref UR HH, 3bis quai Chauveau\\ 69336 Lyon Cedex
+  09 France\\ \vspace{0.2cm}
+  E-mail: \email{alec\_stephenson@hotmail.com} \hspace{0.5cm}
+  \email{ribatet@hotmail.com}\\
 \end{center}
+
 
 \section{Introduction}
 \setcounter{footnote}{0}
 
 \subsection{What is the evdbayes package?}
 
-The \textbf{evdbayes} package is an add-on package for the R \citep{R} statistical computing system.
-It provides functions for the Bayesian analysis of extreme value models, using MCMC methods.
-There is no direct relationship between the \textbf{evd} \citep{step:rn} and \textbf{evdbayes} packages, but \textbf{evd} may be a ``required package'' for \textbf{evdbayes} in the future.
+The \textbf{evdbayes} package is an add-on package for the R \citep{R}
+statistical computing system.  It provides functions for the Bayesian
+analysis of extreme value models, using MCMC methods.  There is no
+direct relationship between the \textbf{evd} \citep{step:rn} and
+\textbf{evdbayes} packages, but \textbf{evd} may be a ``required
+package'' for \textbf{evdbayes} in the future.
 
-All comments, criticisms and queries on the package or associated documentation are gratefully received.
+All comments, criticisms and queries on the package or associated
+documentation are gratefully received.
 
 \subsection{Obtaining the package/guide}
 
-The package can be downloaded from CRAN (The Comprehensive R
-Archive Network) at \verb+http://cran.r-project.org/+. 
-This guide (in pdf) will be in the directory \verb+evdbayes/doc/+
-underneath wherever the package is installed.
+The package can be downloaded from CRAN (The Comprehensive R Archive
+Network) at \url{http://cran.r-project.org/}.  This guide (in pdf)
+will be in the directory \verb+evdbayes/doc/+ underneath wherever the
+package is installed.
 
 \subsection{Contents}
 
-This guide contains examples on the use of the \textbf{evdbayes} package.
-Section \ref{bayes} introduces Bayes Theory.
-Section \ref{lh} describes the generalized extreme value distribution and the point process characterization of extremes.
-Prior distributions are constructed in Section \ref{prior}. 
-Posterior distributions and MCMC methods are discussed in Section \ref{posterior}.
-The heart of the guide is contained in Sections \ref{eg} and \ref{further}.
-In Section \ref{eg} the functions that implement the ideas of Sections \ref{bayes} to \ref{posterior} are introduced.
-Section \ref{further} provides an introduction to more specialist topics.
+This guide contains examples on the use of the \textbf{evdbayes}
+package.  Section \ref{bayes} introduces Bayes Theory.  Section
+\ref{lh} describes the generalized extreme value distribution and the
+point process characterization of extremes.  Prior distributions are
+constructed in Section \ref{prior}.  Posterior distributions and MCMC
+methods are discussed in Section \ref{posterior}.  The heart of the
+guide is contained in Sections \ref{eg} and \ref{further}.  In Section
+\ref{eg} the functions that implement the ideas of Sections
+\ref{bayes} to \ref{posterior} are introduced.  Section \ref{further}
+provides an introduction to more specialist topics.
 
 \subsection{Citing the package/guide}
 
-To cite this guide or the package in publications please use the following bibliographic database entry. 
+To cite this guide or the package in publications please use the
+following bibliographic database entry.
 \begin{verbatim}
 @Manual{key,
-  title = {A User's Guide to the evdbayes Package (Version 1.0)},
-  author = {Stephenson, A. G.},
-  year = {2004},
-  month = {May},
+  title = {A User's Guide to the evdbayes Package (Version 1.1)},
+  author = {Stephenson, A. G. and Ribatet, M. A.},
+  year = {2006},
+  month = {April},
   url = {http://cran.r-project.org/}
 }
 \end{verbatim}
 
 \subsection{Caveat}
 
-I have checked these functions as best I can but, as ever, they may
-contain bugs. 
-If you find a bug or suspected bug in the code or the documentation
-please report it to me at \verb+alec_stephenson@hotmail.com+.  
-Please include an appropriate subject line.
+Alec Stephenson and I have checked these functions as best we can but,
+as ever, they may contain bugs.  If you find a bug or suspected bug in
+the code or the documentation please report it to me at
+\verb+ribatet@hotmail.com+.  Please include an appropriate subject
+line.
 
 \subsection{Legalese}
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but without any warranty; without even the implied warranty of
-merchantability or fitness for a particular purpose.  
-See the GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.  See the GNU
+General Public License for more details.
 
-A copy of the GNU General Public License can be obtained from 
-\verb+http://www.gnu.org/copyleft/gpl.html+.
-You can also obtain it by writing to the Free Software Foundation, 
-Inc., 59 Temple Place -- Suite 330, Boston, MA 02111-1307, USA.
+A copy of the GNU General Public License can be obtained from
+\url{http://www.gnu.org/copyleft/gpl.html}.  You can also obtain it by
+writing to the Free Software Foundation, Inc., 59 Temple Place --
+Suite 330, Boston, MA 02111-1307, USA.
 
 \subsection{Acknowledgments}
 
-Thanks to Ole Christensen and Jonathan Tawn for their comments.
+Thanks to Ole Christensen and Jonathan Tawn for their comments. Thanks
+to Alec Stephenson to let me be the ``new father'' of the
+\textbf{evdbayes} package.
 
 \section{An Introduction to Bayes Theory}
 \setcounter{footnote}{0}
 \label{bayes}
 
-Let us assume that the data $\bs{x} = (x_1,\dots,x_n)$ are independent realizations of a random variable whose density falls within the parametric family $\{f(x|\theta):\theta \in \Theta\}$.
-The \textbf{likelihood} function is defined using
+Let us assume that the data $\bs{x} = (x_1,\dots,x_n)$ are independent
+realizations of a random variable whose density falls within the
+parametric family $\{f(x|\theta):\theta \in \Theta\}$.  The
+\textbf{likelihood} function is defined using
 \begin{equation*}
 L(\theta;\bs{x}) = \prod_{i=1}^n f(x_i|\theta).
 \end{equation*} 
-It is often easier to work with the \textbf{log-likelihood} function $l(\theta;\bs{x}) = \log\{L(\theta;\bs{x})\}$.
-The maximum likelihood estimate $\hat{\theta}(\bs{x})$ is the value at which $l(\theta;\bs{x})$ attains its maximum, as a function of $\theta$.
+It is often easier to work with the \textbf{log-likelihood} function
+$l(\theta;\bs{x}) = \log\{L(\theta;\bs{x})\}$.  The maximum likelihood
+estimate $\hat{\theta}(\bs{x})$ is the value at which
+$l(\theta;\bs{x})$ attains its maximum, as a function of $\theta$.
 
 
-In Bayes Theory we assume that, without reference to the data, it is possible to formulate beliefs about $\theta$ that can be expressed as a probability distribution. 
-For example, if $\theta \in (0,1)$, and you believe that any value in $(0,1)$ is equally likely, your belief can be expressed using the probability distribution $\theta \sim U(0,1)$. 
-On the other hand, if $\theta \in \mathbb{R}^3$, you may be able to express your beliefs using a trivariate normal distribution. 
-This requires the specification of nine parameters; the mean and variance of each marginal distribution, and the correlation coefficients between each pair.  
-A distribution on $\theta$, made without reference to the data, is called a \textbf{prior distribution}.
-The parameters of the prior distribution are called \textbf{hyperparameters}.
-The specification of a particular prior distribution requires the specification of all hyperparameters.
+In Bayes Theory we assume that, without reference to the data, it is
+possible to formulate beliefs about $\theta$ that can be expressed as
+a probability distribution.  For example, if $\theta \in (0,1)$, and
+you believe that any value in $(0,1)$ is equally likely, your belief
+can be expressed using the probability distribution $\theta \sim
+U(0,1)$.  On the other hand, if $\theta \in \mathbb{R}^3$, you may be
+able to express your beliefs using a trivariate normal distribution.
+This requires the specification of nine parameters; the mean and
+variance of each marginal distribution, and the correlation
+coefficients between each pair.  A distribution on $\theta$, made
+without reference to the data, is called a \textbf{prior
+  distribution}.  The parameters of the prior distribution are called
+\textbf{hyperparameters}.  The specification of a particular prior
+distribution requires the specification of all hyperparameters.
 
-Let $\pi(\theta)$ denote the density of the prior distribution for $\theta$.
-Bayes' theorem states that
+Let $\pi(\theta)$ denote the density of the prior distribution for
+$\theta$.  Bayes' theorem states that
 \begin{equation}
-\pi(\theta|\bs{x}) = \frac{\pi(\theta)L(\theta;\bs{x})}{\int_{\Theta} \pi(\theta)L(\theta;\bs{x}) \, \text{d}\theta} \propto \pi(\theta)L(\theta;\bs{x}),
-\label{postdens}
+  \pi(\theta|\bs{x}) =
+  \frac{\pi(\theta)L(\theta;\bs{x})}{\int_{\Theta}
+    \pi(\theta)L(\theta;\bs{x}) \, \text{d}\theta} \propto
+  \pi(\theta)L(\theta;\bs{x}), 
+  \label{postdens}
 \end{equation} 
-where $\pi(\theta|\bs{x})$ is the density of the \textbf{posterior distribution}.
-The posterior distribution includes the additional information provided by the data $\bs{x}$.
-Point estimators can be derived by taking e.g.\ the mean of the posterior distribution (the posterior mean).
+where $\pi(\theta|\bs{x})$ is the density of the \textbf{posterior
+  distribution}.  The posterior distribution includes the additional
+information provided by the data $\bs{x}$.  Point estimators can be
+derived by taking e.g.\ the mean of the posterior distribution (the
+posterior mean).
 
-Computation of the normalizing constant $\int_{\Theta} \pi(\theta)L(\theta;\bs{x}) \, \text{d}\theta$ in \eqref{postdens} can be problematic, particularly for high-dimensional $\theta$.
-Simulation methods can bypass this difficulty.
-In particular, Markov Chain Monte Carlo (MCMC) techniques seek to produce stationary sequences of simulated (vector) values with marginal density $\pi(\theta|\bs{x})$.
-These sequences can then be used to estimate features of the posterior distribution. 
+Computation of the normalizing constant $\int_{\Theta}
+\pi(\theta)L(\theta;\bs{x}) \, \text{d}\theta$ in \eqref{postdens} can
+be problematic, particularly for high-dimensional $\theta$.
+Simulation methods can bypass this difficulty.  In particular, Markov
+Chain Monte Carlo (MCMC) techniques seek to produce stationary
+sequences of simulated (vector) values with marginal density
+$\pi(\theta|\bs{x})$.  These sequences can then be used to estimate
+features of the posterior distribution.
 
 \section{Likelihoods for Extremes}
 \setcounter{footnote}{0}
@@ -159,214 +193,391 @@ These sequences can then be used to estimate features of the posterior distribut
 
 The GEV (generalized extreme value) distribution function is given by
 \begin{equation}
-F(z) = \exp \left\{ - \left[ 1+ \xi \left( z-\mu \right) /\sigma  \right]_{+}^{-1/\xi} \right\},
+  F(z) = \exp \left\{ - \left[ 1+ \xi \left( z-\mu \right) /\sigma
+    \right]_{+}^{-1/\xi} \right\}, 
 \label{gev}
 \end{equation}   
-where ($\mu,\sigma,\xi$) are the location, scale and shape parameters respectively, $\sigma > 0$ and $h_{+}=\max(h,0)$.
-The case $\xi=0$ (the Gumbel distribution) is defined by continuity.
+where ($\mu,\sigma,\xi$) are the location, scale and shape parameters
+respectively, $\sigma > 0$ and $h_{+}=\max(h,0)$.  The case $\xi=0$
+(the Gumbel distribution) is defined by continuity.
 
-Let $\bs{\theta} = (\mu,\sigma,\xi)$.
-If we assume that the data $\bs{x} = (x_1,\dots,x_n)$ are independent realizations of a random variable distributed as $\text{GEV}(\bs{\theta})$, the log-likelihood is
+Let $\bs{\theta} = (\mu,\sigma,\xi)$.  If we assume that the data
+$\bs{x} = (x_1,\dots,x_n)$ are independent realizations of a random
+variable distributed as $\text{GEV}(\bs{\theta})$, the log-likelihood
+is
 \begin{equation}
-l(\bs{\theta};\bs{x}) = -n\log \sigma - (1 + 1/\xi) \sum_{i=1}^n \log\{1+ \xi \left( x_i-\mu \right) /\sigma\} - \sum_{i=1}^n  \left\{ 1 + \xi \left( x_i-\mu \right) /\sigma  \right\}^{-1/\xi},
+  l(\bs{\theta};\bs{x}) = -n\log \sigma - (1 + 1/\xi) \sum_{i=1}^n
+  \log\{1+ \xi \left( x_i-\mu \right) /\sigma\} - \sum_{i=1}^n
+  \left\{ 1 + \xi \left( x_i-\mu \right) /\sigma  \right\}^{-1/\xi}, 
 \label{gevlik}
 \end{equation}
-provided that $1 + \xi \left( x_i-\mu \right) /\sigma$ is positive for each $i=1,\dots,n$. 
-If any of these terms are non-positive the likelihood is zero (since the observed data falls beyond the end point of the $\text{GEV}(\bs{\theta})$ distribution) and the log-likelihood is $-\infty$.
-The case $\xi=0$ is again defined by continuity.
+provided that $1 + \xi \left( x_i-\mu \right) /\sigma$ is positive for
+each $i=1,\dots,n$.  If any of these terms are non-positive the
+likelihood is zero (since the observed data falls beyond the end point
+of the $\text{GEV}(\bs{\theta})$ distribution) and the log-likelihood
+is $-\infty$.  The case $\xi=0$ is again defined by continuity.
   
-Due to an asymptotic argument \citep[e.g.][]{cole01} this model is often used when the data $\bs{x}$ consists of maxima (or negated minima) from some underlying process.  
-Annual sea level maxima and annual temperature maxima are used in the examples of Sections \ref{egpirie} and \ref{egoxford} respectively.
+Due to an asymptotic argument \citep[e.g.][]{cole01} this model is
+often used when the data $\bs{x}$ consists of maxima (or negated
+minima) from some underlying process.  Annual sea level maxima and
+annual temperature maxima are used in the examples of Sections
+\ref{egpirie} and \ref{egoxford} respectively.
 
 \subsection{Point Process Characterization}
 \label{lhpp}
 
-Let $X_1,\dots,X_n$ be a series of independent random variables with common distribution function $F$.
-Suppose that $n$ is large, so that the distribution of $M_n = \max\{X_1,\dots,X_n\}$ can be approximated by the GEV($\mu,\sigma,\xi$) distribution \citep[e.g.][]{cole01}, with (possibly infinite) end points\footnote{If $\xi>0$, $z_- = \mu-\sigma/\xi$ and $z_+ = \infty$. If $\xi<0$, $z_- = -\infty$ and $z_+ = \mu-\sigma/\xi$. If $\xi=0$, the expressions given are all defined by continuity, with $z_- = -\infty$ and $z_+ = \infty$.} $z_-$ and $z_+$.  
-Then for large thresholds $u > z_-$ the sequence $\{X_1,\dots,X_n\}$ viewed on the interval $(u,z_+)$ is approximately a non-homogeneous Poisson process with intensity function
+Let $X_1,\dots,X_n$ be a series of independent random variables with
+common distribution function $F$.  Suppose that $n$ is large, so that
+the distribution of $M_n = \max\{X_1,\dots,X_n\}$ can be approximated
+by the GEV($\mu,\sigma,\xi$) distribution \citep[e.g.][]{cole01}, with
+(possibly infinite) end points\footnote{If $\xi>0$, $z_- =
+  \mu-\sigma/\xi$ and $z_+ = \infty$. If $\xi<0$, $z_- = -\infty$ and
+  $z_+ = \mu-\sigma/\xi$. If $\xi=0$, the expressions given are all
+  defined by continuity, with $z_- = -\infty$ and $z_+ = \infty$.}
+$z_-$ and $z_+$.  Then for large thresholds $u > z_-$ the sequence
+$\{X_1,\dots,X_n\}$ viewed on the interval $(u,z_+)$ is approximately
+a non-homogeneous Poisson process with intensity function
 \begin{equation*}
-\lambda_{\bs{\theta}}(x) = \frac{1}{\sigma} \left\{1 + \xi\left(\frac{x-\mu}{\sigma}\right)\right\}^{-(\xi+1)/\xi}, \qquad u < x < z_+,
+  \lambda_{\bs{\theta}}(x) = \frac{1}{\sigma} \left\{1 +
+    \xi\left(\frac{x-\mu}{\sigma}\right)\right\}^{-(\xi+1)/\xi},
+  \qquad u < x < z_+, 
 \end{equation*}
-where $\sigma > 0$ and $\bs{\theta} = (\mu,\sigma,\xi)$.
-The intensity measure on $(u,z_+)$ is therefore given by
+where $\sigma > 0$ and $\bs{\theta} = (\mu,\sigma,\xi)$.  The
+intensity measure on $(u,z_+)$ is therefore given by
 \begin{equation*}
-\Lambda_{\bs{\theta}}(u,z_+) = \int_u^{z_+} \lambda_{\bs{\theta}}(x) \text{d}x =
-\left\{1 + \xi\left(\frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}.
+  \Lambda_{\bs{\theta}}(u,z_+) = \int_u^{z_+} \lambda_{\bs{\theta}}(x) \text{d}x =
+  \left\{1 + \xi\left(\frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}.
 \end{equation*}
-The mathematical details of the asymptotic approximation are given in \citet{pick71} and \citet{smit89}.
-The approximation yields a likelihood for $\bs{\theta}$ based on observed data $\bs{x} = (x_1,\dots,x_n)$. 
-Suppose that $n_u$ of the $n$ observations exceed the threshold $u$. 
-Let $x_{(i)}$ denote the $i$th exceedence, for $i=1,\dots,n_u$.
-The log-likelihood function can be derived \citep{cole01} as
+The mathematical details of the asymptotic approximation are given in
+\citet{pick71} and \citet{smit89}.  The approximation yields a
+likelihood for $\bs{\theta}$ based on observed data $\bs{x} =
+(x_1,\dots,x_n)$.  Suppose that $n_u$ of the $n$ observations exceed
+the threshold $u$.  Let $x_{(i)}$ denote the $i$th exceedence, for
+$i=1,\dots,n_u$.  The log-likelihood function can be derived
+\citep{cole01} as
 \begin{equation*}
-l(\bs{\theta} ; \bs{x}) = -\Lambda_{\bs{\theta}}(u,z_+) + \sum_{i=1}^{n_u} \log\{\lambda_{\bs{\theta}}(x_{(i)})\},
+  l(\bs{\theta} ; \bs{x}) = -\Lambda_{\bs{\theta}}(u,z_+) +
+  \sum_{i=1}^{n_u} \log\{\lambda_{\bs{\theta}}(x_{(i)})\}, 
 \end{equation*}
-provided that $1 + \xi(u-\mu)/\sigma$ and $1 + \xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are positive. 
-The interpretation of $\bs{\theta}$ depends on the value of $n$, because the approximate distribution of $M_n$ is GEV($\bs{\theta}$).
-The following adjustment\footnote{The adjustment can be derived by introducing the multiplicative factor $n_y$ to the intensity function.} to the log-likelihood $l(\bs{\theta} ; \bs{x})$ avoids this problem.
+provided that $1 + \xi(u-\mu)/\sigma$ and $1 +
+\xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are positive.  The
+interpretation of $\bs{\theta}$ depends on the value of $n$, because
+the approximate distribution of $M_n$ is GEV($\bs{\theta}$).  The
+following adjustment\footnote{The adjustment can be derived by
+  introducing the multiplicative factor $n_y$ to the intensity
+  function.} to the log-likelihood $l(\bs{\theta} ; \bs{x})$ avoids
+this problem.
   
 \begin{equation}
-l(\bs{\theta} ; \bs{x}) = -n_y\Lambda_{\bs{\theta}}(u,z_+) + \sum_{i=1}^{n_u} \log\{\lambda_{\bs{\theta}}(x_{(i)})\}.
+  l(\bs{\theta} ; \bs{x}) = -n_y\Lambda_{\bs{\theta}}(u,z_+) +
+  \sum_{i=1}^{n_u} \log\{\lambda_{\bs{\theta}}(x_{(i)})\}. 
 \label{pplik}
 \end{equation}
-If the value $n_y$ is the number of years of observation (excluding missing values), the annual maxima are distributed as $\text{GEV}(\bs{\theta})$.
-More generally, if $n_y$ is the number of periods of observation, the maxima over those periods are distributed as $\text{GEV}(\bs{\theta})$.
-The asymptotic approximation assumes that there are a large number of observations within each period.
+If the value $n_y$ is the number of years of observation (excluding
+missing values), the annual maxima are distributed as
+$\text{GEV}(\bs{\theta})$.  More generally, if $n_y$ is the number of
+periods of observation, the maxima over those periods are distributed
+as $\text{GEV}(\bs{\theta})$.  The asymptotic approximation assumes
+that there are a large number of observations within each period.
 
+\subsection{Generalized Pareto Distributions}
+\label{lhgp}
+
+The GP (Generalized Pareto) distribution function is given by
+\begin{equation}
+  \label{gp}
+  F(z) = 1 - \left[ 1+ \xi \left( z-\mu \right) /\sigma
+    \right]_{+}^{-1/\xi} , 
+\end{equation}   
+where ($\mu,\sigma,\xi$) are the location, scale and shape parameters
+respectively, $\sigma > 0$ and $h_{+}=\max(h,0)$.  The case $\xi=0$
+(the Exponential distribution) is defined by continuity.
+
+Let $\bs{\theta} = (\mu,\sigma,\xi)$.  If we assume that the data
+$\bs{x} = (x_1,\dots,x_n)$ are independent realizations of a random
+variable distributed as $\text{GP}(\bs{\theta})$, the log-likelihood
+is
+\begin{equation}
+  l(\bs{\theta};\bs{x}) = -n\log \sigma - (1 + 1/\xi) \sum_{i=1}^n
+  \log\left[1+ \xi \left( x_i-\mu \right) /\sigma\right], 
+\label{gplik}
+\end{equation}
+provided that $1 + \xi \left( x_i-\mu \right) /\sigma$ is positive for
+each $i=1,\dots,n$.  If any of these terms are non-positive the
+likelihood is zero (since the observed data falls beyond the end point
+of the $\text{GP}(\bs{\theta})$ distribution) and the log-likelihood
+is $-\infty$.  The case $\xi=0$ is again defined by continuity.
+  
+Due to an asymptotic argument \citep[e.g.][]{cole01} this model is
+often used when the data $\bs{x}$ consists of peaks over a high
+threshold (or peaks under a low threshold) from some underlying
+process.
 
 
 \section{Construction of Prior Distributions}
 \setcounter{footnote}{0}
 \label{prior}
 
-The likelihoods \eqref{gevlik} and \eqref{pplik} are both functions of the parameter vector $\bs{\theta} = (\mu,\sigma,\xi)$.
-The construction of a prior distribution on $\bs{\theta}$ proceeds in the same manner for both models. 
-We employ three different methods of construction.
-The first method uses the trivariate normal distribution.
-The second and third methods construct priors on the quantile space, for fixed probabilities, and on the probability space, for fixed quantiles.
+The likelihoods \eqref{gevlik}, \eqref{gplik} and \eqref{pplik} are
+both functions of the parameter vector $\bs{\theta} =
+(\mu,\sigma,\xi)$.  The construction of a prior distribution on
+$\bs{\theta}$ proceeds in the same manner for both models.  We employ
+for different methods of construction.  The first method uses the
+trivariate normal distribution.  The second method uses also the
+trivariate normal distribution but with a different parametrization.
+The third and fourth methods construct priors on the quantile space,
+for fixed probabilities, and on the probability space, for fixed
+quantiles.
 
-The trivariate normal distribution, which contains nine hyperparameters, is very flexible but is difficult to elicit.
-At the other extreme, the construction on the probability space is relatively easy to elicit but is not very flexible, having only four hyperparameters with which to define a trivariate distribution.
+The trivariate normal distribution, which contains nine
+hyperparameters, is very flexible but is difficult to elicit.  At the
+other extreme, the construction on the probability space is relatively
+easy to elicit but is not very flexible, having only four
+hyperparameters with which to define a trivariate distribution.
 
-The trivariate normal construction is the only construction of those presented below that enables the specification of independent parameters (e.g.\ Section \ref{egpirie}).
-This specification is often used for a naive analysis, where there is no external information with which to formulate a dependence structure.
-On the other hand, increasing $\sigma$ or $\xi$ leads to a heavier tailed distribution, so \emph{a priori} negative dependence between these parameters is expected \citep{coletawn96}.
-The quantile space and probability space constructions induce a natural dependence structure using only a small number of hyperparameters.
-They also enable the elicitation of information using familiar quantities (e.g.\ Section \ref{egoxford}).
+The trivariate normal construction is the only construction of those
+presented below that enables the specification of independent
+parameters (e.g.\ Section \ref{egpirie}).  This specification is often
+used for a naive analysis, where there is no external information with
+which to formulate a dependence structure.  On the other hand,
+increasing $\sigma$ or $\xi$ leads to a heavier tailed distribution,
+so \emph{a priori} negative dependence between these parameters is
+expected \citep{coletawn96}.  The quantile space and probability space
+constructions induce a natural dependence structure using only a small
+number of hyperparameters.  They also enable the elicitation of
+information using familiar quantities (e.g.\ Section \ref{egoxford}).
   
-\subsection{Trivariate Normal Distribution}
+\subsection{Trivariate Normal Distribution (model 1)}
 
-A trivariate normal prior distribution on $\bs{\theta}' = (\mu, \log \sigma, \xi)$ leads to the prior density
+A trivariate normal prior distribution on $\bs{\theta}' = (\mu, \log
+\sigma, \xi)$ leads to the prior density
 \begin{equation}
-\pi(\bs{\theta}) \propto \frac{1}{\sigma} \, \exp\left\{-\frac{1}{2} (\bs{\theta}' - \bs{\nu})^T \Sigma^{-1} (\bs{\theta}' - \bs{\nu}) \right\}.
-\label{priornorm}
+  \pi(\bs{\theta}) \propto \frac{1}{\sigma} \, \exp\left\{-\frac{1}{2}
+    (\bs{\theta}' - \bs{\nu})^T \Sigma^{-1} (\bs{\theta}' - \bs{\nu})
+  \right\}. 
+\label{priornorm1}
 \end{equation}  
-This approach was used by \citet{colepowe96}.
-The mean vector $\bs{\nu}$ and the symmetric positive definite $(3 \times 3)$ covariance matrix $\Sigma$ must be specified.
+This approach was used by \citet{colepowe96}.  The mean vector
+$\bs{\nu}$ and the symmetric positive definite $(3 \times 3)$
+covariance matrix $\Sigma$ must be specified.
+
+\subsection{Trivariate Normal Distribution (model 2)}
+
+A trivariate normal prior distribution on $\bs{\theta}' = (\log \mu, \log
+\sigma, \xi)$ leads to the prior density
+\begin{equation}
+  \pi(\bs{\theta}) \propto \frac{1}{\mu\sigma} \, \exp\left\{-\frac{1}{2}
+    (\bs{\theta}' - \bs{\nu})^T \Sigma^{-1} (\bs{\theta}' - \bs{\nu})
+  \right\}. 
+\label{priornorm2}
+\end{equation}  
+The log-normal parametrization for the location parameter can be
+usefull if a physical lower bound for this parameter is required.  The
+mean vector $\bs{\nu}$ and the symmetric positive definite $(3 \times
+3)$ covariance matrix $\Sigma$ must be specified.
 
 \subsection{Gamma Distributions for Quantile Differences}
 \label{spriorgamma}
 
-The following approach was used in \citet{coletawn96}.
-Let  $F(q_p) = 1-p$, where $F(\cdot)$ is the GEV distribution function, given in expression \eqref{gev}. It follows that
+The following approach was used in \citet{coletawn96}.  Let $F(q_p) =
+1-p$, where $F(\cdot)$ is the GEV distribution function, given in
+expression \eqref{gev}. It follows that
 \begin{equation*}
 q_p = \mu + \sigma(x_p^{-\xi} - 1)/\xi,
 \end{equation*}
-where $x_p=-\log(1-p)$.
-A prior distribution can be constructed in terms of the quantiles $(q_{p_1},q_{p_2},q_{p_3})$ for specified probabilities $p_1 > p_2 > p_3$.
-Since $q_{p_1} < q_{p_2} < q_{p_3}$ it is easier to work with the differences $(\tilde{q}_{p_1},\tilde{q}_{p_2},\tilde{q}_{p_3})$, so that $\tilde{q}_{p_i} = q_{p_i} - q_{p_{i-1}}$ for $i=1,2,3$, where $q_{p_0}$ is the physical lower end point of the process variable.
-The measurement scale can always be transformed to make the lower end point zero.
-The \textbf{evdbayes} package therefore assumes that $q_{p_0} = 0$.
-The priors on the quantile differences are taken to be independent, with
+where $x_p=-\log(1-p)$.  A prior distribution can be constructed in
+terms of the quantiles $(q_{p_1},q_{p_2},q_{p_3})$ for specified
+probabilities $p_1 > p_2 > p_3$.  Since $q_{p_1} < q_{p_2} < q_{p_3}$
+it is easier to work with the differences
+$(\tilde{q}_{p_1},\tilde{q}_{p_2},\tilde{q}_{p_3})$, so that
+$\tilde{q}_{p_i} = q_{p_i} - q_{p_{i-1}}$ for $i=1,2,3$, where
+$q_{p_0}$ is the physical lower end point of the process variable.
+The measurement scale can always be transformed to make the lower end
+point zero.  The \textbf{evdbayes} package therefore assumes that
+$q_{p_0} = 0$.  The priors on the quantile differences are taken to be
+independent, with
 \begin{equation*}
 \tilde{q}_{p_i} \sim \text{gamma}(\alpha_i,\beta_i), \qquad \alpha_i,\beta_i > 0,
 \end{equation*}
-for $i=1,2,3$.
-The differences $(\tilde{q}_{p_2},\tilde{q}_{p_3})$ only depend on the scale and shape parameters $(\sigma,\xi)$.
-The prior information on the location parameter $\mu$ arises only through $\tilde{q}_{p_1}$.
-The hyperparameters $(\alpha_1,\alpha_2,\alpha_3)$ and $(\beta_1,\beta_2,\beta_3)$, and the probabilities $p_1 > p_2 > p_3$, must all be specified.
-(By default the \textbf{evdbayes} package uses $p_i=10^{-i}$ for $i=1,2,3$.)
-This construction leads to the prior density
+for $i=1,2,3$.  The differences $(\tilde{q}_{p_2},\tilde{q}_{p_3})$
+only depend on the scale and shape parameters $(\sigma,\xi)$.  The
+prior information on the location parameter $\mu$ arises only through
+$\tilde{q}_{p_1}$.  The hyperparameters $(\alpha_1,\alpha_2,\alpha_3)$
+and $(\beta_1,\beta_2,\beta_3)$, and the probabilities $p_1 > p_2 >
+p_3$, must all be specified.  (By default the \textbf{evdbayes}
+package uses $p_i=10^{-i}$ for $i=1,2,3$.)  This construction leads to
+the prior density
 \begin{equation}
-\pi(\bs{\theta}) \propto \text{J}
-\prod_{i=1}^{3} \tilde{q}_{p_i}^{\alpha_i-1} \exp\{-\tilde{q}_{p_i}/\beta_i\},
+  \pi(\bs{\theta}) \propto \text{J}
+  \prod_{i=1}^{3} \tilde{q}_{p_i}^{\alpha_i-1}
+  \exp\{-\tilde{q}_{p_i}/\beta_i\}, 
 \label{priorgamma}
 \end{equation}
-provided that $q_{p_1} < q_{p_2} < q_{p_3}$. J is the Jacobian of the transformation from $(q_{p_1},q_{p_2},q_{p_3})$ to $\bs{\theta}=(\mu,\sigma,\xi)$, namely
+provided that $q_{p_1} < q_{p_2} < q_{p_3}$. J is the Jacobian of the
+transformation from $(q_{p_1},q_{p_2},q_{p_3})$ to
+$\bs{\theta}=(\mu,\sigma,\xi)$, namely
 \begin{equation*}
-\text{J} = \sigma/\xi^2 \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j} (x_ix_j)^{-\xi} \log (x_j / x_i) \right|,
+  \text{J} = \sigma/\xi^2 \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i <
+        j}} (-1)^{i+j} (x_ix_j)^{-\xi} \log (x_j / x_i) \right|, 
 \end{equation*}
 where $x_i = -\log(1 - p_i)$ for $i=1,2,3$.
 
 At $\xi=0$ the prior distribution is defined by continuity, using
 \begin{equation*}
-\lim_{\xi\rightarrow0}q_{p_i} = \mu-\sigma \log x_i, \qquad i=1,2,3,
+  \lim_{\xi\rightarrow0}q_{p_i} = \mu-\sigma \log x_i, \qquad i=1,2,3,
 \end{equation*}
 and
 \begin{equation*}
-\lim_{\xi\rightarrow0}\text{J} = \sigma/2 \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j} \log x_i \log x_j \log (x_j / x_i) \right|.
+  \lim_{\xi\rightarrow0}\text{J} = \sigma/2 \left| \sum_{\sfrac{i,j
+        \in \{1,2,3\}}{i < j}} (-1)^{i+j} \log x_i \log x_j \log (x_j
+    / x_i) \right|. 
 \end{equation*}
-Derivations of the results given in this section are presented in detail in Section 5.6 of \citet{step:phd}.
+Derivations of the results given in this section are presented in
+detail in Section 5.6 of \citet{step:phd}.
 
 \subsection{Beta Distributions for Probability Ratios}
 \label{spriorbeta}
 
 The following method of construction was proposed by \citet{crow92}.
-Let  $F(q) = 1-p_q$, where $F(\cdot)$ is the GEV distribution function, given in expression \eqref{gev}. It follows that
+Let $F(q) = 1-p_q$, where $F(\cdot)$ is the GEV distribution function,
+given in expression \eqref{gev}. It follows that
 \begin{equation*}
-p_q = 1 - \exp \left\{ - \left[ 1+ \xi \left( q-\mu \right) /\sigma  \right]_{+}^{-1/\xi} \right\}.
+  p_q = 1 - \exp \left\{ - \left[ 1+ \xi \left( q-\mu \right) /\sigma
+    \right]_{+}^{-1/\xi} \right\}. 
 \end{equation*}
-A prior distribution can be constructed in terms of the probabilities $(p_{q_1},p_{q_2},p_{q_3})$ for specified quantiles $q_1 < q_2 < q_3$.
-Define $p_{q_0} = 1$ and $p_{q_4} = 0$.
-Since $p_{q_1} > p_{q_2} > p_{q_3}$ it is easier to work with the ratios $(\tilde{p}_{q_1},\tilde{p}_{q_2},\tilde{p}_{q_3})$, where $\tilde{p}_{q_i} = p_{q_i}/p_{q_{i-1}}$ for $i=1,2,3$.
+A prior distribution can be constructed in terms of the probabilities
+$(p_{q_1},p_{q_2},p_{q_3})$ for specified quantiles $q_1 < q_2 < q_3$.
+Define $p_{q_0} = 1$ and $p_{q_4} = 0$.  Since $p_{q_1} > p_{q_2} >
+p_{q_3}$ it is easier to work with the ratios
+$(\tilde{p}_{q_1},\tilde{p}_{q_2},\tilde{p}_{q_3})$, where
+$\tilde{p}_{q_i} = p_{q_i}/p_{q_{i-1}}$ for $i=1,2,3$.
 
-The priors on the probability ratios are then taken to be independent, with
+The priors on the probability ratios are then taken to be independent,
+with
 \begin{equation*}
-\tilde{p}_{q_i} \sim \text{beta}\left(\sum\nolimits_{j=i+1}^4 \alpha_j,\,\alpha_i\right), \qquad i=1,2,3.
+  \tilde{p}_{q_i} \sim \text{beta}\left(\sum\nolimits_{j=i+1}^4
+    \alpha_j,\,\alpha_i\right), \qquad i=1,2,3. 
 \end{equation*}
-The positive hyperparameters $(\alpha_i,\alpha_2,\alpha_3,\alpha_4)$ and the quantiles $q_1 < q_2 < q_3$ must all be specified.
-This construction leads to the prior density
+The positive hyperparameters $(\alpha_i,\alpha_2,\alpha_3,\alpha_4)$
+and the quantiles $q_1 < q_2 < q_3$ must all be specified.  This
+construction leads to the prior density
 \begin{equation}
 \pi(\bs{\theta}) \propto \text{J}
 \prod_{i=1}^{4} (p_{q_{i-1}} - p_{q_i})^{\alpha_i - 1},
 \label{priorbeta}
 \end{equation}
-provided that $p_{q_1} > p_{q_2} > p_{q_3}$ and that $1+ \xi( q_i-\mu)/\sigma$ is positive for each $i=1,2,3$. 
-J is the Jacobian of the transformation from $(p_{q_1},p_{q_2},p_{q_3})$ to $\bs{\theta}=(\mu,\sigma,\xi)$, namely
+provided that $p_{q_1} > p_{q_2} > p_{q_3}$ and that $1+ \xi(
+q_i-\mu)/\sigma$ is positive for each $i=1,2,3$.  J is the Jacobian of
+the transformation from $(p_{q_1},p_{q_2},p_{q_3})$ to
+$\bs{\theta}=(\mu,\sigma,\xi)$, namely
 \begin{equation*}
-\text{J} = \sigma/\xi^2  \left\{ \prod\nolimits_{i=1}^3 f(q_i) \right\} \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j} (x_ix_j)^{-\xi} \log (x_j/x_i) \right|,
+  \text{J} = \sigma/\xi^2  \left\{ \prod\nolimits_{i=1}^3 f(q_i)
+  \right\} \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j}
+    (x_ix_j)^{-\xi} \log (x_j/x_i) \right|, 
 \end{equation*}
-where $x_i = -\log(1 - p_{q_i})$ for $i=1,2,3$, and $f(\cdot)$ is the density of the generalized extreme value distribution, so that $f(q_i) = x_i^{1+\xi}\text{e}^{-x_i}/\sigma$.
+where $x_i = -\log(1 - p_{q_i})$ for $i=1,2,3$, and $f(\cdot)$ is the
+density of the generalized extreme value distribution, so that $f(q_i)
+= x_i^{1+\xi}\text{e}^{-x_i}/\sigma$.
 
-Define $x_{i_0} = \lim_{\xi\rightarrow0} x_i = \exp \left\{ -( q_i-\mu)/\sigma  \right\}$, for $i=1,2,3$. At $\xi=0$ the prior distribution is defined by continuity, using 
+Define $x_{i_0} = \lim_{\xi\rightarrow0} x_i = \exp \left\{ -(
+  q_i-\mu)/\sigma \right\}$, for $i=1,2,3$. At $\xi=0$ the prior
+distribution is defined by continuity, using
 \begin{equation*}
-\lim_{\xi\rightarrow0}p_{q_i} = 1 - \text{e}^{ - x_{i_0}},  \qquad i=1,2,3,
+  \lim_{\xi\rightarrow0}p_{q_i} = 1 - \text{e}^{ - x_{i_0}},  \qquad i=1,2,3,
 \end{equation*}
 and 
 \begin{align*}
-\lim_{\xi\rightarrow0}\text{J} &= \sigma/2 \left\{ \prod\nolimits_{i=1}^3 f_0(q_i) \right\} \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j} \log x_{i_0} \log x_{j_0} \log (x_{j_0} / x_{i_0}) \right| \\
-&= \frac{1}{2\sigma^2} \left\{ \prod\nolimits_{i=1}^3 f_0(q_i) \right\} \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j} q_i q_j (q_i - q_j) \right|,
+  \lim_{\xi\rightarrow0}\text{J} &= \sigma/2 \left\{
+    \prod\nolimits_{i=1}^3 f_0(q_i) \right\} \left| \sum_{\sfrac{i,j
+        \in \{1,2,3\}}{i < j}} (-1)^{i+j} \log x_{i_0} \log x_{j_0}
+    \log (x_{j_0} / x_{i_0}) \right| \\ 
+  &= \frac{1}{2\sigma^2} \left\{ \prod\nolimits_{i=1}^3 f_0(q_i)
+  \right\} \left| \sum_{\sfrac{i,j \in \{1,2,3\}}{i < j}} (-1)^{i+j}
+    q_i q_j (q_i - q_j) \right|,
 \end{align*}
-where $f_0(\cdot)$ is the density of the Gumbel distribution, so that $f_0(q_i) = x_{i_0}\text{e}^{-x_{i_0}}/\sigma$.
-Derivations of the results given in this section are presented in detail in Section 5.6 of \citet{step:phd}.
+where $f_0(\cdot)$ is the density of the Gumbel distribution, so that
+$f_0(q_i) = x_{i_0}\text{e}^{-x_{i_0}}/\sigma$.  Derivations of the
+results given in this section are presented in detail in Section 5.6
+of \citet{step:phd}.
 
 \section{Posterior Distributions}
 \setcounter{footnote}{0}
 \label{posterior}
 
-Given our prior density $\pi(\bs{\theta})$ and our likelihood $L(\bs{\theta};\bs{x})$ the posterior density $\pi(\bs{\theta}|\bs{x})$ is defined by equation \eqref{postdens}.
-Computing $\pi(\bs{\theta}|\bs{x})$ directly is problematic because it requires the computation of the integral $\int_{\Theta} \pi(\bs{\theta})L(\bs{\theta}|\bs{x}) \, \text{d}\bs{\theta}$.
-Markov Chain Monte Carlo (MCMC) techniques can bypass this difficulty.
+Given our prior density $\pi(\bs{\theta})$ and our likelihood
+$L(\bs{\theta};\bs{x})$ the posterior density
+$\pi(\bs{\theta}|\bs{x})$ is defined by equation \eqref{postdens}.
+Computing $\pi(\bs{\theta}|\bs{x})$ directly is problematic because it
+requires the computation of the integral $\int_{\Theta}
+\pi(\bs{\theta})L(\bs{\theta}|\bs{x}) \, \text{d}\bs{\theta}$.  Markov
+Chain Monte Carlo (MCMC) techniques can bypass this difficulty.
 
-The \textbf{evdbayes} package produces a \textbf{Markov chain}\footnote{Loosely speaking, a (discrete-time) Markov chain is a stochastic process unfolding in time so that the past and future states are independent given the present.} $\bs{\theta}_0,\dots,\bs{\theta}_n$ with \textbf{equilibrium} distribution\footnote{The equilibrium distribution is the distribution with density $\pi(\bs{\theta}|\bs{x})$, not $\pi(\bs{\theta}|\bs{x})$ itself. We will often refer to a distribution using the corresponding density function.} $\pi(\bs{\theta}|\bs{x})$.
-Loosely speaking, this means that after the chain has been run for a certain length of time each subsequent sample within the chain will be (approximately) distributed as $\pi(\bs{\theta}|\bs{x})$, though the samples will not be independent.
-In this context $\pi(\bs{\theta}|\bs{x})$ is known as the \textbf{target} distribution of the Markov chain.
-The user must specify the \textbf{run length} $n$, and the initial value $\bs{\theta}_0 = (\mu_0,\sigma_0,\xi_0)$.
-After the Markov chain has been generated, the user must also decide when equilibrium has been reached by specifying the \textbf{burn-in} period $b$.
-The first $b$ samples (including the initial value) are then discarded from the chain. 
-Features of the posterior distribution are estimated using $\bs{\theta}_b,\dots,\bs{\theta}_n$, which we assume to be a stationary sequence of (vector) values with marginal density $\pi(\bs{\theta}|\bs{x})$.
-For example, $\frac{1}{n-b+1}\sum_{t=b}^n \mu_t$ is a consistent (as $n \rightarrow \infty$) estimate of the posterior mean of $\mu$.
-The dependence between the samples $\bs{\theta}_b,\dots,\bs{\theta}_n$ influences the accuracy of these estimates.
-As the dependence becomes stronger, the run length $n$ must be larger in order to achieve the same precision.
-Dependence exists both within the output for a single parameter (\textbf{autocorrelations}) and across parameters (\textbf{cross-correlations}).
+The \textbf{evdbayes} package produces a \textbf{Markov
+  chain}\footnote{Loosely speaking, a (discrete-time) Markov chain is
+  a stochastic process unfolding in time so that the past and future
+  states are independent given the present.}
+$\bs{\theta}_0,\dots,\bs{\theta}_n$ with \textbf{equilibrium}
+distribution\footnote{The equilibrium distribution is the distribution
+  with density $\pi(\bs{\theta}|\bs{x})$, not
+  $\pi(\bs{\theta}|\bs{x})$ itself. We will often refer to a
+  distribution using the corresponding density function.}
+$\pi(\bs{\theta}|\bs{x})$.  Loosely speaking, this means that after
+the chain has been run for a certain length of time each subsequent
+sample within the chain will be (approximately) distributed as
+$\pi(\bs{\theta}|\bs{x})$, though the samples will not be independent.
+In this context $\pi(\bs{\theta}|\bs{x})$ is known as the
+\textbf{target} distribution of the Markov chain.  The user must
+specify the \textbf{run length} $n$, and the initial value
+$\bs{\theta}_0 = (\mu_0,\sigma_0,\xi_0)$.  After the Markov chain has
+been generated, the user must also decide when equilibrium has been
+reached by specifying the \textbf{burn-in} period $b$.  The first $b$
+samples (including the initial value) are then discarded from the
+chain.  Features of the posterior distribution are estimated using
+$\bs{\theta}_b,\dots,\bs{\theta}_n$, which we assume to be a
+stationary sequence of (vector) values with marginal density
+$\pi(\bs{\theta}|\bs{x})$.  For example, $\frac{1}{n-b+1}\sum_{t=b}^n
+\mu_t$ is a consistent (as $n \rightarrow \infty$) estimate of the
+posterior mean of $\mu$.  The dependence between the samples
+$\bs{\theta}_b,\dots,\bs{\theta}_n$ influences the accuracy of these
+estimates.  As the dependence becomes stronger, the run length $n$
+must be larger in order to achieve the same precision.  Dependence
+exists both within the output for a single parameter
+(\textbf{autocorrelations}) and across parameters
+(\textbf{cross-correlations}).
 
-Suppose the initial value of the chain is specified as $\bs{\theta}_0$.
-Given that the chain is at state $\bs{\theta}_t = (\mu_t,\sigma_t,\xi_t)$ at iteration $t$, the subsequent state $\bs{\theta}_{t+1}$ is generated using the following algorithm. $LN(\nu, \gamma^2)$ denotes the log-normal distribution, with mean $\exp(\nu + \gamma^2/2)$ and variance $\exp(2\nu + 2\gamma^2) - \exp(2\nu + \gamma^2)$, so that $X$ is distributed as $LN(\nu, \gamma^2)$ if and only if the logarithm of $X$ is distributed as $N(\nu, \gamma^2)$.
-The positive values $\bs{s} = (s_\mu,s_\sigma,s_\xi)$ should be specified to ensure that the chain has desirable properties.
-They should be large enough to ensure that the proposals are made throughout the sample space, but small enough to ensure that the proposed values are accepted often (e.g.\ Section \ref{egpirie}).
+Suppose the initial value of the chain is specified as
+$\bs{\theta}_0$.  Given that the chain is at state $\bs{\theta}_t =
+(\mu_t,\sigma_t,\xi_t)$ at iteration $t$, the subsequent state
+$\bs{\theta}_{t+1}$ is generated using the following algorithm.
+$LN(\nu, \gamma^2)$ denotes the log-normal distribution, with mean
+$\exp(\nu + \gamma^2/2)$ and variance $\exp(2\nu + 2\gamma^2) -
+\exp(2\nu + \gamma^2)$, so that $X$ is distributed as $LN(\nu,
+\gamma^2)$ if and only if the logarithm of $X$ is distributed as
+$N(\nu, \gamma^2)$.  The positive values $\bs{s} =
+(s_\mu,s_\sigma,s_\xi)$ should be specified to ensure that the chain
+has desirable properties.  They should be large enough to ensure that
+the proposals are made throughout the sample space, but small enough
+to ensure that the proposed values are accepted often (e.g.\ Section
+\ref{egpirie}).
 
 \begin{flushleft}
-Propose $\mu^* \sim N(\mu_t, s_\mu^2)$.\\
-Set $\Delta = \frac{\pi(\mu^*,\sigma_t,\xi_t|\bs{x})}{\pi(\mu_t,\sigma_t,\xi_t|\bs{x})}$.\\
-Set $\mu_{t+1} = \mu^*$ with probability $\min\{1, \Delta\}$, else set $\mu_{t+1} = \mu_t$.
+  Propose $\mu^* \sim N(\mu_t, s_\mu^2)$.\\
+  Set $\Delta =
+  \frac{\pi(\mu^*,\sigma_t,\xi_t|\bs{x})}{\pi(\mu_t,\sigma_t,\xi_t|\bs{x})}$.\\ 
+  Set $\mu_{t+1} = \mu^*$ with probability $\min\{1, \Delta\}$, else
+  set $\mu_{t+1} = \mu_t$.
 
-Propose $\sigma^* \sim LN(\log \sigma_t, s_\sigma^2)$.\\
-Set $\Delta = \frac{\pi(\mu_{t+1},\sigma^*,\xi_t|\bs{x})}{\pi(\mu_{t+1},\sigma_t,\xi_t|\bs{x})} \frac{\sigma^*}{\sigma_t}$.\\
-Set $\sigma_{t+1} = \sigma^*$ with probability $\min\{1, \Delta\}$, else set $\sigma_{t+1} = \sigma_t$.
+  Propose $\sigma^* \sim LN(\log \sigma_t, s_\sigma^2)$.\\
+  Set $\Delta =
+  \frac{\pi(\mu_{t+1},\sigma^*,\xi_t|\bs{x})}{\pi(\mu_{t+1},\sigma_t,\xi_t|\bs{x})} \frac{\sigma^*}{\sigma_t}$.\\ 
+  Set $\sigma_{t+1} = \sigma^*$ with probability $\min\{1, \Delta\}$,
+  else set $\sigma_{t+1} = \sigma_t$.
 
-Propose $\xi^* \sim N(\xi_t, s_\xi^2)$.\\
-Set $\Delta = \frac{\pi(\mu_{t+1},\sigma_{t+1},\xi^*|\bs{x})}{\pi(\mu_{t+1},\sigma_{t+1},\xi_t|\bs{x})}$.\\
-Set $\xi_{t+1} = \xi^*$ with probability $\min\{1, \Delta\}$, else set $\xi_{t+1} = \xi_t$.
+  Propose $\xi^* \sim N(\xi_t, s_\xi^2)$.\\
+  Set $\Delta =
+  \frac{\pi(\mu_{t+1},\sigma_{t+1},\xi^*|\bs{x})}{\pi(\mu_{t+1},\sigma_{t+1},\xi_t|\bs{x})}$.\\ 
+  Set $\xi_{t+1} = \xi^*$ with probability $\min\{1, \Delta\}$, else
+  set $\xi_{t+1} = \xi_t$.
 \end{flushleft}
 
 
@@ -374,29 +585,42 @@ Set $\xi_{t+1} = \xi^*$ with probability $\min\{1, \Delta\}$, else set $\xi_{t+1
 \setcounter{footnote}{0}
 \label{eg} 
 
-There are five main functions in the \textbf{evdbayes} package.
-The functions \verb+prior.norm+, \verb+prior.quant+ and \verb+prior.prob+ construct the prior distributions presented in Section \ref{prior}.
-The function \verb+posterior+ generates a Markov chain $\bs{\theta}_0,\dots,\bs{\theta}_n$ with target distribution $\pi(\bs{\theta}|\bs{x})$.
-The function \verb+mposterior+ (locally) maximizes $\pi(\bs{\theta}|\bs{x})$, as a function of $\bs{\theta}$.
-This may be used to specify the initial value $\bs{\theta}_0 = \arg\max_{\bs{\theta}} \pi(\bs{\theta}|\bs{x})$.
+There are five main functions in the \textbf{evdbayes} package.  The
+functions \verb+prior.norm+, \verb+prior.quant+ and \verb+prior.prob+
+construct the prior distributions presented in Section \ref{prior}.
+The function \verb+posterior+ generates a Markov chain
+$\bs{\theta}_0,\dots,\bs{\theta}_n$ with target distribution
+$\pi(\bs{\theta}|\bs{x})$.  The function \verb+mposterior+ (locally)
+maximizes $\pi(\bs{\theta}|\bs{x})$, as a function of $\bs{\theta}$.
+This may be used to specify the initial value $\bs{\theta}_0 =
+\arg\max_{\bs{\theta}} \pi(\bs{\theta}|\bs{x})$.
 
-This section presents three examples that illustrate these functions. 
-The first and second examples use the generalized extreme value model of Section \ref{lhgev}.
-The first example replicates the Bayesian analysis of sea level maxima from Section 9.1.3 of \citet{cole01}.
-The second example examines annual maximum temperatures recorded at Oxford, England.
-The third example uses the point process characterization of Section \ref{lhpp} for daily rainfall observations, following \citet{coletawn94}.
-The datasets used in the first and second examples are available in the \textbf{evd} package \citep{step:rn}. 
+This section presents three examples that illustrate these functions.
+The first and second examples use the generalized extreme value model
+of Section \ref{lhgev}.  The first example replicates the Bayesian
+analysis of sea level maxima from Section 9.1.3 of \citet{cole01}.
+The second example examines annual maximum temperatures recorded at
+Oxford, England.  The third example uses the point process
+characterization of Section \ref{lhpp} for daily rainfall
+observations, following \citet{coletawn94}.  The datasets used in the
+first and second examples are available in the \textbf{evd} package
+\citep{step:rn}.
 
-The computations in the following sections were performed using a notebook containing a 1.2GHz Celeron processor and 256MB RAM.
-The generation times of each Markov chain are given in square brackets.
-The slowest generation time of all the chains generated within this section is about two seconds per 1000 iterations.   
+The computations in the following sections were performed using a
+notebook containing a 1.2GHz Celeron processor and 256MB RAM\@.  The
+generation times of each Markov chain are given in square brackets.
+The slowest generation time of all the chains generated within this
+section is about two seconds per 1000 iterations.
 
 \subsection{Port Pirie Sea Level Data}
 \label{egpirie}
 
-The numeric vector \verb+portpirie+ contains annual maximum sea levels (in metres) recorded at Port Pirie, South Australia, from 1923 to 1987.
-It is included in the \textbf{evd} package, and can be made available using \verb+data(portpirie)+. 
-The data are plotted in Figure \ref{piriedata}, which can be reproduced using the code given below.
+The numeric vector \verb+portpirie+ contains annual maximum sea levels
+(in metres) recorded at Port Pirie, South Australia, from 1923 to
+1987.  It is included in the \textbf{evd} package, and can be made
+available using \verb+data(portpirie)+.  The data are plotted in
+Figure \ref{piriedata}, which can be reproduced using the code given
+below.
 
 \begin{verbatim}
 > data(portpirie) ; ptp <- portpirie
@@ -412,42 +636,61 @@ The data are plotted in Figure \ref{piriedata}, which can be reproduced using th
 \label{piriedata}
 \end{figure}
 
-A ``naive Bayesian analysis'' of the Port Pirie data is performed in \citet[][Section 9.1.3]{cole01}.
-He uses the word `naive' because he has no external information with which to formulate a prior distribution and he makes little attempt to ensure that the generated Markov chain has desirable properties.
-I will begin by replicating his analysis.
-I will then examine the generated Markov chain and repeat the analysis to ensure that the generated chain does have desirable properties.
+A ``naive Bayesian analysis'' of the Port Pirie data is performed in
+\citet[][Section 9.1.3]{cole01}.  He uses the word `naive' because he
+has no external information with which to formulate a prior
+distribution and he makes little attempt to ensure that the generated
+Markov chain has desirable properties.  I will begin by replicating
+his analysis.  I will then examine the generated Markov chain and
+repeat the analysis to ensure that the generated chain does have
+desirable properties.
 
-The prior specified by \citet{cole01} can be constructed using the following code. (The function \verb+diag+ creates a diagonal matrix.)
+The prior specified by \citet{cole01} can be constructed using the
+following code. (The function \verb+diag+ creates a diagonal matrix.)
 
 \begin{verbatim}
 > mat <- diag(c(10000, 10000, 100))
 > pn <- prior.norm(mean = c(0,0,0), cov = mat)
 \end{verbatim}
 
-The function \verb+prior.norm+ is used to construct a multivariate normal prior distribution on $(\mu, \log \sigma, \xi)$, with density \eqref{priornorm}.
-The off-diagonal elements of the covariance matrix of this distribution are zero, so the parameters are specified to be independent.
-The prior is therefore defined by the marginal distributions $\mu \sim N(0,10^4)$, $\sigma \sim LN(0,10^4)$ and $\xi \sim N(0,10^2)$.
-The high variances lead to near-flat marginal priors, which reflect the absence of external information.
+The function \verb+prior.norm+ is used to construct a multivariate
+normal prior distribution on $(\mu, \log \sigma, \xi)$, with density
+\eqref{priornorm1}.  The off-diagonal elements of the covariance matrix
+of this distribution are zero, so the parameters are specified to be
+independent.  The prior is therefore defined by the marginal
+distributions $\mu \sim N(0,10^4)$, $\sigma \sim LN(0,10^4)$ and $\xi
+\sim N(0,10^2)$.  The high variances lead to near-flat marginal
+priors, which reflect the absence of external information.
 
-The function \verb+posterior+ can now be used to generate a Markov chain $\bs{\theta}_0,\dots,\bs{\theta}_n$ with target distribution $\pi(\bs{\theta}|\bs{x})$.
-\citet{cole01} generates a chain of length 1000, using the initial values $\bs{\theta}_0 = (5,1,0.1)$ and the proposal standard deviations\footnote{Strictly speaking, $s_\sigma$ is the standard deviation of the proposal distribution for $\log \sigma$, not for $\sigma$.} $\bs{s} = (0.02,0.1,0.1)$.
-This chain can be reproduced using the following assignment [1.5 secs].
+The function \verb+posterior+ can now be used to generate a Markov
+chain $\bs{\theta}_0,\dots,\bs{\theta}_n$ with target distribution
+$\pi(\bs{\theta}|\bs{x})$.  \citet{cole01} generates a chain of length
+1000, using the initial values $\bs{\theta}_0 = (5,1,0.1)$ and the
+proposal standard deviations\footnote{Strictly speaking, $s_\sigma$ is
+  the standard deviation of the proposal distribution for $\log
+  \sigma$, not for $\sigma$.} $\bs{s} = (0.02,0.1,0.1)$.  This chain
+can be reproduced using the following assignment [1.5 secs].
 
 \begin{verbatim}
 > n <- 1000 ; t0 <- c(5,1,0.1) ; s <- c(.02,.1,.1)
 > ptpmc <- posterior(n, t0, prior = pn, lh = "gev", data = ptp, psd = s)
 \end{verbatim}
 
-The data \verb+ptp+ consist of annual maxima, so the generalized extreme value likelihood of Section \ref{lhgev} is specified using \verb+lh = "gev"+.
-The first argument to \verb+posterior+ is the run length.
-The second argument is the initial value $\bs{\theta}_0$, and the proposal standard deviations  $\bs{s}$ should be passed to \verb+psd+.
-The prior distribution which we constructed earlier using \verb+prior.norm+ is passed to the argument \verb+prior+.
+The data \verb+ptp+ consist of annual maxima, so the generalized
+extreme value likelihood of Section \ref{lhgev} is specified using
+\verb+lh = "gev"+.  The first argument to \verb+posterior+ is the run
+length.  The second argument is the initial value $\bs{\theta}_0$, and
+the proposal standard deviations $\bs{s}$ should be passed to
+\verb+psd+.  The prior distribution which we constructed earlier using
+\verb+prior.norm+ is passed to the argument \verb+prior+.
 
-The object \verb+ptpmc+ is a matrix with $1001$ rows and $3$ columns, containing the Markov chain.
-The rows and columns are labelled using iteration numbers and parameter names respectively.
-The object also contains an attribute named \verb+ar+, which is a matrix containing information regarding the acceptance of proposed values within the MCMC algorithm.
-The \verb+ar+ attribute is shown below.
-It can be printed using \verb+attributes(ptpmc)$ar+. 
+The object \verb+ptpmc+ is a matrix with $1001$ rows and $3$ columns,
+containing the Markov chain.  The rows and columns are labelled using
+iteration numbers and parameter names respectively.  The object also
+contains an attribute named \verb+ar+, which is a matrix containing
+information regarding the acceptance of proposed values within the
+MCMC algorithm.  The \verb+ar+ attribute is shown below.  It can be
+printed using \verb+attributes(ptpmc)$ar+.
 
 \begin{verbatim}
             mu sigma   xi total
@@ -455,27 +698,45 @@ acc.rates 0.75  0.65 0.68  0.69
 ext.rates 0.00  0.00 0.03  0.01
 \end{verbatim}
 
-The first row contains acceptance rates (i.e.\ the number of times a proposal was accepted as a fraction of the run length) for each parameter and for the entire chain.
-If the acceptance rates are too low there may be substantial periods during which the chain does not move at all, because proposals are made that are too far away from the current state.
-If the acceptance rates are too high the chain may be exploring only a small fraction of the parameter space, because proposals are made that are too close to the current state.
-If the chain is jumping around, exploring all of the parameter space, we say that it is \textbf{mixing well}.
+The first row contains acceptance rates (i.e.\ the number of times a
+proposal was accepted as a fraction of the run length) for each
+parameter and for the entire chain.  If the acceptance rates are too
+low there may be substantial periods during which the chain does not
+move at all, because proposals are made that are too far away from the
+current state.  If the acceptance rates are too high the chain may be
+exploring only a small fraction of the parameter space, because
+proposals are made that are too close to the current state.  If the
+chain is jumping around, exploring all of the parameter space, we say
+that it is \textbf{mixing well}.
 
-The proposal standard deviations $\bs{s} = (s_\mu,s_\sigma,s_\xi)$ can be used to tune the acceptance rates.
-Higher standard deviations give smaller acceptance rates, and vice-versa.
-It is difficult to give general advice on which acceptance rates represent the ideal, because results exist only for particular classes of target and proposal distributions \citep[e.g.][]{gelmcarl95}.
-The behaviour of a chain for any given value of $\bs{s}$ can always be determined by plotting the sampled values. 
-Acceptance rates of about 40 percent should lead to chains that mix well.
-The acceptance rates for this chain are quite large. 
-If the proposal standard deviations were a bit higher, the chain would have better mixing properties.
+The proposal standard deviations $\bs{s} = (s_\mu,s_\sigma,s_\xi)$ can
+be used to tune the acceptance rates.  Higher standard deviations give
+smaller acceptance rates, and vice-versa.  It is difficult to give
+general advice on which acceptance rates represent the ideal, because
+results exist only for particular classes of target and proposal
+distributions \citep[e.g.][]{gelmcarl95}.  The behaviour of a chain
+for any given value of $\bs{s}$ can always be determined by plotting
+the sampled values.  Acceptance rates of about 40 percent should lead
+to chains that mix well.  The acceptance rates for this chain are
+quite large.  If the proposal standard deviations were a bit higher,
+the chain would have better mixing properties.
 
-The second row of the \verb+ar+ attribute contains the number of times a proposal was made for which the posterior density estimate was zero, as a fraction of the run length.
-This occurs when the upper/lower end point of the generalized extreme value distribution is less/greater than the largest/smallest data point. 
-If these values are high, either the proposal standard deviations are too large, or the density of the target distribution is large near the boundary of the parameter space. 
+The second row of the \verb+ar+ attribute contains the number of times
+a proposal was made for which the posterior density estimate was zero,
+as a fraction of the run length.  This occurs when the upper/lower end
+point of the generalized extreme value distribution is less/greater
+than the largest/smallest data point.  If these values are high,
+either the proposal standard deviations are too large, or the density
+of the target distribution is large near the boundary of the parameter
+space.
 
-Once a Markov chain has been generated it needs to be analysed to ensure that it has desirable properties.
-I recommend that the R package \textbf{coda} is installed for this purpose.
-This package includes the function \verb+mcmc+, which creates an \verb+mcmc+ object that \textbf{coda} can recognize as a Markov chain.
-The iterations of the chain, shown in Figure \ref{pirietrace1}, can be plotted using the following snippet.
+Once a Markov chain has been generated it needs to be analysed to
+ensure that it has desirable properties.  I recommend that the R
+package \textbf{coda} is installed for this purpose.  This package
+includes the function \verb+mcmc+, which creates an \verb+mcmc+ object
+that \textbf{coda} can recognize as a Markov chain.  The iterations of
+the chain, shown in Figure \ref{pirietrace1}, can be plotted using the
+following snippet.
 
 \begin{verbatim}
 > ptp.mcmc <- mcmc(ptpmc, start = 0, end = 1000)
@@ -484,26 +745,32 @@ The iterations of the chain, shown in Figure \ref{pirietrace1}, can be plotted u
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{pirietrace11.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pirietrace12.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pirietrace13.ps}}
+  \scalebox{0.25}{\includegraphics{pirietrace11.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pirietrace12.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pirietrace13.ps}}
 \end{center}
-\caption{MCMC realizations of generalized extreme value parameters in a Bayesian analysis of the Port Pirie data, recreating Figure 9.1 from \citet{cole01}.}
+\caption{MCMC realizations of generalized extreme value parameters in
+  a Bayesian analysis of the Port Pirie data, recreating Figure 9.1
+  from \citet{cole01}.}
 \label{pirietrace1}
 \end{figure}
 
 Figure \ref{pirietrace1} recreates Figure 9.1 from \citet{cole01}.
-The two figures exhibit similar behaviour, though \citet{cole01} plots the iterations of $\log \sigma$ rather than $\sigma$. 
-Other differences are due to sampling variability.
+The two figures exhibit similar behaviour, though \citet{cole01} plots
+the iterations of $\log \sigma$ rather than $\sigma$.  Other
+differences are due to sampling variability.
 
 The burn-in period seems to take about $b=300$ iterations.
-Thereafter, the stochastic variations in the chain seem reasonably homogeneous.
-The starting value $\bs{\theta}_0 = (5,1,0.1)$ is relatively poor\footnote{I imagine that \citet{cole01} deliberately selected a poor starting value, so that the burn-in period would be clearly depicted within Figure \ref{pirietrace1}.}, as it is not close to the centre of the posterior distribution.
-A good starting value $\bs{\theta_0}$ can be derived using the function \verb+mposterior+, which (locally) maximizes $\pi(\bs{\theta}|\bs{x})$. 
-The maximization is performed in the following snippet.
+Thereafter, the stochastic variations in the chain seem reasonably
+homogeneous.  The starting value $\bs{\theta}_0 = (5,1,0.1)$ is
+relatively poor\footnote{I imagine that \citet{cole01} deliberately
+  selected a poor starting value, so that the burn-in period would be
+  clearly depicted within Figure \ref{pirietrace1}.}, as it is not
+close to the centre of the posterior distribution.  A good starting
+value $\bs{\theta_0}$ can be derived using the function
+\verb+mposterior+, which (locally) maximizes
+$\pi(\bs{\theta}|\bs{x})$.  The maximization is performed in the
+following snippet.
 
 \begin{verbatim}
 > maxpst <- mposterior(t0, prior = pn, lh = "gev", data = ptp)
@@ -511,28 +778,45 @@ The maximization is performed in the following snippet.
 [1]  3.87  0.20 -0.05
 \end{verbatim}
 
-The arguments of \verb+mposterior+ are the same as those of \verb+posterior+, except that the first argument is now the initial value for the optimization.
-The value returned from \verb+mposterior+ is a list of the same form as the value returned by the optimization function \verb+optim+.
-The component \verb+par+ within the returned list contains $\arg\max_{\bs{\theta}} \pi(\bs{\theta}|\bs{x})$, which can be used as the initial value of the Markov chain.
-The above snippet suggests that we take $\bs{\theta_0} = (3.87,0.2,-0.05)$.
+The arguments of \verb+mposterior+ are the same as those of
+\verb+posterior+, except that the first argument is now the initial
+value for the optimization.  The value returned from \verb+mposterior+
+is a list of the same form as the value returned by the optimization
+function \verb+optim+.  The component \verb+par+ within the returned
+list contains $\arg\max_{\bs{\theta}} \pi(\bs{\theta}|\bs{x})$, which
+can be used as the initial value of the Markov chain.  The above
+snippet suggests that we take $\bs{\theta_0} = (3.87,0.2,-0.05)$.
 
-In this example the prior densities are near-flat, reflecting the absence of prior information.
-It is therefore approximately true that $\pi(\bs{\theta}|\bs{x}) \propto L(\bs{\theta};\bs{x})$, so we should expect $(3.87,0.2,-0.05)$ to be close to maximum likelihood estimates.
-(In fact, they are the same when rounded to the second decimal place.) 
-Maximum likelihood estimates\footnote{The functions \texttt{fgev} and \texttt{fpot} in the \textbf{evd} package can calculate maximum likelihood estimates for the models of Section \ref{lh}.} often serve as good starting values.
+In this example the prior densities are near-flat, reflecting the
+absence of prior information.  It is therefore approximately true that
+$\pi(\bs{\theta}|\bs{x}) \propto L(\bs{\theta};\bs{x})$, so we should
+expect $(3.87,0.2,-0.05)$ to be close to maximum likelihood estimates.
+(In fact, they are the same when rounded to the second decimal place.)
+Maximum likelihood estimates\footnote{The functions \texttt{fgev} and
+  \texttt{fpot} in the \textbf{evd} package can calculate maximum
+  likelihood estimates for the models of Section \ref{lh}.} often
+serve as good starting values.
 
-An alternative approach is to generate a (short) Markov chain and examine the output to see where the posterior density is large.
-For example, the iterations shown in Figure \ref{pirietrace1} suggest taking $\bs{\theta_0} \approx (3.9,0.2,0)$.
-The initial value can then be used to generate a further (longer) chain.
-This is essentially the same as maximizing $\pi(\bs{\theta}|\bs{x})$ using a stochastic optimization routine, such as \textbf{simulated annealing}.
-Simulated annealing can be used to maximize $\pi(\bs{\theta}|\bs{x})$ by including the argument \verb+method = "SANN"+ in the call to \verb+mposterior+.
+An alternative approach is to generate a (short) Markov chain and
+examine the output to see where the posterior density is large.  For
+example, the iterations shown in Figure \ref{pirietrace1} suggest
+taking $\bs{\theta_0} \approx (3.9,0.2,0)$.  The initial value can
+then be used to generate a further (longer) chain.  This is
+essentially the same as maximizing $\pi(\bs{\theta}|\bs{x})$ using a
+stochastic optimization routine, such as \textbf{simulated annealing}.
+Simulated annealing can be used to maximize $\pi(\bs{\theta}|\bs{x})$
+by including the argument \verb+method = "SANN"+ in the call to
+\verb+mposterior+.
 
-Another approach entirely is to take multiple initial values, scattered about the parameter space.
-This generates multiple Markov chains which, loosely speaking, can be compared to see if they eventually produce the same behaviour \citep{gelmrubi92}.
-Multiple chains are discussed further in Section \ref{multiple}.
+Another approach entirely is to take multiple initial values,
+scattered about the parameter space.  This generates multiple Markov
+chains which, loosely speaking, can be compared to see if they
+eventually produce the same behaviour \citep{gelmrubi92}.  Multiple
+chains are discussed further in Section \ref{multiple}.
 
-The code below generates the Markov chain again [1.5 secs] using the starting value $\bs{\theta_0} = (3.87,0.2,-0.05)$.
-After some pilot runs, I have decided to take $\bs{s} = (.06,.25,.25)$.
+The code below generates the Markov chain again [1.5 secs] using the
+starting value $\bs{\theta_0} = (3.87,0.2,-0.05)$.  After some pilot
+runs, I have decided to take $\bs{s} = (.06,.25,.25)$.
 
 \begin{verbatim}
 > t0 <- c(3.87,0.2,-0.05) ; s <- c(.06,.25,.25)
@@ -541,38 +825,50 @@ After some pilot runs, I have decided to take $\bs{s} = (.06,.25,.25)$.
 > plot(ptp.mcmc, den = FALSE, sm = FALSE)
 \end{verbatim}
 
-Figure \ref{pirietrace2} shows the iterations of the chain.
-The starting value $\bs{\theta_0} = (3.87,0.2,-0.05)$ yields a smaller burn-in period.
-The proposal standard deviations $\bs{s} = (.06,.25,.25)$ lead to improved mixing properties (although this is difficult to determine from Figures \ref{pirietrace1} and \ref{pirietrace2} because of the different scales on the y-axis).
+Figure \ref{pirietrace2} shows the iterations of the chain.  The
+starting value $\bs{\theta_0} = (3.87,0.2,-0.05)$ yields a smaller
+burn-in period.  The proposal standard deviations $\bs{s} =
+(.06,.25,.25)$ lead to improved mixing properties (although this is
+difficult to determine from Figures \ref{pirietrace1} and
+\ref{pirietrace2} because of the different scales on the y-axis).
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{pirietrace21.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pirietrace22.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pirietrace23.ps}}
+  \scalebox{0.25}{\includegraphics{pirietrace21.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pirietrace22.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pirietrace23.ps}}
 \end{center}
-\caption{MCMC realizations of generalized extreme value parameters in a Bayesian analysis of the Port Pirie data, using different starting values and proposal standard deviations than those used to produce the realizations of Figure \ref{pirietrace1}.}
+\caption{MCMC realizations of generalized extreme value parameters in
+  a Bayesian analysis of the Port Pirie data, using different starting
+  values and proposal standard deviations than those used to produce
+  the realizations of Figure \ref{pirietrace1}.}
 \label{pirietrace2}
 \end{figure}
 
-The properties of the chains produced by \verb+posterior+ can be examined using statistical techniques.
-These techniques attempt to assess whether the chain is in equilibrium (or equivalently, whether the burn-in period is sufficiently long).
-There are also techniques that determine how long the chain should be in order to achieve a given aim.
-Reviews of these techniques are given in \citet{cowlcarl96} and \citet{broorobe98}.
-The \textbf{coda} package contains functions that implement various diagnostics.
-The following paragraphs demonstrate the diagnostics introduced by \citet{gewe92} and \citet{raftlewi92}.
-The diagnostic of \citet{gelmrubi92}, designed for multiple chains, is illustrated in Section \ref{multiple}.
+The properties of the chains produced by \verb+posterior+ can be
+examined using statistical techniques.  These techniques attempt to
+assess whether the chain is in equilibrium (or equivalently, whether
+the burn-in period is sufficiently long).  There are also techniques
+that determine how long the chain should be in order to achieve a
+given aim.  Reviews of these techniques are given in
+\citet{cowlcarl96} and \citet{broorobe98}.  The \textbf{coda} package
+contains functions that implement various diagnostics.  The following
+paragraphs demonstrate the diagnostics introduced by \citet{gewe92}
+and \citet{raftlewi92}.  The diagnostic of \citet{gelmrubi92},
+designed for multiple chains, is illustrated in Section
+\ref{multiple}.
 
-The diagnostic of \citet{gewe92} is particularly simple.
-For each parameter, the means of the first and last parts of the chain are tested for equality.
-By default, the first 10\% and the last 50\% are used.
-The difference between the two means is divided by its estimated standard error.
-The estimation of the standard error attempts to take into account the autocorrelations.
-If the chain has reached equilibrium the distribution of each statistic is approximately standard normal.
-The code below implements this diagnostic on the Markov chain generated previously, where the first $b=200$ samples are treated as the burn-in period and are discarded using the \textbf{coda} function \verb+window+. 
+The diagnostic of \citet{gewe92} is particularly simple.  For each
+parameter, the means of the first and last parts of the chain are
+tested for equality.  By default, the first 10\% and the last 50\% are
+used.  The difference between the two means is divided by its
+estimated standard error.  The estimation of the standard error
+attempts to take into account the autocorrelations.  If the chain has
+reached equilibrium the distribution of each statistic is
+approximately standard normal.  The code below implements this
+diagnostic on the Markov chain generated previously, where the first
+$b=200$ samples are treated as the burn-in period and are discarded
+using the \textbf{coda} function \verb+window+.
 
 \begin{verbatim}
 > ptp.mcmc <- window(ptp.mcmc, start = 200)
@@ -593,16 +889,21 @@ Fraction in 2nd window = 0.4
  0.1067 -0.6257  0.3706 
 \end{verbatim}
 
-The test statistics do not give any cause for concern.
-If any of the values are above two in absolute value, you may wish to increase the burn-in period and repeat the test.
-This is the basis for the plot produced by the function \verb+geweke.plot+.
+The test statistics do not give any cause for concern.  If any of the
+values are above two in absolute value, you may wish to increase the
+burn-in period and repeat the test.  This is the basis for the plot
+produced by the function \verb+geweke.plot+.
 
-The diagnostic of \citet{raftlewi92} attempts to assess how long the chain should be in order to achieve a given aim.
-Specifically, it gives the number of samples that are needed to estimate a quantile (on each margin) within a certain accuracy with at least probability \verb+s+.
-It is intended for use on short pilot runs.
-By default the quantile corresponds to the $\texttt{q} = 0.025$ point of the distribution function and the probability $\texttt{s} = 0.95$.
-The accuracy is defined so that the area to the left of the specified quantile be within a given margin $\pm \texttt{r}$ of \verb+q+.
-By default, $\texttt{r} = 0.005$.
+The diagnostic of \citet{raftlewi92} attempts to assess how long the
+chain should be in order to achieve a given aim.  Specifically, it
+gives the number of samples that are needed to estimate a quantile (on
+each margin) within a certain accuracy with at least probability
+\verb+s+.  It is intended for use on short pilot runs.  By default the
+quantile corresponds to the $\texttt{q} = 0.025$ point of the
+distribution function and the probability $\texttt{s} = 0.95$.  The
+accuracy is defined so that the area to the left of the specified
+quantile be within a given margin $\pm \texttt{r}$ of \verb+q+.  By
+default, $\texttt{r} = 0.005$.
    
 \begin{verbatim}
 > raftery.diag(ptp.mcmc, r = 0.01, s = 0.75)
@@ -618,29 +919,44 @@ Probability (s) = 0.75
  xi    12       1211  323          3.75  
 \end{verbatim}
 
-The first column gives the additional burn-in that would be useful next time you run the chain.
-The recommendations are often small, and appear to be of limited use in practice.
-The second column is of greatest interest.
-It specifies the length of chain (including the additional recommended burn-in, but excluding the 200 iterations already discarded) that is needed to achieve the designated aim, for each parameter.
-The third column gives number of samples \verb+Nmin+ that would be required if those samples were independent.
-If this number is greater than the length of the chain being analysed, which in this case is $801$, the function simply returns a sentence stating the value of \verb+Nmin+.
-(If the default arguments are used, $\texttt{Nmin}= 3746$.)
-The final column gives the dependence factor, which is the ratio of the two preceding columns.
-The factor represents the extent to which the autocorrelation inflates the required sample size.
-Autocorrelations can be estimated and plotted using \verb+autocorr+ and \verb+autocorr.plot+.
-(There exists similar functions for cross-correlations.)
-Large dependence factors occur when strong autocorrelations are present.    
+The first column gives the additional burn-in that would be useful
+next time you run the chain.  The recommendations are often small, and
+appear to be of limited use in practice.  The second column is of
+greatest interest.  It specifies the length of chain (including the
+additional recommended burn-in, but excluding the 200 iterations
+already discarded) that is needed to achieve the designated aim, for
+each parameter.  The third column gives number of samples \verb+Nmin+
+that would be required if those samples were independent.  If this
+number is greater than the length of the chain being analysed, which
+in this case is $801$, the function simply returns a sentence stating
+the value of \verb+Nmin+.  (If the default arguments are used,
+$\texttt{Nmin}= 3746$.)  The final column gives the dependence factor,
+which is the ratio of the two preceding columns.  The factor
+represents the extent to which the autocorrelation inflates the
+required sample size.  Autocorrelations can be estimated and plotted
+using \verb+autocorr+ and \verb+autocorr.plot+.  (There exists similar
+functions for cross-correlations.)  Large dependence factors occur
+when strong autocorrelations are present.
 
-The diagnostics within the \textbf{coda} package should not be used as a substitute for the graphical examination of the sampled values.
-If you are going to use these diagnostics you should implement a range of methods, rather than a single test.
-I also recommend that you take some time to examine the theoretical details of each diagnostic that you implement.
-It is important to emphasize that there are inherent difficulties with all diagnostic procedures.
-In particular, no technique can be guaranteed to successfully diagnose convergence.
-\citet{cowlcarl96} point out that many statisticians rely heavily on such diagnostics, if for no other reason than ``a weak diagnostic is better than no diagnostic at all''.
+The diagnostics within the \textbf{coda} package should not be used as
+a substitute for the graphical examination of the sampled values.  If
+you are going to use these diagnostics you should implement a range of
+methods, rather than a single test.  I also recommend that you take
+some time to examine the theoretical details of each diagnostic that
+you implement.  It is important to emphasize that there are inherent
+difficulties with all diagnostic procedures.  In particular, no
+technique can be guaranteed to successfully diagnose convergence.
+\citet{cowlcarl96} point out that many statisticians rely heavily on
+such diagnostics, if for no other reason than ``a weak diagnostic is
+better than no diagnostic at all''.
 
-The values $\bs{\theta}_b,\dots,\bs{\theta}_n$ (with $b=200$ and $n=1000$) contained within the object \verb+ptp.mcmc+ can now be treated as (dependent) samples from the posterior distribution, with density $\pi(\bs{\theta}|\bs{x})$.
-In the following code, $\bs{\theta}_b,\dots,\bs{\theta}_n$ are used to estimate features of $\pi(\bs{\theta}|\bs{x})$.
-The marginal density estimates, given in Figure \ref{piriedens}, are created using \verb+plot+.
+The values $\bs{\theta}_b,\dots,\bs{\theta}_n$ (with $b=200$ and
+$n=1000$) contained within the object \verb+ptp.mcmc+ can now be
+treated as (dependent) samples from the posterior distribution, with
+density $\pi(\bs{\theta}|\bs{x})$.  In the following code,
+$\bs{\theta}_b,\dots,\bs{\theta}_n$ are used to estimate features of
+$\pi(\bs{\theta}|\bs{x})$.  The marginal density estimates, given in
+Figure \ref{piriedens}, are created using \verb+plot+.
 
 \begin{verbatim}
 > bwf <- function(x) sd(x)/2
@@ -677,26 +993,36 @@ xi    -0.2027 -0.0937 -0.03075 0.03272 0.1982
 \hspace{0cm}
 \scalebox{0.25}{\includegraphics{piriedens3.ps}}
 \end{center}
-\caption{Marginal posterior density estimates for the generalized extreme value parameters $\mu$, $\sigma$ and $\xi$ respectively, in a Bayesian analysis of the Port Pirie data.}
+\caption{Marginal posterior density estimates for the generalized
+  extreme value parameters $\mu$, $\sigma$ and $\xi$ respectively, in
+  a Bayesian analysis of the Port Pirie data.}
 \label{piriedens}
 \end{figure}
 
-The \verb+summary+ function presents summary statistics for each parameter.
-The first matrix gives empirical means and standard deviations.
-It also gives two consistent (as $n\rightarrow\infty$) estimates of the standard error of the mean.
-The \verb+Naive SE+ is the usual estimate, namely the empirical standard deviation divided by the square root of the number of iterations.
-The \verb+Time-series SE+ is an estimate that attempts to account for the autocorrelation.
-The second matrix gives empirical quantiles.
-The empirical $100\alpha/2$ and $100(1-\alpha/2)$ percent quantiles form \textbf{posterior probability intervals}, which contain exactly $100(1-\alpha)\%$ of the posterior probability on each margin.
-The \verb+summary+ function also gives the iteration numbers, the thinning interval (see Section \ref{thin}), the number of chains (see Section \ref{multiple}) and the length of the chain.
+The \verb+summary+ function presents summary statistics for each
+parameter.  The first matrix gives empirical means and standard
+deviations.  It also gives two consistent (as $n\rightarrow\infty$)
+estimates of the standard error of the mean.  The \verb+Naive SE+ is
+the usual estimate, namely the empirical standard deviation divided by
+the square root of the number of iterations.  The
+\verb+Time-series SE+ is an estimate that attempts to account for the
+autocorrelation.  The second matrix gives empirical quantiles.  The
+empirical $100\alpha/2$ and $100(1-\alpha/2)$ percent quantiles form
+\textbf{posterior probability intervals}, which contain exactly
+$100(1-\alpha)\%$ of the posterior probability on each margin.  The
+\verb+summary+ function also gives the iteration numbers, the thinning
+interval (see Section \ref{thin}), the number of chains (see Section
+\ref{multiple}) and the length of the chain.
 
 
 \subsection{Oxford Temperature Data}
 \label{egoxford}
 
-The numeric vector \verb+oxford+ contains annual maximum temperatures (in degrees Fahrenheit) recorded at Oxford, England, from 1901 to 1980.
-It is included in the \textbf{evd} package, and can be made available using \verb+data(oxford)+. 
-The data are plotted in Figure \ref{oxdata}, which can be reproduced using the code given below.
+The numeric vector \verb+oxford+ contains annual maximum temperatures
+(in degrees Fahrenheit) recorded at Oxford, England, from 1901 to
+1980.  It is included in the \textbf{evd} package, and can be made
+available using \verb+data(oxford)+.  The data are plotted in Figure
+\ref{oxdata}, which can be reproduced using the code given below.
 
 \begin{verbatim}
 > data(oxford) ; ox <- oxford
@@ -712,27 +1038,43 @@ The data are plotted in Figure \ref{oxdata}, which can be reproduced using the c
 \label{oxdata}
 \end{figure}
 
-Suppose that we have an expert who is prepared to give us his/her beliefs regarding annual temperature maxima at Oxford, without reference to the data.
-We will use the construction in Section \ref{spriorbeta}, involving prior beta distributions for probability ratios.
-This induces dependence between the parameters $(\mu,\sigma,\xi)$, and is relatively easy to elicit.
-On the other hand, it is not very flexible, having only four hyperparameters with which to define a trivariate distribution.
-The remainder of this section uses the following properties.
-If $X \sim \text{beta}(a,b)$, with $a,b>0$, then $X$ has mean $\nu = a/(a+b)$ and variance $\nu(1-\nu)/(a+b+1)$.
-If $a,b>1$, the density function has a mode at $(a-1)/(a+b-2)$. 
+Suppose that we have an expert who is prepared to give us his/her
+beliefs regarding annual temperature maxima at Oxford, without
+reference to the data.  We will use the construction in Section
+\ref{spriorbeta}, involving prior beta distributions for probability
+ratios.  This induces dependence between the parameters
+$(\mu,\sigma,\xi)$, and is relatively easy to elicit.  On the other
+hand, it is not very flexible, having only four hyperparameters with
+which to define a trivariate distribution.  The remainder of this
+section uses the following properties.  If $X \sim \text{beta}(a,b)$,
+with $a,b>0$, then $X$ has mean $\nu = a/(a+b)$ and variance
+$\nu(1-\nu)/(a+b+1)$.  If $a,b>1$, the density function has a mode at
+$(a-1)/(a+b-2)$.
 
-Using the notation of Section \ref{spriorbeta}, suppose we take $q_1 = 85$, $q_2 = 88$ and $q_3 = 95$.
-The corresponding probabilities are denoted by $p_{85} < p_{88} < p_{95}$.
-The probability ratios are then given by $\tilde{p}_{85} = p_{85}$, $\tilde{p}_{88} = p_{85}/p_{88}$ and $\tilde{p}_{95} = p_{88}/p_{95}$.
-The prior for $\tilde{p}_{85} = p_{85}$ should be elicited first.
-In other words, we need to elicit a prior distribution for the probability that the maximum annual temperature at Oxford will exceed 85 degrees Fahrenheit.
-Suppose that we elicit a beta(5,4) distribution for this probability.
-This means that we are satisfied that the beliefs of the expert correspond to the properties defined by this distribution.
-In particular, our expert believes that the maximum annual temperature at Oxford will exceed 85 degrees just over half the time, and he/she is 90\% sure that the probability of exceedence is in the interval (0.28, 0.8). 
+Using the notation of Section \ref{spriorbeta}, suppose we take $q_1 =
+85$, $q_2 = 88$ and $q_3 = 95$.  The corresponding probabilities are
+denoted by $p_{85} < p_{88} < p_{95}$.  The probability ratios are
+then given by $\tilde{p}_{85} = p_{85}$, $\tilde{p}_{88} =
+p_{85}/p_{88}$ and $\tilde{p}_{95} = p_{88}/p_{95}$.  The prior for
+$\tilde{p}_{85} = p_{85}$ should be elicited first.  In other words,
+we need to elicit a prior distribution for the probability that the
+maximum annual temperature at Oxford will exceed 85 degrees
+Fahrenheit.  Suppose that we elicit a beta(5,4) distribution for this
+probability.  This means that we are satisfied that the beliefs of the
+expert correspond to the properties defined by this distribution.  In
+particular, our expert believes that the maximum annual temperature at
+Oxford will exceed 85 degrees just over half the time, and he/she is
+90\% sure that the probability of exceedence is in the interval (0.28,
+0.8).
 
-As an aid to the elicitation process I have included a simple function called \verb+ibeta+.
-This takes the arguments \verb+mean+ and \verb+var+, or the arguments \verb+shape1+ and \verb+shape2+, all of which can be vectors.
-It returns a vector or matrix containing the mean (\verb+mean+), variance (\verb+var+), mode (\verb+mode+), and shape parameters (\verb+shape1+/\verb+shape2+) of the beta distribution(s) corresponding to the specified arguments.
-The code below gives two examples of its use.
+As an aid to the elicitation process I have included a simple function
+called \verb+ibeta+.  This takes the arguments \verb+mean+ and
+\verb+var+, or the arguments \verb+shape1+ and \verb+shape2+, all of
+which can be vectors.  It returns a vector or matrix containing the
+mean (\verb+mean+), variance (\verb+var+), mode (\verb+mode+), and
+shape parameters (\verb+shape1+/\verb+shape2+) of the beta
+distribution(s) corresponding to the specified arguments.  The code
+below gives two examples of its use.
 
 \begin{verbatim}
 > xx <- ibeta(shape1 = 5, shape2 = 4)
@@ -750,47 +1092,70 @@ shape1 shape2   mean    var   mode
 5   1.80   0.20  0.9 0.03   NA
 \end{verbatim}
 
-The first example shows that the mean and variance of a beta(5,4) random variable are 0.56 and 0.02 respectively.
-The density function has a mode at 0.57.
-Quantiles and probabilities of beta distributions can be calculated using \verb+qbeta+ and \verb+dbeta+.
-Densities can be calculated (and hence plotted) using \verb+dbeta+.
-These tools aid elicitation, and help examine fully the elicited distribution.
+The first example shows that the mean and variance of a beta(5,4)
+random variable are 0.56 and 0.02 respectively.  The density function
+has a mode at 0.57.  Quantiles and probabilities of beta distributions
+can be calculated using \verb+qbeta+ and \verb+dbeta+.  Densities can
+be calculated (and hence plotted) using \verb+dbeta+.  These tools aid
+elicitation, and help examine fully the elicited distribution.
 
-We have elicited $\tilde{p}_{85} \sim \text{beta}(5,4)$, so that $\alpha_1 = 4$ and $\alpha_2+\alpha_3+\alpha_4 = 5$.
-Suppose our expert thinks that half the annual maxima that exceed 85 degrees will also exceed 88 degrees.
-Furthermore, suppose he/she thinks that one tenth of the annual maxima that exceed 88 degrees will also exceed 95 degrees.
-We can equate the means of $\tilde{p}_{88} \sim \text{beta}(\alpha_3 + \alpha_4,\alpha_2)$, and $\tilde{p}_{95} \sim \text{beta}(\alpha_4,\alpha_3)$ to these ratios, giving $\alpha_3+\alpha_4 = 0.5\times5 = 2.5$ and $\alpha_4 = 0.1\times2.5 = 0.25$.
-This yields $\bs{\alpha} = (\alpha_1,\alpha_2,\alpha_3,\alpha_4) = (4,2.5,2.25,0.25)$. 
-The parameter vector $\bs{\alpha}$ can now be used to construct the prior distribution.
+We have elicited $\tilde{p}_{85} \sim \text{beta}(5,4)$, so that
+$\alpha_1 = 4$ and $\alpha_2+\alpha_3+\alpha_4 = 5$.  Suppose our
+expert thinks that half the annual maxima that exceed 85 degrees will
+also exceed 88 degrees.  Furthermore, suppose he/she thinks that one
+tenth of the annual maxima that exceed 88 degrees will also exceed 95
+degrees.  We can equate the means of $\tilde{p}_{88} \sim
+\text{beta}(\alpha_3 + \alpha_4,\alpha_2)$, and $\tilde{p}_{95} \sim
+\text{beta}(\alpha_4,\alpha_3)$ to these ratios, giving
+$\alpha_3+\alpha_4 = 0.5\times5 = 2.5$ and $\alpha_4 = 0.1\times2.5 =
+0.25$.  This yields $\bs{\alpha} =
+(\alpha_1,\alpha_2,\alpha_3,\alpha_4) = (4,2.5,2.25,0.25)$.  The
+parameter vector $\bs{\alpha}$ can now be used to construct the prior
+distribution.
 
-The elicitation process demonstrated above is not only hypothetical, but also over-simplified.
-Elicitation of prior distributions is a notoriously difficult (and controversial) subject.
-In particular, you must obtain the expert's opinion of a number of different quantities in order to ensure that his/her beliefs can be represented by a specific distribution. 
+The elicitation process demonstrated above is not only hypothetical,
+but also over-simplified.  Elicitation of prior distributions is a
+notoriously difficult (and controversial) subject.  In particular, you
+must obtain the expert's opinion of a number of different quantities
+in order to ensure that his/her beliefs can be represented by a
+specific distribution.
 
-Given that our expert's opinion can be represented in the form of Section \ref{spriorbeta}, with $\bs{\alpha} = (4,2.5,2.25,0.25)$, the prior can be constructed as follows.
-The function \verb+prior.prob+ constructs a prior distribution with density \eqref{priorbeta}.
+Given that our expert's opinion can be represented in the form of
+Section \ref{spriorbeta}, with $\bs{\alpha} = (4,2.5,2.25,0.25)$, the
+prior can be constructed as follows.  The function \verb+prior.prob+
+constructs a prior distribution with density \eqref{priorbeta}.
 
 \begin{verbatim}
 > prox <- prior.prob(quant = c(85,88,95), alpha = c(4,2.5,2.25,0.25))
 \end{verbatim}
 
-In the Port Pirie data, the prior distribution on $(\mu,\log \sigma,\xi)$ was taken to be trivariate normal.
-The prior marginal distributions of $\mu$ and $\xi$ were therefore normal, and the marginal distribution of $\sigma$ was log-normal.
-The densities of these marginals can easily be calculated (and therefore plotted) using \verb+dnorm+ and \verb+dlnorm+.
-In this example, the prior marginal distributions of $(\mu,\sigma,\xi)$ are difficult to determine, since they involve the integration of expression \eqref{priorbeta}.
-We can avoid this problem using MCMC methods!
-A Markov chain is generated as before, but now the target distribution has density $\pi(\bs{\theta})$, rather than $\pi(\bs{\theta}|\bs{x})$.
-This can be implemented by the function \verb+posterior+, using the argument \verb+lh = "none"+, meaning ``likelihood is none''.
+In the Port Pirie data, the prior distribution on $(\mu,\log
+\sigma,\xi)$ was taken to be trivariate normal.  The prior marginal
+distributions of $\mu$ and $\xi$ were therefore normal, and the
+marginal distribution of $\sigma$ was log-normal.  The densities of
+these marginals can easily be calculated (and therefore plotted) using
+\verb+dnorm+ and \verb+dlnorm+.  In this example, the prior marginal
+distributions of $(\mu,\sigma,\xi)$ are difficult to determine, since
+they involve the integration of expression \eqref{priorbeta}.  We can
+avoid this problem using MCMC methods!  A Markov chain is generated as
+before, but now the target distribution has density
+$\pi(\bs{\theta})$, rather than $\pi(\bs{\theta}|\bs{x})$.  This can
+be implemented by the function \verb+posterior+, using the argument
+\verb+lh = "none"+, meaning ``likelihood is none''.
 
 The following code generates two Markov chains using \verb+posterior+.
-The first chain [45 secs] samples from the prior density $\pi(\bs{\theta})$.
-The second chain [18 secs] samples from the posterior density $\pi(\bs{\theta}|\bs{x})$. 
-Properties of generated Markov chains were discussed in the previous example, and I will not repeat the process in any detail.
-The chains have run lengths $50\,000$ and $10\,000$ respectively.
-A larger chain is generated for the prior distribution because the surface is more complex.
-The proposal standard deviations, initial values and burn-in periods have been determined by pilot runs.
-The function \verb+posterior+ allows the burn-in periods to be specified through the argument \verb+burn+.
-The first \verb+burn+ iterations are discarded from the returned matrix.
+The first chain [45 secs] samples from the prior density
+$\pi(\bs{\theta})$.  The second chain [18 secs] samples from the
+posterior density $\pi(\bs{\theta}|\bs{x})$.  Properties of generated
+Markov chains were discussed in the previous example, and I will not
+repeat the process in any detail.  The chains have run lengths
+$50\,000$ and $10\,000$ respectively.  A larger chain is generated for
+the prior distribution because the surface is more complex.  The
+proposal standard deviations, initial values and burn-in periods have
+been determined by pilot runs.  The function \verb+posterior+ allows
+the burn-in periods to be specified through the argument \verb+burn+.
+The first \verb+burn+ iterations are discarded from the returned
+matrix.
 
 %set.seed(100)
 \begin{verbatim}
@@ -800,11 +1165,14 @@ The first \verb+burn+ iterations are discarded from the returned matrix.
 > ox.post <- posterior(n, t0, prox, lh = "gev", data = ox, psd = s, burn = b)
 \end{verbatim}
 
-Marginal prior and posterior density estimates are given in Figure \ref{oxdens}. 
-The figure can be produced using the code given below.
-The assignment statements within the code prevent the marginal density estimate of the scale parameter from being positive below zero. 
-Density estimates can be plotted more easily using the \textbf{coda} package (e.g.\ Section \ref{egpirie}).
-Unfortunately, the tools within the package do not make it any easier to create plots of the same form as Figure \ref{oxdens}.
+Marginal prior and posterior density estimates are given in Figure
+\ref{oxdens}.  The figure can be produced using the code given below.
+The assignment statements within the code prevent the marginal density
+estimate of the scale parameter from being positive below zero.
+Density estimates can be plotted more easily using the \textbf{coda}
+package (e.g.\ Section \ref{egpirie}).  Unfortunately, the tools
+within the package do not make it any easier to create plots of the
+same form as Figure \ref{oxdens}.
 
 \begin{verbatim}
 > plot(density(ox.post[,1],adj=2), xlim = c(55,90), ylim = c(0,0.85))
@@ -819,24 +1187,27 @@ Unfortunately, the tools within the package do not make it any easier to create 
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{oxdens1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{oxdens2.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{oxdens3.ps}}
+  \scalebox{0.25}{\includegraphics{oxdens1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{oxdens2.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{oxdens3.ps}}
 \end{center}
-\caption{Marginal prior (dashed lines) and posterior (solid lines) density estimates for $\mu$, $\sigma$ and $\xi$ respectively, in a Bayesian analysis of the Oxford data.}
+\caption{Marginal prior (dashed lines) and posterior (solid lines)
+  density estimates for $\mu$, $\sigma$ and $\xi$ respectively, in a
+  Bayesian analysis of the Oxford data.}
 \label{oxdens}
 \end{figure}
 
 \subsection{Rainfall Data}
 \label{egrain}
 
-The numeric vector \verb+rainfall+ contains 20820 daily aggregate rainfall observations (in millimetres) recorded at a rain gauge in England over a period of 57 years, beginning on a leap year.
-Three years contain only missing (\verb+NA+) values, and the remaining 54 years contain 58 missing values in total.
-The vector is included in the \textbf{evdbayes} package, and can be made available using \verb+data(rainfall)+.
-The data are plotted in Figure \ref{raindata}, which can be reproduced using the code given below.
+The numeric vector \verb+rainfall+ contains 20820 daily aggregate
+rainfall observations (in millimetres) recorded at a rain gauge in
+England over a period of 57 years, beginning on a leap year.  Three
+years contain only missing (\verb+NA+) values, and the remaining 54
+years contain 58 missing values in total.  The vector is included in
+the \textbf{evdbayes} package, and can be made available using
+\verb+data(rainfall)+.  The data are plotted in Figure \ref{raindata},
+which can be reproduced using the code given below.
 
 \begin{verbatim}
 > data(rainfall)
@@ -846,19 +1217,26 @@ The data are plotted in Figure \ref{raindata}, which can be reproduced using the
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{raindata.ps}}
-\vspace{-1.5cm}
+  \scalebox{0.25}{\includegraphics{raindata.ps}} \vspace{-1.5cm}
 \end{center}
-\caption{Daily aggregate rainfall  recorded at a rain gauge in England over a period of 57 years. The dotted horizontal line represents the threshold used for the likelihood \eqref{pplik}.}
+\caption{Daily aggregate rainfall recorded at a rain gauge in England
+  over a period of 57 years. The dotted horizontal line represents the
+  threshold used for the likelihood \eqref{pplik}.}
 \label{raindata}
 \end{figure}
 
-In this section we will suppose that we have used an expert to elicit a prior distribution using the construction of Section \ref{spriorgamma}.
-Suppose that we elicited the distributions $\tilde{q}_{p_1} \sim \text{gamma}(38.9,1.5)$, $\tilde{q}_{p_2} \sim \text{gamma}(7.1,6.3)$ and $\tilde{q}_{p_3} \sim \text{gamma}(47,2.6)$, where $p_i = 10^{-i}$ for $i=1,2,3$.
+In this section we will suppose that we have used an expert to elicit
+a prior distribution using the construction of Section
+\ref{spriorgamma}.  Suppose that we elicited the distributions
+$\tilde{q}_{p_1} \sim \text{gamma}(38.9,1.5)$, $\tilde{q}_{p_2} \sim
+\text{gamma}(7.1,6.3)$ and $\tilde{q}_{p_3} \sim
+\text{gamma}(47,2.6)$, where $p_i = 10^{-i}$ for $i=1,2,3$.
 
-Quantiles and probabilities of gamma distributions can be calculated using \verb+qgamma+ and \verb+pgamma+.
-Densities can be calculated (and hence plotted) using \verb+dgamma+.
-The means and variances of the elicited distributions can be derived using \verb+igamma+, as shown below.
+Quantiles and probabilities of gamma distributions can be calculated
+using \verb+qgamma+ and \verb+pgamma+.  Densities can be calculated
+(and hence plotted) using \verb+dgamma+.  The means and variances of
+the elicited distributions can be derived using \verb+igamma+, as
+shown below.
 
 \begin{verbatim}
 > igamma(shape = c(38.9,7.1,47), scale = c(1.5,6.3,2.6))
@@ -868,28 +1246,35 @@ The means and variances of the elicited distributions can be derived using \verb
 3  47.0   2.6 122.20 317.720 119.60
 \end{verbatim}
 
-The prior can be constructed using \verb+prior.quant+.
-The probabilities do not need to be specified since they are taken as $p_i = 10^{-i}$ by default. 
+The prior can be constructed using \verb+prior.quant+.  The
+probabilities do not need to be specified since they are taken as $p_i
+= 10^{-i}$ by default.
 
 \begin{verbatim}
 > prrain <- prior.quant(shape = c(38.9,7.1,47), scale = c(1.5,6.3,2.6))
 \end{verbatim}
 
-The generalized extreme value likelihood is only appropriate for maxima.
-For the rainfall data, we use the point process characterization of Section \ref{lhpp}.
-This is specified using \verb+lh = "pp"+ in the call to \verb+posterior+.
-The threshold $u$ within the likelihood \eqref{pplik} is specified using the argument \verb+thresh+.
-The value $n_y$ is specified using the argument \verb+noy+.
-If the parameters are to represent the generalized extreme value model for \emph{annual} maxima, $n_y$ should be the number of years of observation (excluding missing values).
-In this case $\texttt{noy} \approx 54$. 
+The generalized extreme value likelihood is only appropriate for
+maxima.  For the rainfall data, we use the point process
+characterization of Section \ref{lhpp}.  This is specified using
+\verb+lh = "pp"+ in the call to \verb+posterior+.  The threshold $u$
+within the likelihood \eqref{pplik} is specified using the argument
+\verb+thresh+.  The value $n_y$ is specified using the argument
+\verb+noy+.  If the parameters are to represent the generalized
+extreme value model for \emph{annual} maxima, $n_y$ should be the
+number of years of observation (excluding missing values).  In this
+case $\texttt{noy} \approx 54$.
 
 The following code generates two Markov chains using \verb+posterior+.
-The first chain [10 secs] samples from the prior density $\pi(\bs{\theta})$.
-The second chain [20 secs] samples from the posterior density $\pi(\bs{\theta}|\bs{x})$.
-We take the threshold $u=40$.
-The specification of the threshold is a standard topic in extreme value theory \citep[e.g.][Ch 4]{cole01}, and will not be discussed here. 
-Both chains have run length $n=10\,000$ and burn-in period $b=2000$.
-Initial values have been derived using \verb+mposterior+, and the proposal standard deviations $\bs{s}$ have been determined using pilot runs.
+The first chain [10 secs] samples from the prior density
+$\pi(\bs{\theta})$.  The second chain [20 secs] samples from the
+posterior density $\pi(\bs{\theta}|\bs{x})$.  We take the threshold
+$u=40$.  The specification of the threshold is a standard topic in
+extreme value theory \citep[e.g.][Ch 4]{cole01}, and will not be
+discussed here.  Both chains have run length $n=10\,000$ and burn-in
+period $b=2000$.  Initial values have been derived using
+\verb+mposterior+, and the proposal standard deviations $\bs{s}$ have
+been determined using pilot runs.
 
 \begin{verbatim}
 > n <- 10000 ; t0 <- c(50.8, 1.18, 0.65) ; s <- c(25, .35, .07) ; b <- 2000
@@ -899,9 +1284,11 @@ Initial values have been derived using \verb+mposterior+, and the proposal stand
       noy = 54, psd = s, burn = b)
 \end{verbatim}
 
-These chains can be used to estimate features of the prior and posterior distributions. 
-Figure \ref{rainpp} shows estimates of the prior and posterior densities.
-The figure can be constructed by adapting the code, given in Section \ref{egoxford}, that was used to construct Figure \ref{oxdens}.
+These chains can be used to estimate features of the prior and
+posterior distributions.  Figure \ref{rainpp} shows estimates of the
+prior and posterior densities.  The figure can be constructed by
+adapting the code, given in Section \ref{egoxford}, that was used to
+construct Figure \ref{oxdens}.
 
 %plot(density(rn.post[,1],adj=2), xlim = c(-10,85), ylim = c(0,0.45))
 %lines(density(rn.prior[,1],adj=2), lty = 2)
@@ -914,14 +1301,12 @@ The figure can be constructed by adapting the code, given in Section \ref{egoxfo
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{rain1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{rain2.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{rain3.ps}}
+  \scalebox{0.25}{\includegraphics{rain1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{rain2.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{rain3.ps}}
 \end{center}
-\caption{Marginal prior (dashed lines) and posterior (solid lines) density estimates for $\mu$, $\sigma$ and $\xi$ respectively.}
+\caption{Marginal prior (dashed lines) and posterior (solid lines)
+  density estimates for $\mu$, $\sigma$ and $\xi$ respectively.}
 \label{rainpp}
 \end{figure}
 
@@ -931,11 +1316,14 @@ The figure can be constructed by adapting the code, given in Section \ref{egoxfo
 \label{further}
 
 This section provides an introduction to more specialist topics.
-Section \ref{mcmc} introduces the concept of thinning, and discusses the use of multiple Markov chains.
-Section \ref{quantiles} depicts posterior distributions of generalized extreme value quantiles.
-Predictive distributions are defined and illustrated in Section \ref{predictive}.
-Model diagnostics are implemented in Section \ref{diag}, following \citet{gelmcarl95}.  
-Three different extensions to the likelihoods of Section \ref{lh} are discussed in Section \ref{extend}.
+Section \ref{mcmc} introduces the concept of thinning, and discusses
+the use of multiple Markov chains.  Section \ref{quantiles} depicts
+posterior distributions of generalized extreme value quantiles.
+Predictive distributions are defined and illustrated in Section
+\ref{predictive}.  Model diagnostics are implemented in Section
+\ref{diag}, following \citet{gelmcarl95}.  Three different extensions
+to the likelihoods of Section \ref{lh} are discussed in Section
+\ref{extend}.
 
 \subsection{MCMC Topics}
 \label{mcmc}
@@ -943,23 +1331,37 @@ Three different extensions to the likelihoods of Section \ref{lh} are discussed 
 \subsubsection{Thinning}
 \label{thin}
 
-Suppose that you create a Markov chain, but you only store every $k$th iteration.
-This process is called \textbf{thinning}.
-The integer $k$ is called the \textbf{thinning interval}.
-The iterations that have been stored, after an initial burn-in period, are (on assumption) sampled from the target distribution of the original chain, but the dependence between the samples will have been reduced.
+Suppose that you create a Markov chain, but you only store every $k$th
+iteration.  This process is called \textbf{thinning}.  The integer $k$
+is called the \textbf{thinning interval}.  The iterations that have
+been stored, after an initial burn-in period, are (on assumption)
+sampled from the target distribution of the original chain, but the
+dependence between the samples will have been reduced.
 
-Let us consider a more concrete example.
-Suppose we take the run length $n=1000$, the burn-in period $b=200$ and suppose that we only store every fifth ($k=5$) iteration.
-Then we generate the $161$ values $\bs{\theta}_{200},\bs{\theta}_{205},\dots,\bs{\theta}_{1000}$.
-Because the values are only stored after every fifth iteration, they are not as dependent as the $161$ values $\bs{\theta}_{200},\bs{\theta}_{201},\dots,\bs{\theta}_{360}$, so they contain more information, and can estimate features of the target distribution more precisely.
-However, by thinning a chain you \emph{always} loose information, because the $801$ values $\bs{\theta}_{200},\bs{\theta}_{201},\dots,\bs{\theta}_{1000}$ are more informative than $\bs{\theta}_{200},\bs{\theta}_{205},\dots,\bs{\theta}_{1000}$.
-At this point, you may be asking why you would ever want to thin a chain.
-The main advantage of thinning a chain is one of storage.
-If you have a limited amount of storage space you can use thinning to throw away samples in such a way that only the minimum of information is wasted.
+Let us consider a more concrete example.  Suppose we take the run
+length $n=1000$, the burn-in period $b=200$ and suppose that we only
+store every fifth ($k=5$) iteration.  Then we generate the $161$
+values $\bs{\theta}_{200},\bs{\theta}_{205},\dots,\bs{\theta}_{1000}$.
+Because the values are only stored after every fifth iteration, they
+are not as dependent as the $161$ values
+$\bs{\theta}_{200},\bs{\theta}_{201},\dots,\bs{\theta}_{360}$, so they
+contain more information, and can estimate features of the target
+distribution more precisely.  However, by thinning a chain you
+\emph{always} loose information, because the $801$ values
+$\bs{\theta}_{200},\bs{\theta}_{201},\dots,\bs{\theta}_{1000}$ are
+more informative than
+$\bs{\theta}_{200},\bs{\theta}_{205},\dots,\bs{\theta}_{1000}$.  At
+this point, you may be asking why you would ever want to thin a chain.
+The main advantage of thinning a chain is one of storage.  If you have
+a limited amount of storage space you can use thinning to throw away
+samples in such a way that only the minimum of information is wasted.
 
-Thinning can be implemented by passing $k$ to the argument \verb+thin+ of the function \verb+posterior+.
-The following code continues the example of Section \ref{egrain}.
-The chain \verb+rn.post2+ is generated [40 secs] in the same manner as \verb+rn.post+, except that we use a run length of $n=20\,000$, and store only every fifth iteration. 
+Thinning can be implemented by passing $k$ to the argument \verb+thin+
+of the function \verb+posterior+.  The following code continues the
+example of Section \ref{egrain}.  The chain \verb+rn.post2+ is
+generated [40 secs] in the same manner as \verb+rn.post+, except that
+we use a run length of $n=20\,000$, and store only every fifth
+iteration.
 
 \begin{verbatim}
 > n <- 20000 ; t0 <- c(43.2, 7.64, 0.32) ; s <- c(2, .2, .07) ; b <- 2000
@@ -978,35 +1380,54 @@ The chain \verb+rn.post2+ is generated [40 secs] in the same manner as \verb+rn.
 \subsubsection{Multiple Chains}
 \label{multiple}
 
-In Section \ref{egpirie} we discussed the possibility of generating multiple Markov chains, with initial values scattered about the parameter space.
-This is the only way to ensure that the chain or chains have fully explored all regions of high probability, particularly when the target distribution is complex.
-I recommend generating a small number of chains and examining the iterations graphically.
-The burn-in period for each chain can easily be identified using this approach.
-In particular, it is possible to determine whether the chains have reached equilibrium (or not, in which case the burn-in period is larger than the current run length), which is very difficult to determine using only a single chain.  
-On the other hand, many iterations will be discarded as there will often be a large burn-in period associated with each chain.
-Furthermore, if a single chain with run length 5\,000 is generated in preference to five chains with length 1\,000, the last 4\,000 iterations will be sampled from a distribution that is likely to be closer to the target distribution than any of the samples that would have been generated in any of the smaller chains.
+In Section \ref{egpirie} we discussed the possibility of generating
+multiple Markov chains, with initial values scattered about the
+parameter space.  This is the only way to ensure that the chain or
+chains have fully explored all regions of high probability,
+particularly when the target distribution is complex.  I recommend
+generating a small number of chains and examining the iterations
+graphically.  The burn-in period for each chain can easily be
+identified using this approach.  In particular, it is possible to
+determine whether the chains have reached equilibrium (or not, in
+which case the burn-in period is larger than the current run length),
+which is very difficult to determine using only a single chain.  On
+the other hand, many iterations will be discarded as there will often
+be a large burn-in period associated with each chain.  Furthermore, if
+a single chain with run length 5\,000 is generated in preference to
+five chains with length 1\,000, the last 4\,000 iterations will be
+sampled from a distribution that is likely to be closer to the target
+distribution than any of the samples that would have been generated in
+any of the smaller chains.
 
-Continuing the example of Section \ref{egrain}, suppose that we generate [2 secs each] the chains \verb+rna+, \verb+rnb+ and \verb+rnc+ in the same manner as \verb+rn.post+, except that we use the starting values $\bs{\theta}_0^a=(40,11,0.2)$, $\bs{\theta}_0^b=(50,5,0.4)$ and $\bs{\theta}_0^c=(32,6,0.3)$.
-I have also reduced the run length to $n=1000$ and omitted the burn-in period ($b=0$).
-The iterations of the location parameter for each of the three chains are plotted in Figure \ref{locit}.
+Continuing the example of Section \ref{egrain}, suppose that we
+generate [2 secs each] the chains \verb+rna+, \verb+rnb+ and
+\verb+rnc+ in the same manner as \verb+rn.post+, except that we use
+the starting values $\bs{\theta}_0^a=(40,11,0.2)$,
+$\bs{\theta}_0^b=(50,5,0.4)$ and $\bs{\theta}_0^c=(32,6,0.3)$.  I have
+also reduced the run length to $n=1000$ and omitted the burn-in period
+($b=0$).  The iterations of the location parameter for each of the
+three chains are plotted in Figure \ref{locit}.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{locit1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{locit2.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{locit3.ps}}
+  \scalebox{0.25}{\includegraphics{locit1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{locit2.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{locit3.ps}}
 \end{center}
-\caption{Iterations of the location parameter for each of the three chains \texttt{rna}, \texttt{rnb} and \texttt{rnc}. The starting values are $\mu_0^a=40$, $\mu_0^b=50$ and $\mu_0^c=32$.}
+\caption{Iterations of the location parameter for each of the three
+  chains \texttt{rna}, \texttt{rnb} and \texttt{rnc}. The starting
+  values are $\mu_0^a=40$, $\mu_0^b=50$ and $\mu_0^c=32$.}
 \label{locit}
 \end{figure}
 
-The diagnostic of \citet{gelmrubi92} is designed for multiple chains that have been run with starting values which are over-dispersed relative to the target distribution.
-(The starting values in this example have been arbitrarily selected at points with low posterior density.)
-The diagnostic is implemented in \textbf{coda}, and can be performed using the following code.
-The function \verb+mcmc.list+ creates an object that \textbf{coda} can recognize as a list of Markov chains.
+The diagnostic of \citet{gelmrubi92} is designed for multiple chains
+that have been run with starting values which are over-dispersed
+relative to the target distribution.  (The starting values in this
+example have been arbitrarily selected at points with low posterior
+density.)  The diagnostic is implemented in \textbf{coda}, and can be
+performed using the following code.  The function \verb+mcmc.list+
+creates an object that \textbf{coda} can recognize as a list of Markov
+chains.
 
 %rna <- posterior(1000, init = c(40,11,0.2), prior = prrain, lh = "pp", data = rainfall, thresh = 40, noy = 54, psd = c(2,.2,.07))
 %rnb <- posterior(1000, init = c(50,5,0.4), prior = prrain, lh = "pp", data = rainfall, thresh = 40, noy = 54, psd = c(2,.2,.07))
@@ -1025,50 +1446,91 @@ Potential scale reduction factors:
 Multivariate psrf: 1.03
 \end{verbatim}
 
-The diagnostics are based on estimates of the variance of the (margins of the) target distribution.
-If the chains have not reached equilibrium, the mean of the empirical variance within each chain (for each parameter) will underestimate the variance, because each chain will not have had the time to range over the target distribution.
-Similarly, the empirical between-chain variance (the variance of the empirical means of each chain, multiplied by the run length) will overestimate the variance, because the starting values are over-dispersed relative to the target distribution.
-The ``point estimate'' potential scale reduction factors (PSRF) are essentially the within-chain divided by the between-chain estimates of variance.
-If these factors are substantially larger than one, the simulated sequences may not have made a full tour of the target distribution.
-\citet{gelmrubi92} recommend increasing the run length $n$ until all the reduction factors are close to one, and then taking $b=n/2$, thus discarding the first half of the chain.
-This is the basis for the plot generated by \verb+gelman.plot+.
-The condition of being ``close'' to one depends on the problem at hand; for most examples, values below 1.2 are acceptable \citep{gelmcarl95}.
+The diagnostics are based on estimates of the variance of the (margins
+of the) target distribution.  If the chains have not reached
+equilibrium, the mean of the empirical variance within each chain (for
+each parameter) will underestimate the variance, because each chain
+will not have had the time to range over the target distribution.
+Similarly, the empirical between-chain variance (the variance of the
+empirical means of each chain, multiplied by the run length) will
+overestimate the variance, because the starting values are
+over-dispersed relative to the target distribution.  The ``point
+estimate'' potential scale reduction factors (PSRF) are essentially
+the within-chain divided by the between-chain estimates of variance.
+If these factors are substantially larger than one, the simulated
+sequences may not have made a full tour of the target distribution.
+\citet{gelmrubi92} recommend increasing the run length $n$ until all
+the reduction factors are close to one, and then taking $b=n/2$, thus
+discarding the first half of the chain.  This is the basis for the
+plot generated by \verb+gelman.plot+.  The condition of being
+``close'' to one depends on the problem at hand; for most examples,
+values below 1.2 are acceptable \citep{gelmcarl95}.
 
-The ``97.5\% quantile'' PSRF is constructed in a similar manner, except that the variance ratio is replaced by the 97.5\% quantile of its (estimated) sampling distribution.  
-The multivariate potential scale reduction factor (MPSRF), due to \citet{broogelm97}, generalizes the original ``point estimate'' method to consider all parameters simultaneously.
+The ``97.5\% quantile'' PSRF is constructed in a similar manner,
+except that the variance ratio is replaced by the 97.5\% quantile of
+its (estimated) sampling distribution.  The multivariate potential
+scale reduction factor (MPSRF), due to \citet{broogelm97}, generalizes
+the original ``point estimate'' method to consider all parameters
+simultaneously.
 
-The values shown here are sufficiently close enough to one to be acceptable.
-Incidentally, using the run length $n=10\,000$, as was used in Section \ref{egrain}, produced reduction factors that were all equal to one (to the number of decimal places printed by \verb+gelman.diag+).
+The values shown here are sufficiently close enough to one to be
+acceptable.  Incidentally, using the run length $n=10\,000$, as was
+used in Section \ref{egrain}, produced reduction factors that were all
+equal to one (to the number of decimal places printed by
+\verb+gelman.diag+).
 
-As with all diagnostics, there are criticisms.
-The diagnostic assumes that the initial values are sampled from a distribution that is over-dispersed relative to the target distribution.
-In practice the target distribution is unknown, so this is difficult\footnote{But not impossible. The target distributions can be approximated using (mixtures of) multivariate normal or multivariate t distributions on $(\mu, \log\sigma, \xi)$, the parameters of which can be estimated using the output of \texttt{mposterior}, upon setting \texttt{hessian = TRUE}.} to achieve.
-The diagnostic also relies on a normal approximation to the samples of each parameter within the chain.
-The parameters can be transformed so that the normal approximation is more appropriate, but it remains a criticism.
+As with all diagnostics, there are criticisms.  The diagnostic assumes
+that the initial values are sampled from a distribution that is
+over-dispersed relative to the target distribution.  In practice the
+target distribution is unknown, so this is difficult\footnote{But not
+  impossible. The target distributions can be approximated using
+  (mixtures of) multivariate normal or multivariate t distributions on
+  $(\mu, \log\sigma, \xi)$, the parameters of which can be estimated
+  using the output of \texttt{mposterior}, upon setting
+  \texttt{hessian = TRUE}.} to achieve.  The diagnostic also relies on
+a normal approximation to the samples of each parameter within the
+chain.  The parameters can be transformed so that the normal
+approximation is more appropriate, but it remains a criticism.
 
 \subsection{Distributions of Quantiles}
 \label{quantiles}
 
-The Markov chains generated can be transformed in order to estimate other quantities of interest.
-In particular, the distributions of quantiles can be estimated.
-Let $F$ be the GEV distribution function, and let $F(q_p) = 1-p$, so that
-\begin{equation*}
-q_p(\bs{\theta}) = 
+The Markov chains generated can be transformed in order to estimate
+other quantities of interest.  In particular, the distributions of
+quantiles can be estimated.  Let $F$ be the GEV or GP distribution function,
+and let $F(q_p) = 1-p$, so that
+\begin{eqnarray*}
+q_p(\bs{\theta}) &=& 
 \begin{cases}
-\mu - \frac{\sigma}{\xi}[1 - \{-\log(1-p)\}^{-\xi}] & \xi \neq 0 \\
-\mu - \sigma \log\{-\log(1-p)\} & \xi = 0,
+  \mu - \frac{\sigma}{\xi}[1 - y^{-\xi}] & \xi \neq 0 \\ 
+  \mu - \sigma \log y & \xi = 0,
 \end{cases}
-\end{equation*}
-is the quantile corresponding to the upper tail probability $p$.
-For each $p$, the samples $\bs{\theta}_b, \dots, \bs{\theta}_n$ can be substituted into the above expression to yield $q_p(\bs{\theta}_b), \dots, q_p(\bs{\theta}_n)$.
-We can use these values to estimate features of the prior and posterior distributions of $q_p(\bs{\theta})$ in the same way that the values $\bs{\theta}_b, \dots, \bs{\theta}_n$ have been used to estimate features of the prior and posterior distributions of $\bs{\theta}$.
+\\
+\text{where } y &=&
+\begin{cases}
+  - \log (1-p) & \text{ if $F$ is the GEV distribution function}\\
+  p & \text{ if $F$ is the GP distribution function}
+\end{cases}
+\end{eqnarray*}
 
-Continuing the example of Section \ref{egrain}, prior and posterior density estimates of the quantiles $q_{0.1}$, $q_{0.01}$  and $q_{0.001}$ are shown in Figure \ref{pqrain}.
-These are density estimates for the value that is exceeded by the annual maximum of daily rainfalls with probabilities 0.1, 0.01 and 0.001.
-The estimates can be plotted using the following code.
+is the quantile corresponding to the upper tail probability $p$.  For
+each $p$, the samples $\bs{\theta}_b, \dots, \bs{\theta}_n$ can be
+substituted into the above expression to yield $q_p(\bs{\theta}_b),
+\dots, q_p(\bs{\theta}_n)$.  We can use these values to estimate
+features of the prior and posterior distributions of
+$q_p(\bs{\theta})$ in the same way that the values $\bs{\theta}_b,
+\dots, \bs{\theta}_n$ have been used to estimate features of the prior
+and posterior distributions of $\bs{\theta}$.
+
+Continuing the example of Section \ref{egrain}, prior and posterior
+density estimates of the quantiles $q_{0.1}$, $q_{0.01}$ and
+$q_{0.001}$ are shown in Figure \ref{pqrain}.  These are density
+estimates for the value that is exceeded by the annual maximum of
+daily rainfalls with probabilities 0.1, 0.01 and 0.001.  The estimates
+can be plotted using the following code.
 
 \begin{verbatim}
-> poq <- mc.quant(rn.post, p = c(.1,.01,.001))
+> poq <- mc.quant(rn.post, p = c(.1,.01,.001), lh = "gev")
 > prq <- mc.quant(rn.prior, p = c(.1,.01,.001))
 > plot(density(poq[,1], adj = 2), xlim = c(20,100), ylim = c(0,.11))
 > lines(density(prq[,1], adj = 2), lty = 2)
@@ -1080,159 +1542,228 @@ The estimates can be plotted using the following code.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{pqrain1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pqrain2.ps}}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{pqrain3.ps}}
+  \scalebox{0.25}{\includegraphics{pqrain1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pqrain2.ps}}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{pqrain3.ps}}
 \end{center}
-\caption{Prior (dashed lines) and posterior (solid lines) density estimates for the value (in millimetres) that is exceeded by the annual maximum of daily rainfalls with probabilities 0.1, 0.01 and 0.001 respectively.}
+\caption{Prior (dashed lines) and posterior (solid lines) density
+  estimates for the value (in millimetres) that is exceeded by the
+  annual maximum of daily rainfalls with probabilities 0.1, 0.01 and
+  0.001 respectively.}
 \label{pqrain}
 \end{figure}
 
-The function \verb+mc.quant+  takes two arguments.
-The first should be an object returned from \verb+posterior+, which contains the values $\bs{\theta}_b, \dots, \bs{\theta}_n$.
-If the second argument $\texttt{p} = p$, the function returns the vector $q_p(\bs{\theta}_b), \dots, q_p(\bs{\theta}_n)$.
-If $\texttt{p} = (p_1, \dots p_m)$ is a vector of length $m$, the function returns a matrix with $j$th column $q_{p_j}(\bs{\theta}_b), \dots, q_{p_j}(\bs{\theta}_n)$, for $j=1,\dots,m$.  
+The function \verb+mc.quant+ takes three arguments.  The first should be
+an object returned from \verb+posterior+, which contains the values
+$\bs{\theta}_b, \dots, \bs{\theta}_n$.  If the second argument
+$\texttt{p} = p$, the function returns the vector $q_p(\bs{\theta}_b),
+\dots, q_p(\bs{\theta}_n)$.  If $\texttt{p} = (p_1, \dots p_m)$ is a
+vector of length $m$, the function returns a matrix with $j$th column
+$q_{p_j}(\bs{\theta}_b), \dots, q_{p_j}(\bs{\theta}_n)$, for
+$j=1,\dots,m$. The third argument is a character string which
+specifies the likelihood function.
 
-Although Figure \ref{pqrain} gives us density estimates for $q_{0.1}$, $q_{0.01}$  and $q_{0.001}$, it would be useful to have a graphical summary of the distributions of $q_p$ for all (small) values of $p$.
-This can be done using a \textbf{return level plot}.
-A return level plot is a standard tool in extreme value theory.
-In the terminology of extreme value theory, return levels are simply quantiles.
-We would say that the value $q_p$ is the \textbf{return level} associated with the \textbf{return period} $1/p$.
-A return level plot is a plot of $q_p$ verses $-1/\log(1-p)$, for fixed values of $(\mu,\sigma,\xi)$, typically maximum likelihood estimates.
-The x-axis is plotted on a logarithmic scale.
-This emphasizes the values in the upper tail (small $p$), and makes the plot linear when $\xi=0$, with slope $\sigma$ and intercept $\mu$.
-For small $p$, $-1/\log(1-p) \approx 1/p$, so the return level plot is approximately a plot of return levels verses return periods.
+Although Figure \ref{pqrain} gives us density estimates for $q_{0.1}$,
+$q_{0.01}$ and $q_{0.001}$, it would be useful to have a graphical
+summary of the distributions of $q_p$ for all (small) values of $p$.
+This can be done using a \textbf{return level plot}.  A return level
+plot is a standard tool in extreme value theory.  In the terminology
+of extreme value theory, return levels are simply quantiles.  We would
+say that the value $q_p$ is the \textbf{return level} associated with
+the \textbf{return period} $1/\lambda p$, where $\lambda$ is the mean
+number of events in a year. That is, for example, with block maxima,
+$\lambda$ is obviously equal to 1. A return level plot is a plot of
+$q_p$ verses $-1/\lambda\log(1-p)$, for fixed values of
+$(\mu,\sigma,\xi)$, typically maximum likelihood estimates.  The
+x-axis is plotted on a logarithmic scale.  This emphasizes the values
+in the upper tail (small $p$), and makes the plot linear when $\xi=0$,
+with slope $\sigma$ and intercept $\mu$.  For small $p$,
+$-1/\lambda\log(1-p) \approx 1/\lambda p$, so the return level plot is
+approximately a plot of return levels verses return periods.
 
-In our Bayesian framework, we can use a return level plot to illustrate the distributions of quantiles, or equivalently, return levels.
-For each $p$ there is a corresponding sample $q_{p}(\bs{\theta}_b), \dots, q_{p}(\bs{\theta}_n)$.
-We take a summary statistic for each sample, say the median, which we denote by $\check{q}_{p}$.
-We can then plot $\check{q}_{p}$ verses $-1/\log(1-p)$, again using a logarithmic scale on the x-axis.
-This gives us a curve of the medians of the prior/posterior distributions of $q_p$.
-We can also plot curves for other summary statistics, such as the empirical sample quantiles corresponding to the percentage points $0.05$ and $0.95$, which yield intervals containing 90\% of the prior/posterior probability, for each $q_p$.
-Return level plots of this form are given in Figure \ref{rlrain}.
-The plots depict the prior and posterior distributions of $q_p$.
-They can be created using \verb+rl.pst(rn.prior)+ and \verb+rl.pst(rn.post)+
-respectively.
+In our Bayesian framework, we can use a return level plot to
+illustrate the distributions of quantiles, or equivalently, return
+levels.  For each $p$ there is a corresponding sample
+$q_{p}(\bs{\theta}_b), \dots, q_{p}(\bs{\theta}_n)$.  We take a
+summary statistic for each sample, say the median, which we denote by
+$\check{q}_{p}$.  We can then plot $\check{q}_{p}$ verses
+$-1/\log(1-p)$, again using a logarithmic scale on the x-axis.  This
+gives us a curve of the medians of the prior/posterior distributions
+of $q_p$.  We can also plot curves for other summary statistics, such
+as the empirical sample quantiles corresponding to the percentage
+points $0.05$ and $0.95$, which yield intervals containing 90\% of the
+prior/posterior probability, for each $q_p$.  Return level plots of
+this form are given in Figure \ref{rlrain}.  The plots depict the
+prior and posterior distributions of $q_p$.  They can be created using
+\verb+rl.pst(rn.prior, lh = "gev")+ and
+\verb+rl.pst(rn.post, lh = "gev")+ respectively.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{rlrain1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{rlrain2.ps}}
+  \scalebox{0.25}{\includegraphics{rlrain1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{rlrain2.ps}}
 \end{center}
-\caption{Return level plots of prior (left panel) and posterior (right panel) distributions for $q_p$. The curves within the plots represent medians (solid lines) and intervals containing 90\% of the prior/posterior probability (dashed lines). Dotted vertical lines are drawn at $p = 0.1, 0.01, 0.001$.}
+\caption{Return level plots of prior (left panel) and posterior (right
+  panel) distributions for $q_p$. The curves within the plots
+  represent medians (solid lines) and intervals containing 90\% of the
+  prior/posterior probability (dashed lines). Dotted vertical lines
+  are drawn at $p = 0.1, 0.01, 0.001$.}
 \label{rlrain}
 \end{figure}
 
-For a specific value of $p$, it may help to imagine a vertical line superimposed on the return level plot at $-1/\log(1-p) \approx 1/p$.
-The estimates for the quantiles of the prior/posterior distribution of $q_p$ are given by the y-coordinate of the intersection of this line with the plotted curves.
-In Figure \ref{rlrain} we have added vertical lines at $p = 0.1,0.01,0.001$, corresponding to the density estimates given in Figure \ref{pqrain}.
+For a specific value of $p$, it may help to imagine a vertical line
+superimposed on the return level plot at $-1/\log(1-p) \approx 1/p$.
+The estimates for the quantiles of the prior/posterior distribution of
+$q_p$ are given by the y-coordinate of the intersection of this line
+with the plotted curves.  In Figure \ref{rlrain} we have added
+vertical lines at $p = 0.1,0.01,0.001$, corresponding to the density
+estimates given in Figure \ref{pqrain}.
 
 \subsection{Predictive Distributions}
 \label{predictive}
 
-The primary objective of an extreme value analysis is often prediction.
-Let $z$ denote a future observation with density function $f(z|\bs{\theta})$, where $\bs{\theta} \in \Theta$.
-The \textbf{posterior predictive density} of $z$, given observed data $\bs{x}$, is
+The primary objective of an extreme value analysis is often
+prediction.  Let $z$ denote a future observation with density function
+$f(z|\bs{\theta})$, where $\bs{\theta} \in \Theta$.  The
+\textbf{posterior predictive density} of $z$, given observed data
+$\bs{x}$, is
 \begin{equation}
-f(z|\bs{x}) = \int_\Theta f(z|\bs{\theta})\pi(\bs{\theta}|\bs{x}) \, \text{d}\bs{\theta}.
+  f(z|\bs{x}) = \int_\Theta f(z|\bs{\theta})\pi(\bs{\theta}|\bs{x}) \,
+  \text{d}\bs{\theta}. 
 \label{predden}
 \end{equation}
-If we are to observe a future observation $z$ but we do not observe any data $\bs{x}$, our predictions are based on the \textbf{prior predictive density}
+If we are to observe a future observation $z$ but we do not observe
+any data $\bs{x}$, our predictions are based on the \textbf{prior
+  predictive density}
 \begin{equation*}
-f(z) = \int_\Theta f(z|\bs{\theta})\pi(\bs{\theta}) \, \text{d}\bs{\theta}.
+  f(z) = \int_\Theta f(z|\bs{\theta})\pi(\bs{\theta}) \,
+  \text{d}\bs{\theta}. 
 \end{equation*}
-Predictive distributions reflect the uncertainty in the model and the uncertainty due to the variability of future observations.
+Predictive distributions reflect the uncertainty in the model and the
+uncertainty due to the variability of future observations.
 
-Let $Z \sim \text{GEV}(\bs{\theta})$, where $\bs{\theta} = (\mu,\sigma,\xi)$.
-Using expression \eqref{predden}, the posterior predictive distribution of a future observation $z$ is given by
+Let $Z \sim \text{GEV}(\bs{\theta})$, where $\bs{\theta} =
+(\mu,\sigma,\xi)$.  Using expression \eqref{predden}, the posterior
+predictive distribution of a future observation $z$ is given by
 \begin{equation*}
-\Pr(Z \leq z | \bs{x}) = \int_\Theta \Pr(Z \leq z | \bs{\theta})\pi(\bs{\theta}|\bs{x}) \, \text{d}\theta,
+  \Pr(Z \leq z | \bs{x}) = \int_\Theta \Pr(Z \leq z |
+  \bs{\theta})\pi(\bs{\theta}|\bs{x}) \, \text{d}\theta, 
 \end{equation*}
-where $\Pr(Z \leq z | \bs{\theta})$ is the generalized extreme value distribution \eqref{gev}, evaluated at $z$.
-The prior predictive distribution $\Pr(Z \leq z)$ is defined in a similar manner, replacing the posterior density $\pi(\bs{\theta}|\bs{x})$ with the prior density $\pi(\bs{\theta})$.
-Using our (prior and posterior) Markov chains $\bs{\theta}_b,\dots,\bs{\theta}_n$, the predictive distributions can be estimated using
+where $\Pr(Z \leq z | \bs{\theta})$ is the generalized extreme value
+distribution \eqref{gev}, evaluated at $z$.  The prior predictive
+distribution $\Pr(Z \leq z)$ is defined in a similar manner, replacing
+the posterior density $\pi(\bs{\theta}|\bs{x})$ with the prior density
+$\pi(\bs{\theta})$.  Using our (prior and posterior) Markov chains
+$\bs{\theta}_b,\dots,\bs{\theta}_n$, the predictive distributions can
+be estimated using
 \begin{equation}
 \frac{1}{n-b+1} \sum_{i=b}^{n} \Pr(Z \leq z | \bs{\theta}_i).
 \label{predest}
 \end{equation}
 
-Suppose that $\Pr(Z > z | \bs{x}) = p$, or that $\Pr(Z > z) = p$, so that $z$ is the return level corresponding to the return period $1/p$.
-For each value of $z$, we can estimate $p$ using expression \eqref{predest}.
-This information can be depicted in a return level plot (see Section \ref{quantiles}).
-In other words, we can plot $z$ verses the estimated values of $-1/\log(1-p) \approx 1/p$, using a logarithmic scale on the x-axis.
+Suppose that $\Pr(Z > z | \bs{x}) = p$, or that $\Pr(Z > z) = p$, so
+that $z$ is the return level corresponding to the return period $1/p$.
+For each value of $z$, we can estimate $p$ using expression
+\eqref{predest}.  This information can be depicted in a return level
+plot (see Section \ref{quantiles}).  In other words, we can plot $z$
+verses the estimated values of $-1/\log(1-p) \approx 1/p$, using a
+logarithmic scale on the x-axis.
 
-Continuing the example of Section \ref{egrain}, the lower curves within the return level plots of Figure \ref{predrain} depict the prior and posterior predictive distributions, as described above.
-It may help to imagine a horizontal line superimposed on a return level plot at a specific value $z$.
-The x-coordinate of the point at which this line crosses the lower curve is (for sufficiently large $z$) approximately the inverse of the prior/posterior probability that the maximum daily rainfall over the next year will exceed $z$.
+Continuing the example of Section \ref{egrain}, the lower curves
+within the return level plots of Figure \ref{predrain} depict the
+prior and posterior predictive distributions, as described above.  It
+may help to imagine a horizontal line superimposed on a return level
+plot at a specific value $z$.  The x-coordinate of the point at which
+this line crosses the lower curve is (for sufficiently large $z$)
+approximately the inverse of the prior/posterior probability that the
+maximum daily rainfall over the next year will exceed $z$.
 
-Let $Z_L$ be the maximum daily rainfall over a future period of $L$ years.
-The predictive distributions $\Pr(Z_L \leq z)$ and $\Pr(Z_L \leq z | \bs{x})$ can similarly be estimated using 
+Let $Z_L$ be the maximum daily rainfall over a future period of $L$
+years.  The predictive distributions $\Pr(Z_L \leq z)$ and $\Pr(Z_L
+\leq z | \bs{x})$ can similarly be estimated using
 \begin{equation*}
 \frac{1}{n-b+1} \sum_{i=b}^{n} \Pr(Z \leq z | \bs{\theta}_i)^L,
 \end{equation*}
-which reduces to expression \eqref{predest} when $L=1$.
-The curves on the return level plots of Figure \ref{predrain} depict the prior and posterior distributions of $Z_L$, for $L=1,2,5$.
-The function \verb+rl.pred+ creates return level plots for predictive distributions.
-Figure \ref{predrain} can be created using the following code.
-The values of $L$ should be passed to the argument \verb+period+.
-The vector \verb+qlim+ represents the quantiles at which the return level plot is evaluated.
+which reduces to expression \eqref{predest} when $L=1$.  The curves on
+the return level plots of Figure \ref{predrain} depict the prior and
+posterior distributions of $Z_L$, for $L=1,2,5$.  The function
+\verb+rl.pred+ creates return level plots for predictive
+distributions.  Figure \ref{predrain} can be created using the
+following code.  The values of $L$ should be passed to the argument
+\verb+period+.  The vector \verb+qlim+ represents the quantiles at
+which the return level plot is evaluated.
 
 %rl.pred(rn.prior, period = c(1,2,5), qlim = c(0,500), xlim = 10^c(-1.6,4.25), ylim = c(-20,520))
 %rl.pred(rn.post, period = c(1,2,5), qlim = c(30,500), xlim = 10^c(-1.6,4.25), ylim = c(-20,520))
 
 \begin{verbatim}
-> rl.pred(rn.prior, period = c(1,2,5), qlim = c(0,500))
-> rl.pred(rn.post, period = c(1,2,5), qlim = c(30,500))
+> rl.pred(rn.prior, period = c(1,2,5), qlim = c(0,500), lh = "gev")
+> rl.pred(rn.post, period = c(1,2,5), qlim = c(30,500), lh = "gev")
 \end{verbatim}
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{predrain1.ps}}
-\vspace{-1.5cm}
-\hspace{0cm}
-\scalebox{0.25}{\includegraphics{predrain2.ps}}
+  \scalebox{0.25}{\includegraphics{predrain1.ps}} \vspace{-1.5cm}
+  \hspace{0cm} \scalebox{0.25}{\includegraphics{predrain2.ps}}
 \end{center}
-\caption{Return level plots of prior (left panel) and posterior (right panel) predictive distributions. The curves within the plots represent predictive distributions for maximum daily rainfall over a future period of one (lower), two (middle) and five (upper) years.}
+\caption{Return level plots of prior (left panel) and posterior (right
+  panel) predictive distributions. The curves within the plots
+  represent predictive distributions for maximum daily rainfall over a
+  future period of one (lower), two (middle) and five (upper) years.}
 \label{predrain}
 \end{figure}
 
 \subsection{Model Diagnostics and Sensitivity Analysis}
 \label{diag}
 
-Any analysis should include some check of the adequacy of the fit of the model to the data, and of the plausibility of the model for the purposes for which it will be used.
-In a Bayesian context, the model refers to both the prior distribution $\pi(\bs{\theta})$ and the likelihood $L(\bs{\theta};\bs{x})$.
+Any analysis should include some check of the adequacy of the fit of
+the model to the data, and of the plausibility of the model for the
+purposes for which it will be used.  In a Bayesian context, the model
+refers to both the prior distribution $\pi(\bs{\theta})$ and the
+likelihood $L(\bs{\theta};\bs{x})$.
 
-In practice, additional information is often available that is not included formally in the likelihood or the prior distribution.
-If this information suggests that posterior inferences are false, then more effort should be made to incorporate this information within the model.
-We can perform informal diagnostic procedures by comparing posterior distributions and posterior predictive distributions with aspects of reality that are not captured by the model.
-If there are any discrepancies, the model should be extended to include these aspects.
-Some possible extensions are discussed in Section \ref{extend}.
+In practice, additional information is often available that is not
+included formally in the likelihood or the prior distribution.  If
+this information suggests that posterior inferences are false, then
+more effort should be made to incorporate this information within the
+model.  We can perform informal diagnostic procedures by comparing
+posterior distributions and posterior predictive distributions with
+aspects of reality that are not captured by the model.  If there are
+any discrepancies, the model should be extended to include these
+aspects.  Some possible extensions are discussed in Section
+\ref{extend}.
 
-A more formal diagnostic procedure compares the posterior predictive distribution to the data that have been observed \citep{gelmcarl95}.
-The basic technique is simple.
-We simulate samples from the posterior predictive distribution.
-These samples are then compared to the original data.
-Systematic discrepancies between the samples and the data correspond to features that are poorly fitted by the model.
-A balanced discussion of the advantages and disadvantages of this approach is given by \citet{bayaberg99, bayaberg00}.
-Further examples are given in \citet{gelmmengster96}.
+A more formal diagnostic procedure compares the posterior predictive
+distribution to the data that have been observed \citep{gelmcarl95}.
+The basic technique is simple.  We simulate samples from the posterior
+predictive distribution.  These samples are then compared to the
+original data.  Systematic discrepancies between the samples and the
+data correspond to features that are poorly fitted by the model.  A
+balanced discussion of the advantages and disadvantages of this
+approach is given by \citet{bayaberg99, bayaberg00}.  Further examples
+are given in \citet{gelmmengster96}.
 
-Let us consider a specific example.
-Suppose we have data $\bs{x} = (x_1,\dots,x_m)$, which we assume to be observed values of independent and identically distributed $\text{GEV}(\bs{\theta})$ random variables.
-We need to simulate a sample from the posterior predictive distribution to which the data can be compared.
-This is done by generating $m$ $\text{GEV}(\bs{\theta})$ random variables, where $\bs{\theta}$ is \emph{sampled from the posterior distribution}.
-Our Markov chain gives us $n-b+1$ values $\bs{\theta}_b, \dots, \bs{\theta}_n$, sampled from the posterior distribution.
-This leads to $n-b+1$ samples of length $m$ that can be compared to the actual data.
-If the point process likelihood \eqref{pplik} is used, the $n-b+1$ samples can be compared to the period maxima derived from the actual data.
-Figure \ref{diagrain} demonstrates this process using the rainfall data from the example of Section \ref{egrain}.
-The plot on the left is a histogram of the annual maxima of daily rainfalls.
-The remaining three plots depict samples from the posterior predictive distribution of annual maxima. 
-They can be created using the following code, where the vector \verb+rainmax+ is constructed to contain the 54 annual rainfall maxima.
-The code includes the \verb+rgev+ simulation function, which is available in the \textbf{evd} package.
+Let us consider a specific example.  Suppose we have data $\bs{x} =
+(x_1,\dots,x_m)$, which we assume to be observed values of independent
+and identically distributed $\text{GEV}(\bs{\theta})$ random
+variables.  We need to simulate a sample from the posterior predictive
+distribution to which the data can be compared.  This is done by
+generating $m$ $\text{GEV}(\bs{\theta})$ random variables, where
+$\bs{\theta}$ is \emph{sampled from the posterior distribution}.  Our
+Markov chain gives us $n-b+1$ values $\bs{\theta}_b, \dots,
+\bs{\theta}_n$, sampled from the posterior distribution.  This leads
+to $n-b+1$ samples of length $m$ that can be compared to the actual
+data.  If the point process likelihood \eqref{pplik} is used, the
+$n-b+1$ samples can be compared to the period maxima derived from the
+actual data.  Figure \ref{diagrain} demonstrates this process using
+the rainfall data from the example of Section \ref{egrain}.  The plot
+on the left is a histogram of the annual maxima of daily rainfalls.
+The remaining three plots depict samples from the posterior predictive
+distribution of annual maxima.  They can be created using the
+following code, where the vector \verb+rainmax+ is constructed to
+contain the 54 annual rainfall maxima.  The code includes the
+\verb+rgev+ simulation function, which is available in the
+\textbf{evd} package.
 
 \begin{verbatim}
 > yrs <- c(rep(c(366,365,365,365), 14), 366) 
@@ -1251,34 +1782,47 @@ The code includes the \verb+rgev+ simulation function, which is available in the
 
 \begin{figure}
 \begin{center}
-\scalebox{0.2}{\includegraphics{diagrain1.ps}}
-\vspace{-1.5cm}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrain2.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrain3.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrain4.ps}}
+  \scalebox{0.2}{\includegraphics{diagrain1.ps}} \vspace{-1.5cm}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrain2.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrain3.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrain4.ps}}
 \end{center}
-\caption{The left panel shows a histogram of the annual maxima of daily rainfall. The remaining three panels show histograms of samples from the posterior predictive distribution.}
+\caption{The left panel shows a histogram of the annual maxima of
+  daily rainfall. The remaining three panels show histograms of
+  samples from the posterior predictive distribution.}
 \label{diagrain}
 \end{figure}
 
-The three samples from the posterior predictive distribution are generated using the values $\bs{\theta}_{2000}$, $\bs{\theta}_{3000}$ and $\bs{\theta}_{4000}$ from the Markov chain \verb+rn.post+.
-There are no clear systematic discrepancies between the samples and the data.
+The three samples from the posterior predictive distribution are
+generated using the values $\bs{\theta}_{2000}$, $\bs{\theta}_{3000}$
+and $\bs{\theta}_{4000}$ from the Markov chain \verb+rn.post+.  There
+are no clear systematic discrepancies between the samples and the
+data.
 
-The code can easily be extended to create $n-b+1$ posterior predictive samples using all the values $\bs{\theta}_b, \dots, \bs{\theta}_n$, where $b=2000$ and $n=10000$.
-It is difficult to compare $8001$ samples to the actual data using only graphical methods.
-Instead, we can define some function of the data $T(\cdot)$.
-We can then calculate the number of samples from the posterior predictive distribution for which the test statistic $T(\cdot)$ is greater than that for the actual data.
-In other words, if the replications are denoted by $\bs{x}^l$, for $l=b,\dots,n$, we define $p$ to be the proportion of the $n-b+1$ simulations for which  $T(\bs{x}^l) > T(\bs{x})$.
-If the value of $p$ is close to zero or one, the test statistic $T(\cdot)$ corresponds to a feature that is poorly fitted by the model \citep{gelmcarl95}.
-The test statistic $T(\cdot)$ should be chosen to reflect aspects of the model that are relevant to the purposes to which the inference will be applied.
-In particular, $T(\bs{x}) = \max_j x_j$ will often be of particular importance for extreme value models.
+The code can easily be extended to create $n-b+1$ posterior predictive
+samples using all the values $\bs{\theta}_b, \dots, \bs{\theta}_n$,
+where $b=2000$ and $n=10000$.  It is difficult to compare $8001$
+samples to the actual data using only graphical methods.  Instead, we
+can define some function of the data $T(\cdot)$.  We can then
+calculate the number of samples from the posterior predictive
+distribution for which the test statistic $T(\cdot)$ is greater than
+that for the actual data.  In other words, if the replications are
+denoted by $\bs{x}^l$, for $l=b,\dots,n$, we define $p$ to be the
+proportion of the $n-b+1$ simulations for which $T(\bs{x}^l) >
+T(\bs{x})$.  If the value of $p$ is close to zero or one, the test
+statistic $T(\cdot)$ corresponds to a feature that is poorly fitted by
+the model \citep{gelmcarl95}.  The test statistic $T(\cdot)$ should be
+chosen to reflect aspects of the model that are relevant to the
+purposes to which the inference will be applied.  In particular,
+$T(\bs{x}) = \max_j x_j$ will often be of particular importance for
+extreme value models.
 
-The plots given in Figure \ref{diagrainT} demonstrate this process, taking $T(\bs{x})$ as the largest value, the smallest value, the average and the standard deviation.
-The plot corresponding to $T(\bs{x}) = \max_j x_j$ can be created using the following code. The remaining plots can be constructed in a similar manner.
-None of the four test statistics yield a value of $p$ close to zero or one.
+The plots given in Figure \ref{diagrainT} demonstrate this process,
+taking $T(\bs{x})$ as the largest value, the smallest value, the
+average and the standard deviation.  The plot corresponding to
+$T(\bs{x}) = \max_j x_j$ can be created using the following code. The
+remaining plots can be constructed in a similar manner.  None of the
+four test statistics yield a value of $p$ close to zero or one.
 
 \begin{verbatim} 
 > reprn <- matrix(0, nrow = 54, ncol = 8001)
@@ -1292,85 +1836,127 @@ None of the four test statistics yield a value of $p$ close to zero or one.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.2}{\includegraphics{diagrainT1.ps}}
-\vspace{-1.5cm}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrainT2.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrainT3.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{diagrainT4.ps}}
+  \scalebox{0.2}{\includegraphics{diagrainT1.ps}} \vspace{-1.5cm}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrainT2.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrainT3.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{diagrainT4.ps}}
 \end{center}
-\caption{Histograms of test statistics of 8001 samples from the posterior predictive distribution. From left to right, the statistics are the largest value, the smallest value, the mean and the standard deviation.
-The corresponding values for the actual data are represented by vertical lines.
-The value $p$ is given within each plot.}
+\caption{Histograms of test statistics of 8001 samples from the
+  posterior predictive distribution. From left to right, the
+  statistics are the largest value, the smallest value, the mean and
+  the standard deviation.  The corresponding values for the actual
+  data are represented by vertical lines.  The value $p$ is given
+  within each plot.}
 \label{diagrainT}
 \end{figure}
 
-It is often the case that more than one model provides an adequate fit to the data.
-Sensitivity analysis determines by what extent posterior inferences change when alternative models are used.
-Alternative models may differ in the likelihood, or in terms of prior specification.
-The basic method of sensitivity analysis is to fit several models to the same problem.
-Posterior inferences from each model can then be compared.
-Posterior inferences will typically include marginal posterior distributions of the parameters $(\mu,\sigma,\xi)$, posterior distributions of GEV quantiles and posterior predictive distributions.
-The sensitivity of the marginal posterior density of the shape parameter $\xi$ is often of particular interest. 
+It is often the case that more than one model provides an adequate fit
+to the data.  Sensitivity analysis determines by what extent posterior
+inferences change when alternative models are used.  Alternative
+models may differ in the likelihood, or in terms of prior
+specification.  The basic method of sensitivity analysis is to fit
+several models to the same problem.  Posterior inferences from each
+model can then be compared.  Posterior inferences will typically
+include marginal posterior distributions of the parameters
+$(\mu,\sigma,\xi)$, posterior distributions of GEV quantiles and
+posterior predictive distributions.  The sensitivity of the marginal
+posterior density of the shape parameter $\xi$ is often of particular
+interest.
 
 \subsection{Model Extensions}
 \label{extend}
 
-This section illustrates three extensions to the likelihoods of Section \ref{lh}.
-Section \ref{lineartrend} generalizes both the GEV and point process models to a frequently used form of non-stationarity.
-Section \ref{variablethresh} discusses the implementation of a time-varying threshold within the point process characterization.
-Section \ref{orderstats} extends the GEV likelihood to incorporate upper order statistics.
-The likelihoods presented in this section are defined by continuity when $\xi = 0$.
+This section illustrates three extensions to the likelihoods of
+Section \ref{lh}.  Section \ref{lineartrend} generalizes both the GEV
+and point process models to a frequently used form of
+non-stationarity.  Section \ref{variablethresh} discusses the
+implementation of a time-varying threshold within the point process
+characterization.  Section \ref{orderstats} extends the GEV likelihood
+to incorporate upper order statistics.  The likelihoods presented in
+this section are defined by continuity when $\xi = 0$.
 
 \subsubsection{Linear Trend for Location Parameter}
 \label{lineartrend}
 
-The generalized extreme value log-likelihood \eqref{gevlik} is based on the assumption that the data to be fitted are the observed values of independent random variables $X_1,\dots,X_n$, where $X_i \sim \text{GEV}(\mu,\sigma,\xi)$ for each $i=1,\dots,n$.
-This assumption can be extended to $X_i \sim \text{GEV}(\mu_i,\sigma,\xi)$, where
+The generalized extreme value log-likelihood \eqref{gevlik} is based
+on the assumption that the data to be fitted are the observed values
+of independent random variables $X_1,\dots,X_n$, where $X_i \sim
+\text{GEV}(\mu,\sigma,\xi)$ for each $i=1,\dots,n$.  This assumption
+can be extended to $X_i \sim \text{GEV}(\mu_i,\sigma,\xi)$, where
 \begin{equation*}
 \mu_i = \zeta + \eta t_i.
 \end{equation*}
-The parameters $(\zeta,\eta)$ are to be estimated, and the vector $\bs{t}=(t_1,\dots,t_n)$ is specified by the user.
-It is assumed that $\bs{t}$ is approximately \textbf{centred} and \textbf{scaled}.
-If there is a linear trend present in the data, $t_i$ should be some centred and scaled version of the time of the $i$th observation.
-The log-likelihood \eqref{gevlik} is extended to
+The parameters $(\zeta,\eta)$ are to be estimated, and the vector
+$\bs{t}=(t_1,\dots,t_n)$ is specified by the user.  It is assumed that
+$\bs{t}$ is approximately \textbf{centred} and \textbf{scaled}.  If
+there is a linear trend present in the data, $t_i$ should be some
+centred and scaled version of the time of the $i$th observation.  The
+log-likelihood \eqref{gevlik} is extended to
 \begin{equation*}
--n\log \sigma - (1 + 1/\xi) \sum_{i=1}^n \log\{1+ \xi \left( x_i-\mu_i \right) /\sigma\} - \sum_{i=1}^n  \left\{ 1 + \xi \left( x_i-\mu_i \right) /\sigma  \right\}^{-1/\xi}.
+  -n\log \sigma - (1 + 1/\xi) \sum_{i=1}^n \log\{1+ \xi \left(
+    x_i-\mu_i \right) /\sigma\} - \sum_{i=1}^n  \left\{ 1 + \xi \left(
+      x_i-\mu_i \right) /\sigma  \right\}^{-1/\xi}. 
 \end{equation*}
 
-The extension of the Poisson process log-likelihood \eqref{pplik} is similar.
-Recall that $n_u$ of the $n$ observations $x_1,\dots,x_n$ exceed the threshold $u$, and $x_{(i)}$ denotes the $i$th exceedence, for $i=1,\dots,n_u$.
-The original log-likelihood is
+The extension of the Poisson process log-likelihood \eqref{pplik} is
+similar.  Recall that $n_u$ of the $n$ observations $x_1,\dots,x_n$
+exceed the threshold $u$, and $x_{(i)}$ denotes the $i$th exceedence,
+for $i=1,\dots,n_u$.  The original log-likelihood is
 \begin{equation}
--n_u\log \sigma - n_y\left\{1 + \xi\left(\frac{u-\mu}{\sigma}\right)\right\}_{+}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 + \xi\left(\frac{x_{(i)}-\mu}{\sigma}\right)\right\},
+  -n_u\log \sigma - n_y\left\{1 +
+    \xi\left(\frac{u-\mu}{\sigma}\right)\right\}_{+}^{-1/\xi} -
+  \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 +
+    \xi\left(\frac{x_{(i)}-\mu}{\sigma}\right)\right\}, 
 \label{pplik2}
 \end{equation}
-provided that $1 + \xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are positive.
-We again take $\mu_i = \zeta + \eta t_i$, for $i=1,\dots,n$.
-Let $\mu_{(i)}$ denote the location parameter that corresponds to the $i$th exceedence $x_{(i)}$.
-Then the log-likelihood is extended\footnote{The term $\frac{1}{n} \sum_{i=1}^{n} \{1 + \xi(u-\mu_{i})/\sigma \}^{-1/\xi}$ is an approximation to an integral. Since $n$ is often very large, the package (by default) calculates $\frac{1}{|b|} \sum_{i \in b} \{1 + \xi(u-\mu_{i})/\sigma \}^{-1/\xi}$ for an appropriate subset $b \subset \{1,\dots,n\}$, with $|b| << n$.
-This behaviour can be overridden by setting \texttt{exact = TRUE}.
-This also applies to the likelihoods of Section \ref{variablethresh}.} to
+provided that $1 + \xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are
+positive.  We again take $\mu_i = \zeta + \eta t_i$, for
+$i=1,\dots,n$.  Let $\mu_{(i)}$ denote the location parameter that
+corresponds to the $i$th exceedence $x_{(i)}$.  Then the
+log-likelihood is extended\footnote{The term $\frac{1}{n}
+  \sum_{i=1}^{n} \{1 + \xi(u-\mu_{i})/\sigma \}^{-1/\xi}$ is an
+  approximation to an integral. Since $n$ is often very large, the
+  package (by default) calculates $\frac{1}{|b|} \sum_{i \in b} \{1 +
+  \xi(u-\mu_{i})/\sigma \}^{-1/\xi}$ for an appropriate subset $b
+  \subset \{1,\dots,n\}$, with $|b| << n$.  This behaviour can be
+  overridden by setting \texttt{exact = TRUE}.  This also applies to
+  the likelihoods of Section \ref{variablethresh}.} to
 \begin{equation*}
--n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 + \xi\left(\frac{u-\mu_{i}}{\sigma}\right)\right\}_{+}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 + \xi\left(\frac{x_{(i)}-\mu_{(i)}}{\sigma}\right)\right\},
+  -n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 +
+    \xi\left(\frac{u-\mu_{i}}{\sigma}\right)\right\}_{+}^{-1/\xi} -
+  \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 +
+    \xi\left(\frac{x_{(i)}-\mu_{(i)}}{\sigma}\right)\right\}, 
 \end{equation*}
-provided that $1 + \xi(x_{(i)}-\mu_{(i)})/\sigma$ for $i=1,\dots,n_u$ are positive.
+provided that $1 + \xi(x_{(i)}-\mu_{(i)})/\sigma$ for $i=1,\dots,n_u$
+are positive.
 
-To incorporate the linear trend term within a Bayesian analysis, a prior $\pi(\bs{\theta})$ must be specified on all four parameters $\bs{\theta} = (\zeta,\sigma,\xi,\eta)$.
-The construction of the prior proceeds in two stages.
-Firstly, a prior is constructed on $(\zeta,\sigma,\xi)$, using one of the techniques given in Section \ref{prior}.
-Then we specify an independent prior normal distribution for $\eta$, with mean zero (since the vector $\bs{t}$ should be centred) and standard deviation \verb+trendsd+, which is specified by the user.
+To incorporate the linear trend term within a Bayesian analysis, a
+prior $\pi(\bs{\theta})$ must be specified on all four parameters
+$\bs{\theta} = (\zeta,\sigma,\xi,\eta)$.  The construction of the
+prior proceeds in two stages.  Firstly, a prior is constructed on
+$(\zeta,\sigma,\xi)$, using one of the techniques given in Section
+\ref{prior}.  Then we specify an independent prior normal distribution
+for $\eta$, with mean zero (since the vector $\bs{t}$ should be
+centred) and standard deviation \verb+trendsd+, which is specified by
+the user.
 
-When calling the function \verb+posterior+, the initial value \verb+init+ must be extended to $\bs{\theta}_0 = (\zeta_0,\sigma_0,\xi_0,\eta_0)$, and the proposal standard deviations must be extended to $\bs{s} = (s_\zeta,s_\sigma,s_\xi,s_\eta)$.
-The vector $\bs{t}$ should be specified using the argument \verb+trend+.
+When calling the function \verb+posterior+, the initial value
+\verb+init+ must be extended to $\bs{\theta}_0 =
+(\zeta_0,\sigma_0,\xi_0,\eta_0)$, and the proposal standard deviations
+must be extended to $\bs{s} = (s_\zeta,s_\sigma,s_\xi,s_\eta)$.  The
+vector $\bs{t}$ should be specified using the argument \verb+trend+.
 
-Continuing the example of Section \ref{egrain}, the following code generates Markov chains [13 and 32 secs respectively] with target distributions $\pi(\bs{\theta})$ and $\pi(\bs{\theta}|\bs{x})$, where $\bs{\theta} = (\zeta,\sigma,\xi,\eta)$.
-The initial values were derived using \verb+mposterior+.
-The period $1932-1988$ contains $20820$ days, the $6576$th of which is 1st January 1950. 
-The trend parameter $\bs{t}$ is therefore specified so that $\zeta$ represents the location parameter on 1st January 1950 and $\eta$ represents the increase (or decrease, if negative) over a period of 40 years ($14610$ days).
-We take $\texttt{trendsd} = 10$, representing a fairly flat marginal prior for $\eta$.
+Continuing the example of Section \ref{egrain}, the following code
+generates Markov chains [13 and 32 secs respectively] with target
+distributions $\pi(\bs{\theta})$ and $\pi(\bs{\theta}|\bs{x})$, where
+$\bs{\theta} = (\zeta,\sigma,\xi,\eta)$.  The initial values were
+derived using \verb+mposterior+.  The period $1932-1988$ contains
+$20820$ days, the $6576$th of which is 1st January 1950.  The trend
+parameter $\bs{t}$ is therefore specified so that $\zeta$ represents
+the location parameter on 1st January 1950 and $\eta$ represents the
+increase (or decrease, if negative) over a period of 40 years ($14610$
+days).  We take $\texttt{trendsd} = 10$, representing a fairly flat
+marginal prior for $\eta$.
 
 \begin{verbatim}
 > shape <- c(38.9,7.1,47) ; scale <- c(1.5,6.3,2.6)
@@ -1382,95 +1968,144 @@ We take $\texttt{trendsd} = 10$, representing a fairly flat marginal prior for $
       noy = 54, trend = tt, psd = s, burn = b)
 \end{verbatim}
 
-The marginal prior and posterior density estimates are shown in Figure \ref{trdens}.
-The marginal posterior density for $\eta$ is approximately normal, with mean $1$ and standard deviation $1.9$.
-An increasing trend of one millimetre every 40 years does not represent a trend of any significance.
-Consequently, the prior and posterior distributions for $(\zeta,\sigma,\xi)$ are almost identical to those for $(\mu,\sigma,\xi)$ given in Figure \ref{rainpp}.
+The marginal prior and posterior density estimates are shown in Figure
+\ref{trdens}.  The marginal posterior density for $\eta$ is
+approximately normal, with mean $1$ and standard deviation $1.9$.  An
+increasing trend of one millimetre every 40 years does not represent a
+trend of any significance.  Consequently, the prior and posterior
+distributions for $(\zeta,\sigma,\xi)$ are almost identical to those
+for $(\mu,\sigma,\xi)$ given in Figure \ref{rainpp}.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.2}{\includegraphics{trdens1.ps}}
-\vspace{-1.5cm}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{trdens2.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{trdens3.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{trdens4.ps}}
+  \scalebox{0.2}{\includegraphics{trdens1.ps}} \vspace{-1.5cm}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{trdens2.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{trdens3.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{trdens4.ps}}
 \end{center}
-\caption{Marginal prior (dashed line) and posterior (solid line) density estimates for the generalized extreme value parameters $\zeta$, $\sigma$, $\xi$ and $\eta$ respectively, in a Bayesian analysis of the rainfall data.}
+\caption{Marginal prior (dashed line) and posterior (solid line)
+  density estimates for the generalized extreme value parameters
+  $\zeta$, $\sigma$, $\xi$ and $\eta$ respectively, in a Bayesian
+  analysis of the rainfall data.}
 \label{trdens}
 \end{figure}
 
 \subsubsection{Variable Thresholds}
 \label{variablethresh}
 
-In the example of Section \ref{egrain}, the threshold for the Possion process likelihood \eqref{pplik2} was chosen to be $u=40$.
-We can extend this idea to allow variable thresholds.
-In other words, the threshold $\bs{u}$ can be a vector of length $n$, containing one value for each observation.
-The observation $x_i$ is therefore an exceedence only if $x_i > u_i$. 
-Let $x_{(i)}$ denote the $i$th exceedence.
-The log-likelihood is extended to
+In the example of Section \ref{egrain}, the threshold for the Possion
+process likelihood \eqref{pplik2} was chosen to be $u=40$.  We can
+extend this idea to allow variable thresholds.  In other words, the
+threshold $\bs{u}$ can be a vector of length $n$, containing one value
+for each observation.  The observation $x_i$ is therefore an
+exceedence only if $x_i > u_i$.  Let $x_{(i)}$ denote the $i$th
+exceedence.  The log-likelihood is extended to
 \begin{equation*}
--n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 + \xi\left(\frac{u_{i}-\mu}{\sigma}\right)\right\}_{+}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 + \xi\left(\frac{x_{(i)}-\mu}{\sigma}\right)\right\},
+  -n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 +
+    \xi\left(\frac{u_{i}-\mu}{\sigma}\right)\right\}_{+}^{-1/\xi} -
+  \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 +
+    \xi\left(\frac{x_{(i)}-\mu}{\sigma}\right)\right\}, 
 \end{equation*}
-provided that $1 + \xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are positive.
-This likelihood can be implemented by passing a vector of length $n$ to the argument \verb+thresh+. 
-If a shorter vector is passed to \verb+thresh+, it is replicated until a vector of length $n$ is created.
+provided that $1 + \xi(x_{(i)}-\mu)/\sigma$ for $i=1,\dots,n_u$ are
+positive.  This likelihood can be implemented by passing a vector of
+length $n$ to the argument \verb+thresh+.  If a shorter vector is
+passed to \verb+thresh+, it is replicated until a vector of length $n$
+is created.
 
-A linear trend term can also be included in the analysis, using the methods outlined in Section \ref{lineartrend}.
-In this case, the log-likelihood becomes
+A linear trend term can also be included in the analysis, using the
+methods outlined in Section \ref{lineartrend}.  In this case, the
+log-likelihood becomes
 \begin{equation*}
--n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 + \xi\left(\frac{u_{i}-\mu_{i}}{\sigma}\right)\right\}_{+}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 + \xi\left(\frac{x_{(i)}-\mu_{(i)}}{\sigma}\right)\right\}.
+  -n_u\log \sigma - \frac{n_y}{n} \sum_{i=1}^{n} \left\{1 +
+    \xi\left(\frac{u_{i}-\mu_{i}}{\sigma}\right)\right\}_{+}^{-1/\xi}
+  - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{n_u} \log\left\{1 +
+    \xi\left(\frac{x_{(i)}-\mu_{(i)}}{\sigma}\right)\right\}. 
 \end{equation*}
 
 \subsubsection{Order Statistics}
 \label{orderstats}
 
-Due to an asymptotic argument \citep[e.g.][]{cole01} the generalized extreme value log-likelihood \eqref{gevlik} is often used when the data $\bs{x}$ consists of maxima from some underlying process.
-Suppose that the data $\bs{x}$ consists not only of maxima, but of the $r$ largest order statistics.
-Specifically, suppose that $\bs{x} = (x_1^{(1)}, \dots, x_1^{(r_1)}, x_2^{(1)}, \dots, x_2^{(r_2)}, \dots, x_m^{(r_m)})$, where $(x_i^{(1)}, \dots, x_i^{(r_i)})$  are the largest $r_i$ order statistics from year/period $i$, for $i=1,\dots,m$.
-It will often be the case that $r_1 = \dots = r_m = r$.
-The same asymptotic argument used to justify the log-likelihood \eqref{gevlik} for maxima leads to the log-likelihood for order statistics
+Due to an asymptotic argument \citep[e.g.][]{cole01} the generalized
+extreme value log-likelihood \eqref{gevlik} is often used when the
+data $\bs{x}$ consists of maxima from some underlying process.
+Suppose that the data $\bs{x}$ consists not only of maxima, but of the
+$r$ largest order statistics.  Specifically, suppose that $\bs{x} =
+(x_1^{(1)}, \dots, x_1^{(r_1)}, x_2^{(1)}, \dots, x_2^{(r_2)}, \dots,
+x_m^{(r_m)})$, where $(x_i^{(1)}, \dots, x_i^{(r_i)})$ are the largest
+$r_i$ order statistics from year/period $i$, for $i=1,\dots,m$.  It
+will often be the case that $r_1 = \dots = r_m = r$.  The same
+asymptotic argument used to justify the log-likelihood \eqref{gevlik}
+for maxima leads to the log-likelihood for order statistics
 \begin{equation*}
--\left(\sum_{i=1}^m r_i\right)\log \sigma - \sum_{i=1}^{m} \left\{1 + \xi\left(\frac{x_i^{(r_i)}-\mu}{\sigma}\right)\right\}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{m} \sum_{k=1}^{r_i} \log\left\{1 + \xi\left(\frac{x_i^{(k)}-\mu}{\sigma}\right)\right\},
+  -\left(\sum_{i=1}^m r_i\right)\log \sigma - \sum_{i=1}^{m} \left\{1
+    + \xi\left(\frac{x_i^{(r_i)}-\mu}{\sigma}\right)\right\}^{-1/\xi}
+  - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{m} \sum_{k=1}^{r_i}
+  \log\left\{1 + \xi\left(\frac{x_i^{(k)}-\mu}{\sigma}\right)\right\}, 
 \end{equation*}
-provided that $1 + \xi(x_i^{(k)}-\mu)/\sigma$ is positive for all $i=1,\dots,m$ and $k = 1,\dots,r_i$.
-A linear trend term can also be included in the analysis, using the methods outlined in Section \ref{lineartrend}.
-In this case, the log-likelihood becomes
+provided that $1 + \xi(x_i^{(k)}-\mu)/\sigma$ is positive for all
+$i=1,\dots,m$ and $k = 1,\dots,r_i$.  A linear trend term can also be
+included in the analysis, using the methods outlined in Section
+\ref{lineartrend}.  In this case, the log-likelihood becomes
 \begin{equation*}
--\left(\sum_{i=1}^m r_i\right)\log \sigma - \sum_{i=1}^{m} \left\{1 + \xi\left(\frac{x_i^{(r_i)}-\mu_i}{\sigma}\right)\right\}^{-1/\xi} - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{m} \sum_{k=1}^{r_i} \log\left\{1 + \xi\left(\frac{x_i^{(k)}-\mu_i}{\sigma}\right)\right\},
+  -\left(\sum_{i=1}^m r_i\right)\log \sigma - \sum_{i=1}^{m} \left\{1
+    +
+    \xi\left(\frac{x_i^{(r_i)}-\mu_i}{\sigma}\right)\right\}^{-1/\xi}
+  - \left(1+\frac{1}{\xi}\right) \sum_{i=1}^{m} \sum_{k=1}^{r_i}
+  \log\left\{1 +
+    \xi\left(\frac{x_i^{(k)}-\mu_i}{\sigma}\right)\right\}, 
 \end{equation*}
 where $\mu_i = \zeta + \eta t_i$ for $i=1,\dots,m$.
  
-The number of order statistics used within each year/period comprises a bias-variance trade-off: small values of $r$ generate few data leading to high variance, whereas large values are likely to violate the asymptotic support for the model, leading to bias.
-The considerations involved in this choice are similar to those involved in the choice of threshold for the point process characterization.
-In practice, it is usual to select the $r_i$ as large as possible, subject to adequate model diagnostics \citep{cole01}.
-For use in the \textbf{evdbayes} package, data of the form $(x_1^{(1)}, \dots, x_1^{(r_1)}, x_2^{(1)}, \dots, x_2^{(r_2)}, \dots, x_m^{(r_m)})$ should be stored in a numeric matrix with $m$ rows and $\max\{r_1,\dots,r_m\}$ columns.
-The $(i,j)$th entry should contain $x_i^{(j)}$ if $j \leq r_i$ and \verb+NA+ otherwise.
-If no order statistics are available within a particular year, the corresponding row should contain only \verb+NA+ values.
+The number of order statistics used within each year/period comprises
+a bias-variance trade-off: small values of $r$ generate few data
+leading to high variance, whereas large values are likely to violate
+the asymptotic support for the model, leading to bias.  The
+considerations involved in this choice are similar to those involved
+in the choice of threshold for the point process characterization.  In
+practice, it is usual to select the $r_i$ as large as possible,
+subject to adequate model diagnostics \citep{cole01}.  For use in the
+\textbf{evdbayes} package, data of the form $(x_1^{(1)}, \dots,
+x_1^{(r_1)}, x_2^{(1)}, \dots, x_2^{(r_2)}, \dots, x_m^{(r_m)})$
+should be stored in a numeric matrix with $m$ rows and
+$\max\{r_1,\dots,r_m\}$ columns.  The $(i,j)$th entry should contain
+$x_i^{(j)}$ if $j \leq r_i$ and \verb+NA+ otherwise.  If no order
+statistics are available within a particular year, the corresponding
+row should contain only \verb+NA+ values.
 
-The numeric matrix \verb+venice+ contains the 10 largest sea levels (in centimetres) within each year in Venice for the period 1931--1981, except for the year 1935 in which only the six largest measurements are available.   
-It is included in the \textbf{evd} package, and can be made available using \verb+data(venice)+. 
-The data are plotted in Figure \ref{vendata}, which can be reproduced using \verb+matplot(1931:1981, venice)+.
-%matplot(1931:1981, venice, pch = 1, col = 1, xlab = "year", ylab = "sea level (cm)")
-Figure \ref{vendata} gives strong visual evidence for an increasing trend.
-We explicitly model this trend using $\mu_i = \zeta + \eta t_i$ for $i=1,\dots,m$.
-(There also appears to be some cyclicity in the series, which we do not attempt to model.)
-We perform a naive Bayesian analysis, taking near-flat priors that reflect the absence of external information, in a similar manner to Section \ref{egpirie}.  
-The following code generates a Markov chain [40 secs] with target distribution $\pi(\bs{\theta}|\bs{x})$, where $\bs{\theta} = (\zeta,\sigma,\xi,\eta)$.
-The likelihood can be specified by setting \verb+lh = "os"+, meaning ``likelihood is order statistics''.
-We take a run length $n=10000$, a burn-in period $b=2000$ and a thinning interval $k=5$.
-The starting value has been derived using \verb+mposterior+.
-The trend vector $\bs{t} = (t_1,\dots,t_m)$ is specified so that $\zeta$ represents the location parameter in 1950 and $\eta$ represents the increase (or decrease, if negative) in the location parameter over a period of $10$ years.
-The proposal standard deviations have, as usual, been determined by pilot runs.
+The numeric matrix \verb+venice+ contains the 10 largest sea levels
+(in centimetres) within each year in Venice for the period 1931--1981,
+except for the year 1935 in which only the six largest measurements
+are available.  It is included in the \textbf{evd} package, and can be
+made available using \verb+data(venice)+.
+
+The data are plotted in Figure \ref{vendata}, which can be reproduced
+using \verb+matplot(1931:1981, venice)+.
+% matplot(1931:1981, venice, pch = 1, col = 1, xlab = "year", ylab =
+% "sea level (cm)")
+Figure \ref{vendata} gives strong visual evidence for an increasing
+trend.  We explicitly model this trend using $\mu_i = \zeta + \eta
+t_i$ for $i=1,\dots,m$.  (There also appears to be some cyclicity in
+the series, which we do not attempt to model.)  We perform a naive
+Bayesian analysis, taking near-flat priors that reflect the absence of
+external information, in a similar manner to Section \ref{egpirie}.
+The following code generates a Markov chain [40 secs] with target
+distribution $\pi(\bs{\theta}|\bs{x})$, where $\bs{\theta} =
+(\zeta,\sigma,\xi,\eta)$.  The likelihood can be specified by setting
+\verb+lh = "os"+, meaning ``likelihood is order statistics''.  We take
+a run length $n=10000$, a burn-in period $b=2000$ and a thinning
+interval $k=5$.  The starting value has been derived using
+\verb+mposterior+.  The trend vector $\bs{t} = (t_1,\dots,t_m)$ is
+specified so that $\zeta$ represents the location parameter in 1950
+and $\eta$ represents the increase (or decrease, if negative) in the
+location parameter over a period of $10$ years.  The proposal standard
+deviations have, as usual, been determined by pilot runs.
 
 \begin{figure}
 \begin{center}
-\scalebox{0.25}{\includegraphics{vendata.ps}}
-\vspace{-1.5cm}
+  \scalebox{0.25}{\includegraphics{vendata.ps}} \vspace{-1.5cm}
 \end{center}
-\caption{The 10 largest sea levels within each year in Venice for the period 1931--1981.}
+\caption{The 10 largest sea levels within each year in Venice for the
+  period 1931--1981.}
 \label{vendata}
 \end{figure}
 
@@ -1481,28 +2116,33 @@ The proposal standard deviations have, as usual, been determined by pilot runs.
 > v.post <- posterior(10000, t0, pv, lh = "os", data = venice, trend = tt, 
       psd = c(1.5, .05, .03, 1), burn = 2000, thin = 5)
 \end{verbatim}
-%venice2 <- venice[,1:5]
-%v.post2 <- posterior(10000, t0, pv, lh = "os", data = venice2, trend = tt, psd = c(1.5, .05, .03, 1), burn = 2000, thin = 5)
+% venice2 <- venice[,1:5] v.post2 <- posterior(10000, t0, pv, lh =
+% "os", data = venice2, trend = tt, psd = c(1.5, .05, .03, 1), burn =
+% 2000, thin = 5)
 
 \begin{figure}
 \begin{center}
-\scalebox{0.2}{\includegraphics{vendens1.ps}}
-\vspace{-1.5cm}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{vendens2.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{vendens3.ps}}
-\hspace{-0.5cm}
-\scalebox{0.2}{\includegraphics{vendens4.ps}}
+  \scalebox{0.2}{\includegraphics{vendens1.ps}} \vspace{-1.5cm}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{vendens2.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{vendens3.ps}}
+  \hspace{-0.5cm} \scalebox{0.2}{\includegraphics{vendens4.ps}}
 \end{center}
-\caption{Marginal posterior density estimates for the generalized extreme value parameters $\zeta$, $\sigma$, $\xi$ and $\eta$ respectively, in a Bayesian analysis of the venice data, using the ten largest (solid line) and five largest (dashed line) values within each year.}
+\caption{Marginal posterior density estimates for the generalized
+  extreme value parameters $\zeta$, $\sigma$, $\xi$ and $\eta$
+  respectively, in a Bayesian analysis of the venice data, using the
+  ten largest (solid line) and five largest (dashed line) values
+  within each year.}
 \label{vendens}
 \end{figure}
 
-The marginal posterior density estimates are depicted by the solid lines within Figure \ref{vendens}. 
-The dashed lines give marginal posterior density estimates under the same model, but using only the five largest values within each year.  
-The variances of the marginal posterior distributions inevitably increase when fewer order statistics are used.
+The marginal posterior density estimates are depicted by the solid
+lines within Figure \ref{vendens}.  The dashed lines give marginal
+posterior density estimates under the same model, but using only the
+five largest values within each year.  The variances of the marginal
+posterior distributions inevitably increase when fewer order
+statistics are used.
 
+\clearpage
 \bibliography{bibliog}
 
 \end{document}

@@ -9,7 +9,7 @@
 }
     
 \usage{
-mposterior(init, prior, lh = c("none", "gev", "pp", "os"),
+mposterior(init, prior, lh = c("none", "gev", "gpd", "pp", "os"),
     method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"),
     lower = -Inf, upper = Inf, control = list(), hessian = FALSE, ...)
 }
@@ -21,8 +21,8 @@ mposterior(init, prior, lh = c("none", "gev", "pp", "os"),
     using \code{prior.prob}, \code{prior.quant} or
     \code{prior.norm}.}
   \item{lh}{A character string specifying the likelihood; either
-    \code{"gev"} for gev, \code{"os"} for order statistics,
-    \code{"pp"} for Poisson process or \code{"none"} for none
+    \code{"gev"} for gev, \code{"gpd"} for gpd, \code{"os"} for order
+    statistics, \code{"pp"} for Poisson process or \code{"none"} for none
     (the default). The latter can be used to maximize the
     prior distribution.}
   \item{method}{The method to be used. See \code{\link{optim}}.}

@@ -1,15 +1,15 @@
 \name{posterior}
-\alias{posterior}
+\alias{posterior.mix}
 
-\title{MCMC Sampling of Posterior Distributions}
+\title{MCMC Sampling of Posterior Distributions with mixture}
 \description{
   Constructing MCMC samples of prior and posterior distibutions for
   the location (with optional trend), scale and shape parameters under
   the gev, order statistics or point process models.
 }
 \usage{
-posterior(n, init, prior, lh = c("none", "gev", "gpd", "pp","os"), \dots, psd,
-    burn = 0, thin = 1)
+posterior.mix(n, init, prior, lh = c("none", "gev", "pp","os"), \dots, psd,
+    pMassProb, normPi0, xitilde, cv = c(.25, .75), burn = 0, thin = 1)
 }
 
 \arguments{
@@ -21,8 +21,8 @@ posterior(n, init, prior, lh = c("none", "gev", "gpd", "pp","os"), \dots, psd,
     using \code{prior.prob}, \code{prior.quant} or
     \code{prior.norm}.}
   \item{lh}{A character string specifying the likelihood; either
-    \code{"gev"} for gev, \code{"gpd"} for gpd, \code{"os"} for order
-    statistics, \code{"pp"} for Poisson process or \code{"none"} for none
+    \code{"gev"} for gev, \code{"os"} for order statistics,
+    \code{"pp"} for Poisson process or \code{"none"} for none
     (the default). The latter can be used to sample from the
     prior distribution.}
   \item{\dots}{Arguments to the likelihood. Should include \code{data}
@@ -33,6 +33,12 @@ posterior(n, init, prior, lh = c("none", "gev", "gpd", "pp","os"), \dots, psd,
     See \code{\link{pplik}} for details.}
   \item{psd}{A vector of length three/four containing standard
     deviations for proposal distributions.}
+  \item{pMassProb}{The probability for the point Mass.}
+  \item{normPi0}{The constant such as the point mass prior distribution
+    is a distribution.}
+  \item{xitilde}{The point mass for the shape parameter.}
+  \item{cv}{A vector of length two containing probabilities for
+    quantiles matching.}
   \item{burn}{The burn-in period (an integer); the first \code{burn}
     iterations (including \code{init}) are excluded from the chain.}
   \item{thin}{The thinning interval (an integer); iteration \eqn{k}
@@ -58,12 +64,5 @@ posterior(n, init, prior, lh = c("none", "gev", "gpd", "pp","os"), \dots, psd,
 
 \seealso{\code{\link{pplik}}, \code{\link{prior.prob}}}
 
-\examples{
-mat <- diag(c(10000, 10000, 100))
-pn <- prior.norm(mean = c(0,0,0), cov = mat)
-\dontrun{data(portpirie)}
-\dontrun{posterior(1000, init = c(5,1,0.1), prior = pn, lh = "gev",
-    data = portpirie, psd = c(.02,.1,.1))}
-}
 \keyword{models}
 

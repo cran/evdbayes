@@ -8,6 +8,9 @@
 void gevlik(double *data, int *n, double *par, double *dns);
 void gevlikt(double *data, int *n, double *par, double *trend, 
              double *dns);
+void gpdlik(double *data, int *n, double *par, double *dns);
+void gpdlikt(double *data, int *n, double *par, double *trend, 
+             double *dns);
 void pplik(double *data, int *nh, double *par, double *thresh, 
            int *n, double *noy, double *dns);
 void pplikt(double *data, int *nh, double *par, double *thresh, 
@@ -19,6 +22,8 @@ void oslikt(double *data, double *thresh, int *n, int *m, int *r,
             double *par, double *trend, double *dns);
 void dprior_norm(double *par, double *mean, double *icov, 
                  double *trendsd, double *dns);
+void dprior_loglognorm(double *par, double *mean, double *icov, 
+		       double *trendsd, double *dns);
 void dprior_prob(double *par, double *quant, double *alpha, 
                  double *trendsd, double *dns);
 void dprior_quant(double *par, double *prob, double *shape, 
@@ -82,6 +87,80 @@ void gevlikt(double *data, int *n, double *par, double *trend,
   }
 
   for(i=0;i<*n;i++)
+    *dns = *dns + dvec[i];
+}
+
+void gpdlik(double *data, int *n, double *par, double *dns)
+{
+  int i;
+  double *dvec, eps;
+  
+  dvec = (double *)R_alloc(*n, sizeof(double));
+  eps = R_pow(DOUBLE_EPS, 0.3);
+
+  if(par[1] <= 0) {
+     *dns = R_NegInf;
+     return;
+  }
+
+  for(i=0;i<*n;i++)  {
+    data[i] = (data[i] - par[0]) / par[1];
+    if (data[i] <= 0) {
+      *dns = R_NegInf;
+      return;
+    }
+    if(fabs(par[2]) <= eps) 
+      dvec[i] = log(1 / par[1]) - data[i];
+    else {
+      data[i] = 1 + par[2] * data[i];
+      if(data[i] <= 0) {
+	*dns = R_NegInf;
+	return;
+      }
+      dvec[i] = log(1 / par[1]) - (1 / par[2] + 1) * log(data[i]);
+    }
+  }
+  
+  for(i=0;i<*n;i++) 
+    *dns = *dns + dvec[i];
+}
+
+void gpdlikt(double *data, int *n, double *par, double *trend,
+	     double *dns)
+{
+  int i;
+  double *loc, *dvec, eps;
+  
+  loc = (double *)R_alloc(*n, sizeof(double));
+  dvec = (double *)R_alloc(*n, sizeof(double));
+  eps = R_pow(DOUBLE_EPS, 0.3);
+
+  for(i=0;i<*n;i++) loc[i] = par[0] + trend[i] * par[3];
+
+  if(par[1] <= 0) {
+     *dns = R_NegInf;
+     return;
+  }
+
+  for(i=0;i<*n;i++)  {
+    data[i] = (data[i] - loc[i]) / par[1];
+    if (data[i] <= 0) {
+      *dns = R_NegInf;
+      return;
+    }
+    if(fabs(par[2]) <= eps) 
+      dvec[i] = log(1 / par[1]) - data[i];
+    else {
+      data[i] = 1 + par[2] * data[i];
+      if(data[i] <= 0) {
+	*dns = R_NegInf;
+	return;
+      }
+      dvec[i] = log(1 / par[1]) - (1 / par[2] + 1) * log(data[i]);
+    }
+  }
+  
+  for(i=0;i<*n;i++) 
     *dns = *dns + dvec[i];
 }
 
@@ -282,6 +361,24 @@ void dprior_norm(double *par, double *mean, double *icov,
     2 * icov[1] * cpar[0] * cpar[1] + 2 * icov[2] * cpar[0] * cpar[2] +
     2 * icov[4] * cpar[1] * cpar[2];
   ld = -ld / 2 - par[1];
+  if(*trendsd != 0) ld = ld - R_pow_di(par[3] / *trendsd, 2) / 2;
+  *dns = ld;
+}
+
+void dprior_loglognorm(double *par, double *mean, double *icov, 
+		       double *trendsd, double *dns)
+{
+  double cpar[3], ld;
+  int i;
+  
+  par[0] = log(par[0]);
+  par[1] = log(par[1]);
+  for(i=0;i<3;i++) cpar[i] = par[i] - mean[i];
+  ld = icov[0] * R_pow_di(cpar[0], 2) + icov[3] * R_pow_di(cpar[1], 2) +
+    icov[5] * R_pow_di(cpar[2], 2) + 
+    2 * icov[1] * cpar[0] * cpar[1] + 2 * icov[2] * cpar[0] * cpar[2] +
+    2 * icov[4] * cpar[1] * cpar[2];
+  ld = -ld / 2 - par[1] - par[0];
   if(*trendsd != 0) ld = ld - R_pow_di(par[3] / *trendsd, 2) / 2;
   *dns = ld;
 }

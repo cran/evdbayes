@@ -1,7 +1,13 @@
 CHANGES FROM VERSION 1.0-3 ARE AS FOLLOWS
 
-  An appropriate error message is now returned if the
-  threshold is not specified.
+  Maintainer of the package has changed.
+
+  Add a new prior model.
+
+  Add functions to allow a prior model with a non null
+  probability on a fixed shape parameter value.
+
+  Bayesian analysis for the GP approach is now available. 
 
 CHANGES FROM VERSION 1.0-2 ARE AS FOLLOWS
  

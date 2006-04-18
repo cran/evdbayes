@@ -2,6 +2,7 @@
 \alias{prior.prob}
 \alias{prior.quant}
 \alias{prior.norm}
+\alias{prior.loglognorm}
 
 \title{Construction of Prior Distributions}
 \description{
@@ -16,6 +17,7 @@
 prior.prob(quant, alpha, trendsd = 0)
 prior.quant(prob = 10^-(1:3), shape, scale, trendsd = 0)
 prior.norm(mean, cov, trendsd = 0)
+prior.loglognorm(mean, cov, trendsd = 0)
 }
 
 \arguments{

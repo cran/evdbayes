@@ -8,14 +8,17 @@
 }
 
 \usage{
-rl.pst(post, ci = 0.9, lty = c(2,1), col = c(2,1), xlab =
-    "-1/log(1-1/return period)", ylab = "return level",  \dots)
+rl.pst(post, npy, lh = c("gev", "gpd"), ci = 0.9, lty = c(2,1), col = c(2,1),
+xlab = "return period", ylab = "return level",  \dots)
 }
 
 \arguments{
   \item{post}{A Markov chain generated using \code{posterior},
     containing samples from the corresponding prior/posterior
     distribution.}
+  \item{npy}{The Number of observation Per Year (in average). If ``gev''
+  likelihood, ``npy'' is supposed to be equal to 1 i.e. annual maxima.}
+  \item{lh}{The likelihood.}
   \item{ci}{The confidence coefficient for the plotted
     prior/posterior probability interval.}
   \item{lty}{Passed to \code{matplot}. The first and

@@ -1,5 +1,6 @@
 \name{lh}
 \alias{gevlik}
+\alias{gpdlik}
 \alias{pplik}
 \alias{oslik}
 
@@ -11,6 +12,7 @@
 \usage{
 pplik(par, data, thresh, noy, trend, exact = FALSE)
 gevlik(par, data, trend)
+gpdlik(par, data, trend)
 oslik(par, data, trend) 
 }
 \arguments{
@@ -19,10 +21,10 @@ oslik(par, data, trend)
     If \code{trend} is not missing, should be a numeric vector of length
     four, containing the location intercept, scale, shape and location
     trend parameters, in that order.}
-  \item{data}{For \code{pplik} and \code{gevlik}; a non-empty numeric
-    vector containing the data at which the likelihood is evaluated,
-    possibly containing missing values. For \code{oslik}; a numeric
-    matrix (see the user's guide).}
+  \item{data}{For \code{pplik}, \code{gevlik} and \code{gpdlik}; a
+    non-empty numeric vector containing the data at which the likelihood
+    is evaluated, possibly containing missing values. For \code{oslik};
+    a numeric matrix (see the user's guide).}
   \item{thresh}{Threshold. Typically a single number or a vector of
     the same length as \code{data}.}
   \item{noy}{Number of years/periods of observations, excluding

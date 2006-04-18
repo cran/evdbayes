@@ -63,6 +63,29 @@ function(mean, cov, trendsd = 0)
               trendsd = trendsd), class = "evprior")
 }
 
+"prior.loglognorm" <-
+  function(mean, cov, trendsd = 0)
+{
+  if(length(mean) != 3 || mode(mean) != "numeric")
+    stop("`mean' must be a numeric vector of length three")
+  if(!is.matrix(cov) || any(dim(cov) != 3) || mode(cov) != "numeric")
+    stop("`cov' must be a symmetric three by three matrix")
+  if(length(trendsd) != 1 || mode(trendsd) != "numeric")
+    stop("`trendsd' must be a numeric vector of length one")
+  if(trendsd < 0)
+    stop("`trendsd' must be positive")
+  if(any(abs(cov - t(cov)) > .Machine$double.eps^0.5))
+    warning("`cov' may not be symmetric")
+  eg <- eigen(cov, symmetric = TRUE, only.values = TRUE)$values
+  if(any(eg <= 0))
+    warning("`cov' may not be positive definite")
+  
+  icov <- solve(cov)
+  icov <- icov[row(icov) >= col(icov)] 
+  structure(list(prior = "dprior.loglognorm", mean = mean, icov = icov,
+                 trendsd = trendsd), class = "evprior")
+}
+
 # PRIOR DENSITIES
 
 "dprior.quant" <-
@@ -90,6 +113,17 @@ function(par, mean, icov, trendsd)
     .C("dprior_norm",
         par, mean, icov, trendsd, dns = double(1),
         PACKAGE = "evdbayes")$dns
+}
+
+"dprior.loglognorm" <-
+## Computes log prior density for (loc,scale,shape) based on a trivariate
+## normal distribution for (log(loc),log(scale),shape). Includes optional
+## normal trend for location.
+function(par, mean, icov, trendsd)
+{
+    .C("dprior_loglognorm",
+       par, mean, icov, trendsd, dns = double(1),
+       PACKAGE = "evdbayes")$dns
 }
 
 # LIKELIHOODS
@@ -121,12 +155,38 @@ function(par, data, trend)
     lik
 }
 
+"gpdlik" <-
+# Computes log-likelihood of gpd model at (loc,scale,shape). Exponential is computed for small shape.
+function(par, data, trend)
+{
+    nas <- !is.na(data)
+    data <- data[nas]
+    if(!missing(trend)) trend <- trend[nas]
+
+    gpdlik2(par = par, data = data, trend = trend)
+}
+
+"gpdlik2" <-
+# Computes log-likelihood of gpd model at (loc,scale,shape). Exponential is computed for small shape.
+function(par, data, trend)
+{
+    n <- length(data)
+    if(missing(trend))
+      lik <- .C("gpdlik",
+          data, n, par, dns = double(1),
+          PACKAGE = "evdbayes")$dns
+    else
+      lik <- .C("gpdlikt",
+          data, n, par, trend, dns = double(1),
+          PACKAGE = "evdbayes")$dns
+    lik
+}
+
 "pplik" <-
 # Computes log-likelihood of Poission process model at (mu,sigma,xi) with threshold u and npy observations per block. Gumbel is computed for small shape.
 function(par, data, thresh, noy, trend, exact = FALSE)
 {
     n <- length(data)
-    if(missing(thresh)) stop("thresh must be specified")
     thresh <- rep(thresh, length.out = n)
     nan <- !is.na(data)
     data <- data[nan]
@@ -202,20 +262,38 @@ function(par, data, trend, thresh, rvec)
 
 "dpost" <-
 # Computes log-posterior density at (mu,sigma,xi). Includes optional normal trend for location.
-function(par, prior, lh, ...)
+function(par, prior, lh, mix = FALSE, pMassProb, normPi0, pMass, ...)
+# mix : logical. Is there a point mass for the prior distribution
 {
-    dprior <- do.call(prior$prior, c(list(par = par), prior[-1]))
-    switch(lh,
-           gev = dprior + gevlik2(par, ...),
-           pp = dprior + pplik2(par, ...),
-           os = dprior + oslik2(par, ...),
-           none = dprior)
+  if ( missing(pMass) && mix )
+    stop("pMass should be present.")
+  if ( missing(pMassProb) && mix )
+    stop("pMassProb should be present.")
+  if ( missing(normPi0) && mix )
+    stop("normPi0 should be present.")
+  
+  dprior <- do.call(prior$prior, c(list(par = par), prior[-1]))
+
+  if (mix == TRUE){
+    if (par[3] == pMass)
+      dprior <- dprior + log(pMassProb) - log(normPi0)
+    else
+      dprior <- dprior + log(1- pMassProb)
+  }
+  
+  switch(lh,
+         gev = dprior + gevlik2(par, ...),
+         gpd = dprior + gpdlik2(par, ...),
+         pp = dprior + pplik2(par, ...),
+         os = dprior + oslik2(par, ...),
+         none = dprior)
 }
+
 
 # MAXIMIZE POSTERIOR DENSITY
 
 "mposterior" <-
-function(init, prior, lh = c("none","gev","pp","os"),
+function(init, prior, lh = c("none","gev","gpd","pp","os"),
          method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"),
          lower = -Inf, upper = Inf, control = list(),
          hessian = FALSE, ...)
@@ -235,6 +313,7 @@ function(init, prior, lh = c("none","gev","pp","os"),
       dprior <- do.call(prior$prior, c(list(par = par), prior[-1]))
       switch(lh,
              gev = -dprior - gevlik(par, ...),
+             gpd = -dprior - gpdlik(par, ...),
              pp = -dprior - pplik(par, ...),
              os = -dprior - oslik(par, ...),
              none = -dprior)
@@ -280,7 +359,8 @@ function(n, init, prior, lh, ..., psd, thin, burn)
 # WRAPPER TO SAMPLER
 
 "posterior" <-
-function(n, init, prior, lh = c("none","gev","pp","os"), ..., psd, burn = 0, thin = 1)
+function(n, init, prior, lh = c("none","gev","gpd","pp","os"), ..., psd,
+         burn = 0, thin = 1)
 {
     if (!inherits(prior, "evprior")) 
         stop("`prior' must be a prior distribution")
@@ -308,7 +388,6 @@ function(n, init, prior, lh = c("none","gev","pp","os"), ..., psd, burn = 0, thi
     
     if(lh == "pp") {
         nn <- length(ar$data)
-        if(is.null(ar$thresh)) stop("thresh must be specified")
         ar$thresh <- rep(ar$thresh, length.out = nn)
         nan <- !is.na(ar$data)
         ar$data <- ar$data[nan]
@@ -334,7 +413,11 @@ function(n, init, prior, lh = c("none","gev","pp","os"), ..., psd, burn = 0, thi
         ar$data <- ar$data[nas]  
         if(!is.null(ar$trend)) ar$trend <- ar$trend[nas]
     }
-
+    if(lh == "gpd") {
+        nas <- !is.na(ar$data)
+        ar$data <- ar$data[nas]  
+        if(!is.null(ar$trend)) ar$trend <- ar$trend[nas]
+    }
     if(lh == "os") {
         nas <- !apply(is.na(ar$data), 1, all)
         ar$data <- ar$data[nas, ,drop = FALSE]  
@@ -439,57 +522,86 @@ function(mean, var, shape, scale)
 # COMPUTE POSTERIOR QUANTILES IN UPPER TAIL
 
 "mc.quant" <-
-function(post, p)
+  function(post, p, lh = c("gev", "gpd"))
 {
-    nc <- length(p)
-    nr <- nrow(post)
-    dn <- list(rownames(post), p)
-    mat <- matrix(0, ncol = nc, nrow = nr, dimnames = dn)
-    loc <- post[,"mu"]
-    scale <- post[,"sigma"]
-    shape <- post[,"xi"]
-    for(i in 1:nc)
-        mat[,i] <- ifelse(shape,
-            loc + scale * ((-log(1-p[i]))^(-shape) - 1)/shape,
-            loc - scale * log(-log(1-p[i])))
-    drop(mat)
+  nc <- length(p)
+  nr <- nrow(post)
+  dn <- list(rownames(post), p)
+  mat <- matrix(0, ncol = nc, nrow = nr, dimnames = dn)
+  loc <- post[,"mu"]
+  scale <- post[,"sigma"]
+  shape <- post[,"xi"]
+  
+  if (lh == "gev")
+    y <- -log(p)
+  else
+    y <- 1-p
+
+  for(i in 1:nc)
+    mat[,i] <- ifelse(shape,
+                      loc + scale * (y[i]^(-shape) - 1)/shape,
+                      loc - scale * log(y[i]))
+    
+  drop(mat)
 }
 
 # POSTERIOR RETURN LEVEL PLOT
 
 "rl.pst" <-
-function(post, ci = 0.9, lty = c(2,1), col = c(2,1), xlab = "-1/log(1-1/return period)", ylab = "return level",  ...)
-{
-    rps <- c(1.001,10^(seq(0,4,len=20))[-1])
-    p.upper <- 1/rps
-    mat <- mc.quant(post = post, p = p.upper) 
+  function(post, npy, lh = c("gev", "gpd"), ci = 0.9, lty = c(2,1),
+           col = c(2,1), xlab = "return period",
+           ylab = "return level",  ...)
+  {
+    if (missing(npy) && lh == "gpd")
+      stop("``npy'' should be present with a ``gpd'' likelihood")
+
+    if (lh == "gev")
+      npy <- 1
+    
+    rps <- c(1/npy + 0.001, 10^(seq(0,4,len=20))[-1])
+    p.upper <- 1 - 1/(npy * rps)
+    mat <- mc.quant(post = post, p = p.upper, lh = lh) 
     mat <- t(apply(mat, 2, quantile, probs = c((1-ci)/2, 0.5, (1+ci)/2)))
-    matplot(-1/log(1-p.upper), mat, log = "x", type = "l",
-       xlab = xlab, ylab = ylab, lty = lty, col = col, ...)
-    invisible(list(x = -1/log(1-p.upper), y = mat))
-}
+    matplot(rps, mat, log = "x", type = "l",
+            xlab = xlab, ylab = ylab, lty = lty, col = col, ...)
+    invisible(list(x = rps, y = mat))
+  }
 
 "rl.pred" <-
-function(post, qlim, period = 1, lty = 1, col = 1, xlab = "-1/log(1-1/return period)", ylab = "return level", ...)
+  function(post, qlim, npy, lh = c("gev", "gpd"), period = 1, lty = 1,
+           col = 1, xlab = "return period",
+           ylab = "return level", ...)
 {
-   np <- length(period)
-   p.upper <- matrix(0, nrow = 25, ncol = np)
-   qnt <- seq(qlim[1], qlim[2], length = 25)
-   for(i in 1:25) {
-       p <- (qnt[i] - post[,"mu"])/post[,"sigma"]
-       p <- ifelse(post[,"xi"],
-                   exp( - pmax((1 + post[,"xi"] * p),0)^(-1/post[,"xi"])),
-                   exp(-exp(-p)))
-       for(j in 1:np)
-           p.upper[i,j] <- 1-mean(p^period[j])
-   }
-   if(any(p.upper == 1))
-       stop("lower q-limit is too small")
-   if(any(p.upper == 0))
-       stop("upper q-limit is too large")
-   matplot(-1/log(1-p.upper), qnt, log = "x", type = "l", lty = lty,
-           col = col, xlab = xlab, ylab = ylab, ...)
-   invisible(list(x = -1/log(1-p.upper), y = qnt))
+
+  if (missing(npy) && lh == "gpd")
+    stop("``npy'' should be present with a ``gpd'' likelihood")
+  
+  if (lh == "gev")
+    npy <- 1
+    
+  np <- length(period)
+  p.upper <- matrix(0, nrow = 25, ncol = np)
+  qnt <- seq(qlim[1], qlim[2], length = 25)
+  
+  for(i in 1:25) {
+    p <- (qnt[i] - post[,"mu"])/post[,"sigma"]
+    p <- ifelse(post[,"xi"],
+                exp( - pmax((1 + post[,"xi"] * p),0)^(-1/post[,"xi"])),
+                exp(-exp(-p)))
+    for(j in 1:np)
+      p.upper[i,j] <- 1-mean(p^period[j])
+  }
+
+  if (lh == "gpd")
+    p <- 1 + log(p)
+  
+  if(any(p.upper == 1))
+    stop("lower q-limit is too small")
+  if(any(p.upper == 0))
+    stop("upper q-limit is too large")
+  matplot(1/(npy * p.upper ), qnt, log = "x", type = "l", lty = lty,
+          col = col, xlab = xlab, ylab = ylab, ...)
+  invisible(list(x = 1/(npy * p.upper ), y = qnt))
 }
 
 

@@ -8,8 +8,8 @@
 }
 
 \usage{
-rl.pred(post, qlim, period = 1, lty = 1, col = 1, xlab =
-    "-1/log(1-1/return period)", ylab = "return level", \dots)
+rl.pred(post, qlim, npy, lh = c("gev", "gpd"), period = 1, lty = 1, col = 1,
+xlab = "return period", ylab = "return level", \dots)
 }
 
 \arguments{
@@ -19,6 +19,9 @@ rl.pred(post, qlim, period = 1, lty = 1, col = 1, xlab =
   \item{qlim}{A vector of length two, giving the limits for
     the quantiles at which the predictive probabilities are
     calculated.}
+  \item{npy}{The Number of observation Per Year (in average). If ``gev''
+  likelihood, ``npy'' is supposed to be equal to 1 i.e. annual maxima.} 
+  \item{lh}{The likelihood.} 
   \item{period}{A vector of integers. One curve is plotted for
     each element of \code{period}. The \eqn{i}th curve depicts
     the probabilities that that quantiles will be exceeded over

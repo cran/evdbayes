@@ -8,13 +8,14 @@
 }
 
 \usage{
-mc.quant(post, p)
+mc.quant(post, p, lh = c("gev", "gpd"))
 }
 
 \arguments{
   \item{post}{A Markov chain generated using \code{posterior},
     containing samples of gev parameters.}
-  \item{p}{A numeric vector of upper tail probabilities.}  
+  \item{p}{A numeric vector of upper tail probabilities.}
+  \item{lh}{Specify ``gev'' or ``gpd'' likelihood.}
 }
 
 \value{
