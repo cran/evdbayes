@@ -5,11 +5,12 @@
 \description{
   Constructing MCMC samples of prior and posterior distibutions for
   the location (with optional trend), scale and shape parameters under
-  the gev, order statistics or point process models.
+  the gev, order statistics or point process models. Note this function
+  is only effective for a mixture defined in the prior distribution.
 }
 \usage{
 posterior.mix(n, init, prior, lh = c("none", "gev", "pp","os"), \dots, psd,
-    pMassProb, normPi0, xitilde, cv = c(.25, .75), burn = 0, thin = 1)
+    pMassProb, normPi0, xitilde, pMass = 0, cv, burn = 0, thin = 1)
 }
 
 \arguments{
@@ -36,7 +37,10 @@ posterior.mix(n, init, prior, lh = c("none", "gev", "pp","os"), \dots, psd,
   \item{pMassProb}{The probability for the point Mass.}
   \item{normPi0}{The constant such as the point mass prior distribution
     is a distribution.}
-  \item{xitilde}{The point mass for the shape parameter.}
+  \item{xitilde}{The mode of the marginal posterior distribution for the
+  shape parameter - from a conventional Bayesian analysis i.e. without a
+  point Mass.}
+  \item{pMass}{The point mass for the shape parameter.}
   \item{cv}{A vector of length two containing probabilities for
     quantiles matching.}
   \item{burn}{The burn-in period (an integer); the first \code{burn}

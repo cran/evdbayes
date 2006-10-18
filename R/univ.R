@@ -89,7 +89,10 @@ function(mean, cov, trendsd = 0)
 # PRIOR DENSITIES
 
 "dprior.quant" <-
-# Computes log prior density for (mu,sigma,xi) based on gamma distributions for quantile differences corresponding to three specified probabilities. Includes optional normal trend for location.
+## Computes log prior density for (mu,sigma,xi) based on gamma
+## distributions for quantile differences corresponding to three
+## specified probabilities. Includes optional normal trend for
+## location.
 function(par, prob = 10^-(1:3), shape, scale, trendsd)
 {
     .C("dprior_quant",
@@ -98,7 +101,9 @@ function(par, prob = 10^-(1:3), shape, scale, trendsd)
 }
 
 "dprior.prob" <-
-# Computes log prior density for (mu,sigma,xi) based on beta distributions for probability ratios corresponding to three specified quantiles. Includes optional normal trend for location.
+## Computes log prior density for (mu,sigma,xi) based on beta
+## distributions for probability ratios corresponding to three
+## specified quantiles. Includes optional normal trend for location.
 function(par, quant, alpha, trendsd)
 {
     .C("dprior_prob",
@@ -107,7 +112,9 @@ function(par, quant, alpha, trendsd)
 }
 
 "dprior.norm" <-
-# Computes log prior density for (mu,sigma,xi) based on a trivariate normal distribution for (mu,log(sigma),xi). Includes optional normal trend for location.
+## Computes log prior density for (mu,sigma,xi) based on a trivariate
+## normal distribution for (mu,log(sigma),xi). Includes optional normal
+## trend for location.
 function(par, mean, icov, trendsd)
 {
     .C("dprior_norm",
@@ -129,7 +136,8 @@ function(par, mean, icov, trendsd)
 # LIKELIHOODS
 
 "gevlik" <-
-# Computes log-likelihood of gev model at (mu,sigma,xi). Gumbel is computed for small shape.
+## Computes log-likelihood of gev model at (mu,sigma,xi). Gumbel is
+## computed for small shape.
 function(par, data, trend)
 {
     nas <- !is.na(data)
@@ -140,7 +148,8 @@ function(par, data, trend)
 }
 
 "gevlik2" <-
-# Computes log-likelihood of gev model at (mu,sigma,xi). Gumbel is computed for small shape.
+## Computes log-likelihood of gev model at (mu,sigma,xi). Gumbel is
+## computed for small shape.
 function(par, data, trend)
 {
     n <- length(data)
@@ -156,7 +165,8 @@ function(par, data, trend)
 }
 
 "gpdlik" <-
-# Computes log-likelihood of gpd model at (loc,scale,shape). Exponential is computed for small shape.
+## Computes log-likelihood of gpd model at
+## (loc,scale,shape). Exponential is computed for small shape.
 function(par, data, trend)
 {
     nas <- !is.na(data)
@@ -167,7 +177,8 @@ function(par, data, trend)
 }
 
 "gpdlik2" <-
-# Computes log-likelihood of gpd model at (loc,scale,shape). Exponential is computed for small shape.
+## Computes log-likelihood of gpd model at
+## (loc,scale,shape). Exponential is computed for small shape.
 function(par, data, trend)
 {
     n <- length(data)
@@ -183,7 +194,9 @@ function(par, data, trend)
 }
 
 "pplik" <-
-# Computes log-likelihood of Poission process model at (mu,sigma,xi) with threshold u and npy observations per block. Gumbel is computed for small shape.
+## Computes log-likelihood of Poission process model at (mu,sigma,xi)
+## with threshold u and npy observations per block. Gumbel is computed
+## for small shape.
 function(par, data, thresh, noy, trend, exact = FALSE)
 {
     n <- length(data)
@@ -209,7 +222,9 @@ function(par, data, thresh, noy, trend, exact = FALSE)
 }
 
 "pplik2" <-
-# Computes log-likelihood of Poission process model at (mu,sigma,xi) with threshold u and npy observations per block. Gumbel is computed for small shape.
+## Computes log-likelihood of Poission process model at (mu,sigma,xi)
+## with threshold u and npy observations per block. Gumbel is computed
+## for small shape.
 function(par, data, thresh, noy, trend, htrend)
 {   
     nh <- length(data)
@@ -226,7 +241,8 @@ function(par, data, thresh, noy, trend, htrend)
 }
 
 "oslik" <-
-# Computes log-likelihood of gev order statistics model at (mu,sigma,xi). Gumbel is computed for small shape.
+## Computes log-likelihood of gev order statistics model at
+## (mu,sigma,xi). Gumbel is computed for small shape.
 function(par, data, trend)
 {
     nas <- !apply(is.na(data), 1, all)
@@ -242,7 +258,8 @@ function(par, data, trend)
 }
 
 "oslik2" <-
-# Computes log-likelihood of gev order statistics model at (mu,sigma,xi). Gumbel is computed for small shape.
+## Computes log-likelihood of gev order statistics model at
+## (mu,sigma,xi). Gumbel is computed for small shape.
 function(par, data, trend, thresh, rvec)
 {
     m <- length(thresh)
@@ -261,9 +278,10 @@ function(par, data, trend, thresh, rvec)
 # POSTERIOR DENSITIES
 
 "dpost" <-
-# Computes log-posterior density at (mu,sigma,xi). Includes optional normal trend for location.
+## Computes log-posterior density at (mu,sigma,xi). Includes optional
+## normal trend for location.
 function(par, prior, lh, mix = FALSE, pMassProb, normPi0, pMass, ...)
-# mix : logical. Is there a point mass for the prior distribution
+## mix : logical. Is there a point mass for the prior distribution
 {
   if ( missing(pMass) && mix )
     stop("pMass should be present.")
@@ -356,6 +374,44 @@ function(n, init, prior, lh, ..., psd, thin, burn)
     structure(mc, ar = ar)
 }
 
+"gibbs.mix" <-
+function(n, init, prior, lh, ..., psd, thin, burn, pMassProb,
+         normPi0, xitilde, pMass, cv)
+{
+    if(prior$trendsd) np <- 4
+    else np <- 3
+    param <- c("mu","sigma","xi")
+    if(prior$trendsd) param <- c(param, "mutrend")
+    dpst <- function(a) dpost(a, prior, lh, mix = TRUE, pMassProb,
+                              normPi0, pMass, ...)
+    
+    mc <- .Call("gibbsmix", as.integer(n), as.integer(np),
+                as.integer(thin), as.double(init), as.double(psd),
+                quote(dpst(x)), new.env(), as.double(pMassProb),
+                as.double(xitilde), as.double(pMass), as.double(cv),
+                PACKAGE = "evdbayes")
+    
+    naccept <- mc[[2]]
+    nexternal <- mc[[3]]
+    propType <- mc[[4]]
+    names(propType) <- c('Type 1', 'Type 2', 'Normal')
+    naccType <- mc[[5]]
+    naccType <- round(naccType / propType[-3], 2)
+    naccType <- matrix(naccType, ncol =2, byrow = TRUE,
+                       dimnames=list(c("acc.rates"),
+                         c("Type 1", "Type 2")))
+    mc <- matrix(mc[[1]], ncol = np, byrow = TRUE)
+    dimnames(mc) <- list(seq(0, n, thin), param)
+    mc <- mc[as.numeric(rownames(mc)) >= burn, , drop = FALSE]
+    nexternal[np+1] <- sum(nexternal)/np
+    naccept[np+1] <- sum(naccept)/np
+    ar <- round(c(naccept/propType[3], nexternal/propType[3]),2)
+    ardn <- list(c("acc.rates","ext.rates"),
+                 c(param,"total"))
+    ar <- matrix(ar, ncol = np+1, byrow = TRUE, dimnames = ardn)
+    structure(mc, ar = ar, propType = propType, arType = naccType)
+}
+
 # WRAPPER TO SAMPLER
 
 "posterior" <-
@@ -436,6 +492,68 @@ function(n, init, prior, lh = c("none","gev","gpd","pp","os"), ..., psd,
     ar <- c(list(n = n, init = init, prior = prior, lh = lh), ar,
             list(psd = psd, thin = thin, burn = burn))
     do.call("gibbs", ar)
+}
+
+
+"posterior.mix" <-
+function(n, init, prior, lh = c("none","gev","gpd"), ..., psd,
+         pMassProb, normPi0, xitilde, pMass = 0, cv,
+         burn = 0, thin = 1)
+{
+    if (!inherits(prior, "evprior")) 
+        stop("`prior' must be a prior distribution")
+    if(!prior$trendsd && (length(init) != 3 || mode(init) != "numeric"))
+        stop("`init' must be a numeric vector of length three")
+    if(prior$trendsd && (length(init) != 4 || mode(init) != "numeric"))
+        stop("`init' must be a numeric vector of length four")
+    if(init[2] <= 0)
+        stop("initial value of scale parameter must be positive")
+    if(!prior$trendsd && (length(psd) != 3 || mode(psd) != "numeric"))
+        stop("`psd' must be a numeric vector of length three")
+    if(prior$trendsd && (length(psd) != 4 || mode(psd) != "numeric"))
+        stop("`psd' must be a numeric vector of length four")
+    if(any(psd <= 0))
+        stop("`psd'  must contain positive values")
+    if(any(psd <= 0))
+        stop("`psd'  must contain positive values")
+    if(burn > n)
+        stop("burn-in period is larger than run length")
+    if(thin > n)
+        stop("thinning interval is larger than run length")
+    if(pMassProb == 1 && init[3] != pMass)
+      stop("initial values should match with the point Mass")
+    if(pMassProb == 0 && init[3] == pMass)
+      stop("initial values should not match with the point Mass")
+    
+    lh <- match.arg(lh)
+    ar <- list(...)
+
+    if(lh == "gev") {
+      cv <- -log(1 - cv)
+      nas <- !is.na(ar$data)
+      ar$data <- ar$data[nas]  
+      if(!is.null(ar$trend)) ar$trend <- ar$trend[nas]
+    }
+    if(lh == "gpd") {
+      cv <- 1 - cv
+      nas <- !is.na(ar$data)
+      ar$data <- ar$data[nas]  
+      if(!is.null(ar$trend)) ar$trend <- ar$trend[nas]
+    }
+
+    
+    initar <- c(list(par = init, prior = prior, lh = lh), ar,
+                list(pMassProb = pMassProb, normPi0 = normPi0,
+                     pMass = pMass))
+    inittest <- do.call("dpost", initar) 
+    if(is.infinite(inittest))
+        stop("density is zero at initial parameter values")
+
+    ar <- c(list(n = n, init = init, prior = prior, lh = lh), ar,
+            list(psd = psd, thin = thin, burn = burn,
+                 pMassProb = pMassProb, normPi0 = normPi0,
+                 xitilde = xitilde, pMass = pMass, cv = cv))
+    do.call("gibbs.mix", ar)
 }
 
 # BETA AND GAMMA INFORMATION
