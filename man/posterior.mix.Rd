@@ -1,4 +1,4 @@
-\name{posterior}
+\name{posterior.mix}
 \alias{posterior.mix}
 
 \title{MCMC Sampling of Posterior Distributions with mixture}
@@ -9,7 +9,7 @@
   is only effective for a mixture defined in the prior distribution.
 }
 \usage{
-posterior.mix(n, init, prior, lh = c("none", "gev", "pp","os"), \dots, psd,
+posterior.mix(n, init, prior, lh = c("none", "gev", "gpd"), \dots, psd,
     pMassProb, normPi0, xitilde, pMass = 0, cv, burn = 0, thin = 1)
 }
 
