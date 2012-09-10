@@ -767,7 +767,7 @@ SEXP gibbsmix(SEXP n, SEXP np, SEXP thin, SEXP init, SEXP propsd,
       post_ratio = exp(REAL(dpst_upper)[0] - REAL(dpst_lower)[0]);
       acc_prob = fmin2(1, prop_ratio * post_ratio);
 
-      printf("Prob acceptation %f\n", acc_prob);
+      //printf("Prob acceptation %f\n", acc_prob);
       if (runif(0, 1) < acc_prob) {
 	for (j=0;j<nnp;j++)
 	  crow[j] = REAL(current)[j];
