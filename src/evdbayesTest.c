@@ -532,13 +532,26 @@ SEXP gibbs(SEXP n, SEXP np, SEXP thin,
         else REAL(current)[k] = prow[k];
       }
       defineVar(install("x"), current, rho);
-      dpst_lower = eval(f, rho);
+      dpst_lower = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_lower) != REALSXP)
+	error("non-numeric result");
+
       REAL(current)[j] = prop;
+
       defineVar(install("x"), current, rho);
-      dpst_upper = eval(f, rho);
+      dpst_upper = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_upper) != REALSXP)
+	error("non-numeric result");
+
       post_ratio = exp(REAL(dpst_upper)[0] - REAL(dpst_lower)[0]);
+
       if(!R_FINITE(REAL(dpst_upper)[0]))
         REAL(nex)[j] = REAL(nex)[j] + 1;
+
+      UNPROTECT(2);
+
       acc_prob = fmin2(1, prop_ratio * post_ratio);
       if(R_IsNaN(acc_prob)) {
         acc_prob = 0;
@@ -755,17 +768,25 @@ SEXP gibbsmix(SEXP n, SEXP np, SEXP thin, SEXP init, SEXP propsd,
 	REAL(current)[j] = prow[j];
 
       defineVar(install("x"), current, rho);
-      dpst_lower = eval(f, rho);
+      dpst_lower = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_lower) != REALSXP)
+	error("non-numeric result");
       
       REAL(current)[0] = propLoc;
       REAL(current)[1] = propScale;
       REAL(current)[2] = propShape;
       
       defineVar(install("x"), current, rho);
-      dpst_upper = eval(f, rho);
+      dpst_upper = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_upper) != REALSXP)
+	error("non-numeric result");
       
       post_ratio = exp(REAL(dpst_upper)[0] - REAL(dpst_lower)[0]);
       acc_prob = fmin2(1, prop_ratio * post_ratio);
+
+      UNPROTECT(2);
 
       //printf("Prob acceptation %f\n", acc_prob);
       if (runif(0, 1) < acc_prob) {
@@ -803,14 +824,25 @@ SEXP gibbsmix(SEXP n, SEXP np, SEXP thin, SEXP init, SEXP propsd,
         else REAL(current)[k] = prow[k];
       }
       defineVar(install("x"), current, rho);
-      dpst_lower = eval(f, rho);
+      dpst_lower = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_lower) != REALSXP)
+	error("non-numeric result");
+
       REAL(current)[j] = prop;
       defineVar(install("x"), current, rho);
-      dpst_upper = eval(f, rho);
+      dpst_upper = PROTECT(eval(f, rho));
+
+      if (TYPEOF(dpst_upper) != REALSXP)
+	error("non-numeric result");
+
       post_ratio = exp(REAL(dpst_upper)[0] - REAL(dpst_lower)[0]);
      
       if(!R_FINITE(REAL(dpst_upper)[0]))
         REAL(nex)[j] = REAL(nex)[j] + 1;
+
+      UNPROTECT(2);
+
       acc_prob = fmin2(1, prop_ratio * post_ratio);
       if(R_IsNaN(acc_prob)) {
         acc_prob = 0;

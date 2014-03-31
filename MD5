@@ -1,4 +1,4 @@
-f7adaf663b8e37456577393db9b88b2a *DESCRIPTION
+74aedba6b6027666f29d6971f5ce2792 *DESCRIPTION
 ce7de29e2b387ec04767740126d5e72f *NAMESPACE
 80fdbf7ba3ce652983e971972429dea0 *R/inf.R
 7f2181d0120d16bac064dd1b9049b168 *R/lik.R
@@ -6,7 +6,6 @@ ad8abc209bb1495cfd9b606aa264fab2 *R/mcmc.R
 2837e86cf50577aec61e5f51a0332256 *R/prior.R
 ce52231149c2a493c88be0c3816a5344 *R/univ.R
 d7c10a11de8d481c452840896f094529 *R/utils.R
-29b4d11ddbd2634201eb53a1ed621a60 *R/zzz.R
 88258c8074e3d1ed888347b6e24c5df4 *data/rainfall.rda
 07444e8efd3ff92630db59be0b7e773d *inst/CHANGES
 464d3cc89887269cb33735bcabcf4968 *inst/README
@@ -24,4 +23,4 @@ c6c2e602eedb6001bc90e8d2196a1725 *man/prior.Rd
 ccdbfec1fe764256f490c0298cb5aea0 *man/rainfall.Rd
 49a00b32fc96c233d1e2d271148935c6 *man/rl.pred.Rd
 04725007f433778db8fb8309d32aca49 *man/rl.pst.Rd
-c0c7468b7f11a1f890588cd9a1f06dfc *src/evdbayesTest.c
+ddb882487315ef159d0b13911ff532af *src/evdbayesTest.c
