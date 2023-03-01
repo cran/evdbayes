@@ -59,11 +59,15 @@ posterior(n, init, prior, lh = c("none", "gev", "gpd", "pp","os"), \dots, psd,
 \seealso{\code{\link{pplik}}, \code{\link{prior.prob}}}
 
 \examples{
-mat <- diag(c(10000, 10000, 100))
-pn <- prior.norm(mean = c(0,0,0), cov = mat)
-\dontrun{data(portpirie)}
-\dontrun{posterior(1000, init = c(5,1,0.1), prior = pn, lh = "gev",
-    data = portpirie, psd = c(.02,.1,.1))}
+data(rainfall)
+prrain <- prior.quant(shape = c(38.9, 7.1, 47), scale = c(1.5, 6.3, 2.6))
+
+n <- 100 ; t0 <- c(50.8, 1.18, 0.65) ; s <- c(25, .35, .07) ; b <- 20
+rn.prior <- posterior(n, t0, prrain, "none", psd = s, burn = b)
+
+t0 <- c(43.2, 7.64, 0.32) ; s <- c(2, .2, .07)
+rn.post <- posterior(n, t0, prrain, "pp", data = rainfall, thresh = 40,
+  noy = 54, psd = s, burn = b)
 }
 \keyword{models}
 

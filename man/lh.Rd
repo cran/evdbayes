@@ -38,6 +38,9 @@ oslik(par, data, trend)
     value in \code{trend} and \code{thresh} is used for the
     approximation.}
 }
+\value{
+  A numeric vector.
+}
 \details{
   See the user's guide. 
 }

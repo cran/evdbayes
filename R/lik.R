@@ -17,13 +17,11 @@ function(par, data, trend)
 {
     n <- length(data)
     if(missing(trend))
-      lik <- .C("gevlik",
-          data, n, par, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_gevlik,
+          data, n, par, dns = double(1))$dns
     else
-      lik <- .C("gevlikt",
-          data, n, par, trend, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_gevlikt,
+          data, n, par, trend, dns = double(1))$dns
     lik
 }
 
@@ -44,13 +42,11 @@ function(par, data, trend)
 {
     n <- length(data)
     if(missing(trend))
-      lik <- .C("gpdlik",
-          data, n, par, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_gpdlik,
+          data, n, par, dns = double(1))$dns
     else
-      lik <- .C("gpdlikt",
-          data, n, par, trend, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_gpdlikt,
+          data, n, par, trend, dns = double(1))$dns
     lik
 }
 
@@ -87,13 +83,12 @@ function(par, data, thresh, noy, trend, htrend)
     nh <- length(data)
     n <- length(thresh)
     if(missing(trend))
-      lik <- .C("pplik",
-          data, nh, par, thresh, n, noy, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_pplik,
+          data, nh, par, thresh, n, noy, dns = double(1))$dns
     else
-      lik <- .C("pplikt",
+      lik <- .C(C_pplikt,
           data, nh, par, thresh, n, noy, trend, htrend,
-                dns = double(1), PACKAGE = "evdbayes")$dns
+                dns = double(1))$dns
     lik
 }
 
@@ -120,12 +115,10 @@ function(par, data, trend, thresh, rvec)
     m <- length(thresh)
     n <- length(data)
     if(missing(trend))
-      lik <- .C("oslik",
-          data, thresh, n, m, par, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_oslik,
+          data, thresh, n, m, par, dns = double(1))$dns
     else
-      lik <- .C("oslikt",
-          data, thresh, n, m, rvec, par, trend, dns = double(1),
-          PACKAGE = "evdbayes")$dns
+      lik <- .C(C_oslikt,
+          data, thresh, n, m, rvec, par, trend, dns = double(1))$dns
     lik
 }

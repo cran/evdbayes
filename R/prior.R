@@ -93,27 +93,24 @@
   ## Computes log prior density for (mu,sigma,xi) based on gamma distributions for quantile differences corresponding to three specified probabilities. Includes optional normal trend for location.
   function(par, prob = 10^-(1:3), shape, scale, trendsd)
 {
-  .C("dprior_quant",
-     par, prob, shape, scale, trendsd, dns = double(1),
-     PACKAGE = "evdbayes")$dns
+  .C(C_dprior_quant,
+     par, prob, shape, scale, trendsd, dns = double(1))$dns
 }
 
 "dprior.prob" <-
   ## Computes log prior density for (mu,sigma,xi) based on beta distributions for probability ratios corresponding to three specified quantiles. Includes optional normal trend for location.
   function(par, quant, alpha, trendsd)
 {
-  .C("dprior_prob",
-     par, quant, alpha, trendsd, dns = double(1),
-     PACKAGE = "evdbayes")$dns
+  .C(C_dprior_prob,
+     par, quant, alpha, trendsd, dns = double(1))$dns
 }
 
 "dprior.norm" <-
-                                        # Computes log prior density for (mu,sigma,xi) based on a trivariate normal distribution for (mu,log(sigma),xi). Includes optional normal trend for location.
+  # Computes log prior density for (mu,sigma,xi) based on a trivariate normal distribution for (mu,log(sigma),xi). Includes optional normal trend for location.
   function(par, mean, icov, trendsd)
 {
-  .C("dprior_norm",
-     par, mean, icov, trendsd, dns = double(1),
-     PACKAGE = "evdbayes")$dns
+  .C(C_dprior_norm,
+     par, mean, icov, trendsd, dns = double(1))$dns
 }
 
 "dprior.loglognorm" <-
@@ -122,7 +119,6 @@
   ## normal trend for location.
   function(par, mean, icov, trendsd)
 {
-  .C("dprior_loglognorm",
-     par, mean, icov, trendsd, dns = double(1),
-     PACKAGE = "evdbayes")$dns
+  .C(C_dprior_loglognorm,
+     par, mean, icov, trendsd, dns = double(1))$dns
 }

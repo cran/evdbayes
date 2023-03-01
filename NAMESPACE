@@ -1,2 +1,10 @@
-exportPattern("^[^\\.]")
-useDynLib(evdbayes)
+useDynLib(evdbayes, .registration = TRUE, .fixes = "C_")
+
+export(ibeta,igamma,ar.choice,mposterior,
+prior.quant,prior.prob,prior.norm,prior.loglognorm,dprior.quant,dprior.prob,dprior.norm,dprior.loglognorm,
+dpost,gibbs,posterior,
+gevlik,gevlik2,gpdlik,gpdlik2,pplik,pplik2,oslik,oslik2,
+mc.quant,rl.pst,rl.pred)
+
+importFrom("graphics", "matplot")
+importFrom("stats", "optim", "quantile")

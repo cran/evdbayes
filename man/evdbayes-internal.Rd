@@ -10,12 +10,16 @@
 \alias{oslik2}
 \alias{dpost}
 \alias{gibbs}
-\alias{gibbs.mix}
 
 \title{Internal Functions}
 
 \description{
   Not to be called by the user.
+}
+
+\value{
+  Internal functions, returning numeric vectors. The only exception is the internal function
+  \code{gibbs} which is used to produce the output of \code{\link{posterior}}.
 }
 
 \keyword{internal}

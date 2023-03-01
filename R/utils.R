@@ -87,11 +87,13 @@ ar.choice <- function(init, prior, lh = c("none","gev","gpd","pp","os"),
                   ..., psd = psd)
   npar <- length(psd)
   ar.cur <- attributes(mc)$ar[1,1:npar]
-  cat("Accept Rate values and proposal standard deviations at each iterations...\n")
-  cat("Accept Rate", "\t", "Prop. Std\n")
+  
+  #cat("Accept Rate values and proposal standard deviations at each iterations...\n")
+  #cat("Accept Rate", "\t", "Prop. Std\n")
   
   idx <- which(abs(ar.cur - ar) >= tol)
-  cat(ar.cur, "\t", round(psd, 3), "\n")
+  #cat(ar.cur, "\t", round(psd, 3), "\n")
+  
   ##Initialization
   psd.inf <- rep(0, npar)
   psd.sup <- 5 * psd
@@ -112,7 +114,7 @@ ar.choice <- function(init, prior, lh = c("none","gev","gpd","pp","os"),
     mc <- posterior(n = n, init = init, prior = prior, lh = lh,
                     ..., psd = psd)
     ar.cur <- attributes(mc)$ar[1,1:npar]
-    cat(ar.cur, "\t", round(psd, 3), "\n" )
+    #cat(ar.cur, "\t", round(psd, 3), "\n" )
     
     for (i in idx){
       if ( (ar.cur - ar)[i] > 0 ){
@@ -125,48 +127,46 @@ ar.choice <- function(init, prior, lh = c("none","gev","gpd","pp","os"),
         psd.inf[i] <- psd.inf[i] * ar.cur[i] / ar[i]
       }
     }
-
-                                        #cat("psd Inf: ", psd.inf, "\n")
-                                        #cat("psd Sup: ", psd.sup, "\n")
     idx <- which(abs(ar.cur - ar) >= tol)
   }
   
   return(list(psd = psd, ar = ar.cur))
 }
 
-## MAXIMIZE POSTERIOR DENSITY
+# MAXIMIZE POSTERIOR DENSITY
+
 "mposterior" <-
-  function(init, prior, lh = c("none","gev","gpd","pp","os"),
-           method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"),
-           lower = -Inf, upper = Inf, control = list(),
-           hessian = FALSE, ...)
+function(init, prior, lh = c("none","gev","gpd","pp","os"),
+         method = c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"),
+         lower = -Inf, upper = Inf, control = list(),
+         hessian = FALSE, ...)
 {
-  if (!inherits(prior, "evprior")) 
-    stop("`prior' must be a prior distribution")
-  if(!prior$trendsd && (length(init) != 3 || mode(init) != "numeric"))
-    stop("`init' must be a numeric vector of length three")
-  if(prior$trendsd && (length(init) != 4 || mode(init) != "numeric"))
-    stop("`init' must be a numeric vector of length four")
-  if(init[2] <= 0)
-    stop("initial value of scale parameter must be positive")
+    if (!inherits(prior, "evprior")) 
+        stop("`prior' must be a prior distribution")
+    if(!prior$trendsd && (length(init) != 3 || mode(init) != "numeric"))
+        stop("`init' must be a numeric vector of length three")
+    if(prior$trendsd && (length(init) != 4 || mode(init) != "numeric"))
+        stop("`init' must be a numeric vector of length four")
+    if(init[2] <= 0)
+        stop("initial value of scale parameter must be positive")
 
-  lh <- match.arg(lh)
-  ndpost <- function(par, prior, lh, ...) {
-    if(par[2] <= 0) return(Inf)
-    dprior <- do.call(prior$prior, c(list(par = par), prior[-1]))
-    switch(lh,
-           gev = -dprior - gevlik(par, ...),
-           gpd = -dprior - gpdlik(par, ...),
-           pp = -dprior - pplik(par, ...),
-           os = -dprior - oslik(par, ...),
-           none = -dprior)
-  }
+    lh <- match.arg(lh)
+    ndpost <- function(par, prior, lh, ...) {
+      if(par[2] <= 0) return(Inf)
+      dprior <- do.call(prior$prior, c(list(par = par), prior[-1]))
+      switch(lh,
+             gev = -dprior - gevlik(par, ...),
+             gpd = -dprior - gpdlik(par, ...),
+             pp = -dprior - pplik(par, ...),
+             os = -dprior - oslik(par, ...),
+             none = -dprior)
+    }
 
-  inittest <- ndpost(par = init, prior = prior, lh = lh, ...) 
-  if(is.infinite(inittest))
-    stop("density is zero at initial parameter values")
-  
-  optim(init, ndpost, method = method, lower = lower,
-        upper = upper, control = control, prior = prior,
-        lh = lh, ...)
+    inittest <- ndpost(par = init, prior = prior, lh = lh, ...) 
+    if(is.infinite(inittest))
+        stop("density is zero at initial parameter values")
+    
+    optim(init, ndpost, method = method, lower = lower,
+          upper = upper, control = control, prior = prior,
+          lh = lh, ...)
 }
